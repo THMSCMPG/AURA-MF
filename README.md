@@ -35,8 +35,11 @@ AURA-MF includes a dedicated Accuracy_Module to ensure physical consistency acro
 
 ## Directory Structure
 radiation-transport-model/
+
 ├── solvers/
+
 │   ├── v1_high_fidelity/      # Baseline Coupled BTE/N-S
+
 │   ├── v2_low_high_fidelity/       # MF
 
 ## Current Status (Dec 2025)
