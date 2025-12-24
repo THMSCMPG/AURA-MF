@@ -15,8 +15,8 @@ High-resolution coupling of BTE and N-S is computationally expensive for large-s
 | --- | --- | --- |
 | SimV1 | High-Fidelity Baseline | coupled model (MC + Thermal). |
 | SimV2 | Multi-Fidelity (MF) | Introduction of low/high-fidelity approximations for speed. |
-| SimV3 | MF2 + Optimization | Use of low/med-fidelity and Optimization Logic |
-| SimV4 | ML Optimized + OpenMP | Use of machine learning optimization and multi-core parallelization. |
+| SimV3 | MF + Optimization | Use of low/med-fidelity and Optimization Logic |
+| SimV4 | MF + Optimization + OpenMP | Use of low/med/high-fidelity, machine learning optimization, and multi-core parallelization. |
 
 
 ### Technical Architecture
