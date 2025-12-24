@@ -34,14 +34,14 @@ AURA-MF includes a dedicated Accuracy_Module to ensure physical consistency acro
 - Physical Bounds: Automatic monitoring of Max/Min temperatures to detect solver instability.
 
 ## Directory Structure
-radiation-transport-model/
-
+```text
+AURA-MF/
+├── README.md
 ├── solvers/
-
 │   ├── v1_high_fidelity/      # Baseline Coupled BTE/N-S
-
 │   ├── v2_low_high_fidelity/       # MF
-
+└── scripts/
+```
 ## Current Status (Dec 2025)
 - Proof of Concept: Finalized
 - v1_high_fidelity: In verification phase, comparing with open data from Sandia National Labs
