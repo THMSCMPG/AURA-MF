@@ -33,19 +33,20 @@ AURA-MF includes a dedicated Accuracy_Module to ensure physical consistency acro
 - Mathematical Consistency: Includes a Poisson residual check for numerical stability.
 - Physical Bounds: Automatic monitoring of Max/Min temperatures to detect solver instability.
 
-## Directory Structure
+SimV1 is directly compared with open datasets from Sandia National Lab. In addition to this a comparison of resolution's was done.
+
+## Current Directory Structure
 ```text
 AURA-MF/
 ├── README.md
 ├── solvers/
 │   ├── v1_high_fidelity/      # Baseline Coupled BTE/N-S
-│   ├── v2_low_high_fidelity/       # MF
-└── scripts/
+└──
 ```
 ## Current Status (Dec 2025)
 - Proof of Concept: Finalized
 - v1_high_fidelity: In verification phase, comparing with open data from Sandia National Labs
-- v2_low_high_fidelity: In build phase
+- v2: In build phase
 - v3 - v4: In research and planning phase
 
 ## Installation and Dependencies
