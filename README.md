@@ -1,14 +1,13 @@
 # AURA-MF
 Atmospheric Unified Radiation Assessment with Multi-Fidelity
 
-A high-fidelity radiation transport and thermal evolution engine supporting hierarchical parallelization and surrogate modeling.
+AURA-MF is an independent research framework designed to simulate complex atmospheric interactions by coupling radiation transport with fluid dynamics. It utilizes a multi-fidelity hierarchical approach to solve the Boltzmann Transport Equation (BTE) and Navier-Stokes (N-S) equations efficiently.
 
 ## Scientific Overview:
-Monte Carlo Radiation Transport: Simulates particle energy deposition (MeV) using stochastic sampling.
-
-Thermal Evolution: Solves the heat equation in Silicon ($K_Si = 148W/m⋅K$) to track temperature changes over time.
-
-Coupling: The Monte Carlo energy deposition is converted into a volumetric source term ($W/m^3$) for the thermal solver.
+High-resolution coupling of BTE and N-S is computationally expensive for large-scale research. AURA-MF addresses this by:
+- Radiation Transport: Modeling photon travel through various atmospheric densities.
+- Fluid Dynamics: Solving air flow and thermal gradients.
+- Computational Efficiency: Using low-fidelity models to focus high-fidelity computational resources where they are needed most.
 
 ## Fidelity Roadmap
 
@@ -21,16 +20,30 @@ Coupling: The Monte Carlo energy deposition is converted into a volumetric sourc
 
 
 ### Technical Architecture
-Solvers: Organized by fidelity level, allowing for hierarchical benchmarking.
-
-Visualization: Integrated pyplot module for generating 2D heatmaps and 3D space-time surface plots.
+The framework leverages a technical stack to balance speed and physical accuracy:
+- Core: Written in Fortran 90 for high-performance numerical throughput.
+- Solvers: Organized by fidelity level, allowing for hierarchical benchmarking.
+  - Monte Carlo: Stochastic particle energy deposition.
+  - Diffusion/Poisson: Approximations for pressure and thermal fields.
+- Visualization: Integrated pyplot module for generating 2D heatmaps and 3D space-time surface plots.
 
 ## Verification and Accuracy
-Energy Conservation: Checks the balance between total deposited energy and the thermal source term.
+AURA-MF includes a dedicated Accuracy_Module to ensure physical consistency across fidelity levels:
+- Energy Conservation: Checks the balance between total deposited energy and the thermal source term.
+- Mathematical Consistency: Includes a Poisson residual check for numerical stability.
+- Physical Bounds: Automatic monitoring of Max/Min temperatures to detect solver instability.
 
-Mathematical Consistency: Includes a Poisson residual check for numerical stability.
+## Directory Structure
+radiation-transport-model/
+├── solvers/
+│   ├── v1_high_fidelity/      # Baseline Coupled BTE/N-S
+│   ├── v2_low_high_fidelity/       # MF
 
-Physical Bounds: Automatic monitoring of Max/Min temperatures to detect solver instability.
+## Current Status (Dec 2025)
+- Proof of Concept: Finalized
+- v1_high_fidelity: In verification phase, comparing with open data from Sandia National Labs
+- v2_low_high_fidelity: In build phase
+- v3 - v4: In research and planning phase
 
 ## Installation and Dependencies
 Compilers: GFortran and Fortran Program Manager.
