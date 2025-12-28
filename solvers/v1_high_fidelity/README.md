@@ -1,2 +1,4 @@
 v1_high_fidelity
-Baseling Coupled BTE/N-S
+
+coupling high fidelity solvers for Boltzmann Transport and Navier Stokes equations
+current phase: fine tuning and 
