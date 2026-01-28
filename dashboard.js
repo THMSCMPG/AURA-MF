@@ -23,7 +23,7 @@
 
 const CONFIG = {
     // API Configuration
-    API_BASE_URL: 'https://[your-app].alwaysdata.net',  // UPDATE THIS!
+    API_BASE_URL = 'https://aura-mf-backend.onrender.com';
     FETCH_INTERVAL: 2000,  // 2 seconds
     TIMEOUT: 5000,         // 5 second timeout
     
