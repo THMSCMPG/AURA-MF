@@ -15,7 +15,9 @@ Version: 1.0.0
 
 import os
 import time
-from flask import Flask, jsonify, request
+import random
+from datetime import datetime
+from flask import Flask, jsonify, request, render_template_string
 from flask_cors import CORS
 from flask_mail import Mail, Message
 
@@ -32,22 +34,14 @@ app.config.update(
     MAIL_USERNAME=os.environ.get("MAIL_USERNAME"),
     MAIL_PASSWORD=os.environ.get("MAIL_PASSWORD"),
     MAIL_DEFAULT_SENDER=os.environ.get("MAIL_USERNAME")
+    # Near the top with other configs
+    CONTACT_RECIPIENT = os.environ.get("CONTACT_EMAIL") 
+    # Inside index(), change MAIL_PASSWORD to check the config
+    mail_status = "Configured" if app.config['MAIL_PASSWORD'] else "Not Configured"
 )
 
-mail = Mail(app)
 
 @app.route('/api/contact', methods=['POST'])
-def contact():
-    data = request.json
-    # Honeypot check
-    if data.get('website_hp'):
-        return jsonify({"status": "error", "message": "Bot detected"}), 400
-        
-    msg = Message(f"New AURA-MF Message from {data['name']}",
-                  recipients=[os.environ.get("CONTACT_EMAIL")])
-    msg.body = f"From: {data['name']} ({data['email']})\n\n{data['message']}"
-    mail.send(msg)
-    return jsonify({"status": "success", "message": "Thank you! Message sent."})
 
 if __name__ == "__main__":
     # Render binds to the PORT environment variable
@@ -490,5 +484,5 @@ def internal_error(error):
 
 if __name__ == "__main__":
     # Development server (use Alwaysdata's WSGI in production)
-  port = int(os.environ.get("PORT", 5000))  
-  app.run(debug=True, host='0.0.0.0', port=port)
+    port = int(os.environ.get("PORT", 5000))  
+    app.run(debug=True, host='0.0.0.0', port=port)
