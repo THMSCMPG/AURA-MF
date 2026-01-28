@@ -66,17 +66,19 @@
     </nav>
 
     <main>
-        
-        <header style="margin-bottom: 40px; text-align: center;">
-            <h1 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 800;">AURA-MF</h1>
-            <title style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 1px;">{{ page.title }}</title>
-        </header>
-       
-        <section id="content">
-            </section>
+
+    <header class="page-header">
+        <div class="container">
+            <h1>{{ page.title }}</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="content-area">
+            {{ content }}
+        </div>
     </main>
 
-    
 
     <footer class="footer">
         <p>Thomas Campagna | Physics & Mathematics</p>
