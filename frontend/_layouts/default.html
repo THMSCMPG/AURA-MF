@@ -22,12 +22,12 @@
         <div class="container">
             <a href="https://github.com/THMSCMPG/" class="logo"><i class="fas fa-bolt-lightning"></i> THMSCMPG</a>
             <ul class="nav-links">
-                <li><a href="https://thmscmpg.github.io/">Home</a></li>
-                <li><a href="https://thmscmpg.github.io/projects.html">Research</a></li>
-                <li><a href="https://thmscmpg.github.io/reports.html">Lab Reports</a></li>
-                <li><a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank" rel="noopener noreferrer">CV</a></li>
-                <li><a href="https://thmscmpg.github.io/CircuitNotes/">CircuitNotes</a></li>
-                <li><a href="https://thmscmpg.github.io/CircuitNotes/docs/master-reference.html">Master Ref</a></li>
+                <li><a href="{{ site.data.navigation[0].link | relative_url }}">{{ site.data.navigation[0].name }}</a></li>
+                <li><a href="{{ site.data.navigation[1].link | relative_url }}">{{ site.data.navigation[1].name }}</a></li>
+                <li><a href="{{ site.data.navigation[2].link | relative_url }}">{{ site.data.navigation[2].name }}</a></li>
+                <li><a href="{{ site.data.navigation[3].link | relative_url }}">{{ site.data.navigation[3].name }}</a></li>
+                <li><a href="{{ site.data.navigation[4].link | relative_url }}">{{ site.data.navigation[4].name }}</a></li>
+                <li><a href="{{ site.data.navigation[5].link | relative_url }}">{{ site.data.navigation[5].name }}</a></li>
             </ul>
         </div>
     </nav>
@@ -35,11 +35,11 @@
     <button class="menu-btn" onclick="toggleSidebar()">MENU &#9662;</button>
     <div id="mobileSidebar" class="sidebar-mobile">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
-        <a href="https://thmscmpg.github.io/">Home</a>
-        <a href="https://thmscmpg.github.io/projects.html">Research</a>
-        <a href="https://thmscmpg.github.io/reports.html">Lab Reports</a>
-        <a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf">CV</a>
-        <a href="https://thmscmpg.github.io/CircuitNotes/">CircuitNotes</a>
+                <li><a href="{{ site.data.navigation[0].link | relative_url }}">{{ site.data.navigation[0].name }}</a></li>
+                <li><a href="{{ site.data.navigation[1].link | relative_url }}">{{ site.data.navigation[1].name }}</a></li>
+                <li><a href="{{ site.data.navigation[2].link | relative_url }}">{{ site.data.navigation[2].name }}</a></li>
+                <li><a href="{{ site.data.navigation[3].link | relative_url }}">{{ site.data.navigation[3].name }}</a></li>
+                <li><a href="{{ site.data.navigation[4].link | relative_url }}">{{ site.data.navigation[4].name }}</a></li>
         <a href="#overview" onclick="toggleSidebar()">AURA Overview</a>
         <a href="#downloads" onclick="toggleSidebar()">Downloads</a>
     </div>
@@ -53,15 +53,15 @@
             <li><a href="#architecture">Architecture</a></li>
             <li><a href="#simulations">Simulations</a>
                 <ul>
-                    <li><a href="https://thmscmpg.github.io/AURA-MF/docs/simv1-gold-standard.html">SimV1: Gold Standard</a></li>
-                    <li><a href="https://thmscmpg.github.io/AURA-MF/docs/simv2-multifidelity.html">SimV2: Multi-Fidelity</a></li>
-                    <li><a href="https://thmscmpg.github.io/AURA-MF/docs/simv3-bayesian.html">SimV3: Bayesian Opt</a></li>
-                    <li><a href="https://thmscmpg.github.io/AURA-MF/docs/simv4-ml-orchestrator.html">SimV4: ML Orchestrator</a></li>
+                <li><a href="{{ site.data.navigation[15].link | relative_url }}">{{ site.data.navigation[15].name }}</a></li>
+                <li><a href="{{ site.data.navigation[16].link | relative_url }}">{{ site.data.navigation[16].name }}</a></li>
+                <li><a href="{{ site.data.navigation[17].link | relative_url }}">{{ site.data.navigation[17].name }}</a></li>
+                <li><a href="{{ site.data.navigation[18].link | relative_url }}">{{ site.data.navigation[18].name }}</a></li>
                 </ul>
             </li>
             <li><a href="#performance">Performance</a></li>
             <li><a href="#downloads">Downloads</a></li>
-            <li><a href="https://thmscmpg.github.io/AURA-MF/interactive/dashboard.html">Live Dashboard</a></li>
+            <li><a href="{{ site.data.navigation[19].link | relative_url }}">{{ site.data.navigation[19].name }}</a></li>
         </ul>
     </nav>
 
