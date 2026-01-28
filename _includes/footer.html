@@ -22,10 +22,11 @@
 {% comment %} 4. Display the navigation links {% endcomment %}
 <div class="nav-footer">
   {% if prev_page %}
-    <a href="{{ prev_page.url | relative_url }}">&larr; Previous: {{ prev_page.title }}</a>
+    <a href="{{ site.baseurl }}{{ prev_page.url }}">&larr; Previous: {{ prev_page.title }}</a>
   {% endif %}
 
   {% if next_page %}
-    <a href="{{ next_page.url | relative_url }}" style="float: right;">Next: {{ next_page.title }} &rarr;</a>
+    <a href="{{ site.baseurl }}{{ next_page.url }}" style="float: right;">Next: {{ next_page.title }} &rarr;</a>
   {% endif %}
 </div>
+
