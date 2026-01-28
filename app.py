@@ -25,7 +25,7 @@ from flask_mail import Mail, Message
 # FLASK APPLICATION SETUP
 # ============================================================================
 
-app = app
+app = flask(__name__)
 
 # ============================================================================
 # CONFIGURATION
