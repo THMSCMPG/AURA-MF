@@ -163,8 +163,8 @@ def contact():
         msg = Message(
             subject=f"AURA-MF Contact: {data['name']}",
             recipients=[CONTACT_RECIPIENT],
-            body=f"From: {data['name']} ({data['email']})\n\n{data['message']}"
-        )
+            body: JSON.stringify(data
+            )
         mail.send(msg)
         return jsonify({"status": "success", "message": "Email sent!"}), 200
     except Exception as e:
