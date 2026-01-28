@@ -191,6 +191,14 @@
             box-shadow: 4px 0 10px rgba(0,0,0,0.3);
         }
 
+        h1 { color: var(--primary); font-size: 2.5rem; margin-bottom: 1rem; border-bottom: 3px solid var(--primary); 
+             padding-bottom: 0.5rem; }
+        h2 { color: var(--dark); font-size: 1.8rem; margin-top: 3rem; margin-bottom: 1rem; 
+             border-left: 4px solid var(--primary); padding-left: 15px; }
+        h3 { color: var(--text); font-size: 1.4rem; margin-top: 2rem; margin-bottom: 0.8rem; }
+        h4 { color: var(--text); font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.6rem; font-weight: 700; }
+        p { margin-bottom: 1rem; line-height: 1.8; }
+
         /* The Trigger Zone */
         body::after {
             content: "";
@@ -275,6 +283,22 @@
         }
 
         /* --- Hero Section --- */
+        .hero-banner { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 3rem 2rem; border-radius: 8px; margin-bottom: 2rem; text-align: center; }
+        .hero-banner h2 { color: white; border: none; margin-top: 0; padding-left: 0; font-size: 2rem; }
+        .hero-banner p { margin: 0; opacity: 0.9; font-size: 1.1rem; }
+        .theory-box { background: #f0fdf4; border-left: 4px solid var(--primary); padding: 1.5rem; margin: 2rem 0; border-radius: 4px; }
+        .warning-box { background: #fef3c7; border-left: 4px solid var(--accent); padding: 1.5rem; 
+                       margin: 2rem 0; border-radius: 4px; }
+        .info-box { background: #eff6ff; border-left: 4px solid var(--info); padding: 1.5rem; 
+                    margin: 2rem 0; border-radius: 4px; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+                        gap: 2rem; margin: 2rem 0; }
+        .feature-card { background: white; padding: 1.5rem; border-radius: 8px; 
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: 0.2s; }
+        .feature-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); transform: translateY(-2px); }
+        .feature-card h4 { color: var(--primary); margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; background: white; 
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         .hero { 
             background: white; 
             padding: 60px 40px; 
