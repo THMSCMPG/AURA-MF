@@ -7,7 +7,7 @@ description: >- # This shows up in Google search results
   
 # Site Settings
 url: "https://THMSCMPG.github.io"
-baseurl: "/AURA-MF/frontend"
+baseurl: "/AURA-MF"
 backend_url: "https://aura-mf-backend.onrender.com"
 
 exclude:
