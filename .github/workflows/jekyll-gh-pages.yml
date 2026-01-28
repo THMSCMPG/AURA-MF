@@ -33,12 +33,12 @@ jobs:
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
-          source: /AURA-MF/frontend
-          destination: /AURA-MF/frontend/_site
+          source: frontend
+          destination: ./_site
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-            path: /AURA-MF/frontend/_site
+            path: ./_site
     
 
   # Deployment job
