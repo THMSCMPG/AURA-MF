@@ -1,4 +1,4 @@
-"""
+ """
 AURA-MF Dashboard Backend - Flask Application
 ==============================================
 
@@ -20,9 +20,9 @@ from flask_cors import CORS
 from flask_mail import Mail, Message
 
 app = Flask(__name__)
-
+CORS(app)
 # Fixed CORS: No trailing slash on origins
-CORS(app, resources={r"/api/*": {"origins": ["https://thmscmpg.github.io/AURA-MF", "http://localhost:4000"]}})
+# CORS(app, resources={r"/api/*": {"origins": ["https://thmscmpg.github.io/AURA-MF", "http://localhost:4000"]}})
 
 # Updated Gmail SMTP Configuration
 app.config.update(
@@ -490,4 +490,5 @@ def internal_error(error):
 
 if __name__ == "__main__":
     # Development server (use Alwaysdata's WSGI in production)
-    app.run(debug=True, host='0.0.0.0', port=5000)
+  port = int(os.environ.get("PORT", 5000))  
+  app.run(debug=True, host='0.0.0.0', port=port)
