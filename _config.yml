@@ -1,3 +1,21 @@
-title: AURA-MF
-description: Multi-Fidelity Photovoltaic Simulation Framework
-layout: default
+name: ""
+title: Thomas Campagna
+email: thmscmpgn@gmail.com
+description: >- # This shows up in Google search results
+  Undergraduate Physics & Math Student at Austin Peay State University. 
+  Aspiring Computational Physicist specializing in Photonics and Environmental Physics.
+  
+# Site Settings
+url: "https://THMSCMPG.github.io"
+baseurl: ""
+
+# Build Settings
+markdown: kramdown
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+kramdown:
+  math_engine: mathjax
+  input: GFM # GitHub Flavored Markdown
+  syntax_highlighter: rouge
