@@ -39,3 +39,7 @@
 
 # debug information files
 *.dwo
+
+# GitHub Pages (config and style files)
+*.css
+*.yml
