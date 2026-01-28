@@ -1,70 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA-MF | Multi-Fidelity Photovoltaic Simulation</title>
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
-
-    <nav class="navbar">
-        <div class="container">
-            <a href="https://github.com/THMSCMPG/" class="logo"><i class="fas fa-bolt-lightning"></i> THMSCMPG</a>
-            <ul class="nav-links">
-                <li><a href="https://thmscmpg.github.io/">Home</a></li>
-                <li><a href="https://thmscmpg.github.io/projects.html">Research</a></li>
-                <li><a href="https://thmscmpg.github.io/reports.html">Lab Reports</a></li>
-                <li><a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank" rel="noopener noreferrer">CV</a></li>
-                <li><a href="https://thmscmpg.github.io/CircuitNotes/">CircuitNotes</a></li>
-                <li><a href="https://thmscmpg.github.io/CircuitNotes/docs/master-reference.html">Master Ref</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <button class="menu-btn" onclick="toggleSidebar()">MENU &#9662;</button>
-    <div id="mobileSidebar" class="sidebar-mobile">
-        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
-        <a href="https://thmscmpg.github.io/">Home</a>
-        <a href="https://thmscmpg.github.io/projects.html">Research</a>
-        <a href="https://thmscmpg.github.io/reports.html">Lab Reports</a>
-        <a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf">CV</a>
-        <a href="https://thmscmpg.github.io/CircuitNotes/">CircuitNotes</a>
-        <a href="#overview" onclick="toggleSidebar()">AURA Overview</a>
-        <a href="#downloads" onclick="toggleSidebar()">Downloads</a>
-    </div>
-
-    <div class="trigger-zone"></div> 
-    
-    <nav class="peek-nav">
-        <h2>AURA-MF Menu</h2>
-        <ul>
-            <li><a href="#overview" class="active">Overview</a></li>
-            <li><a href="#architecture">Architecture</a></li>
-            <li><a href="#simulations">Simulations</a>
-                <ul>
-                    <li><a href="docs/simv1-gold-standard.html">SimV1: Gold Standard</a></li>
-                    <li><a href="docs/simv2-multifidelity.html">SimV2: Multi-Fidelity</a></li>
-                    <li><a href="docs/simv3-bayesian.html">SimV3: Bayesian Opt</a></li>
-                    <li><a href="docs/simv4-ml-orchestrator.html">SimV4: ML Orchestrator</a></li>
-                </ul>
-            </li>
-            <li><a href="#performance">Performance</a></li>
-            <li><a href="#downloads">Downloads</a></li>
-            <li><a href="interactive/dashboard.html">Live Dashboard</a></li>
-        </ul>
-    </nav>
+---
+layout: default
+title: Home
+---
 
     <main>
         <header style="margin-bottom: 40px; text-align: center;">
