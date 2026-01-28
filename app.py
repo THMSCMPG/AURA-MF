@@ -35,8 +35,7 @@ app = Flask(__name__)
 # Replace with your actual GitHub Pages URL
 ALLOWED_ORIGINS = [
     "https://thmscmpg.github.io",
-    "http://localhost:8000",  # For local testing
-    "http://127.0.0.1:8000"   # Alternative local
+    "http://localhost:0000",  # For local testing
 ]
 
 CORS(app, resources={
