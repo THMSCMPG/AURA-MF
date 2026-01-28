@@ -244,6 +244,23 @@ async function fetchSimulationData() {
     }
 }
 
+async function checkBackend() {
+    const statusEl = document.getElementById('statusIndicator');
+    try {
+        // Ping the health endpoint we set up in the Render guide
+        const response = await fetch(`${API_BASE_URL}/api/health`);
+        if (response.ok) {
+            statusEl.innerHTML = "🟢 Connected";
+            statusEl.style.color = "#2ecc71";
+            startSimulation(); // Function to start your data loop
+        }
+    } catch (error) {
+        statusEl.innerHTML = "⏳ Waking up server (may take 30s)...";
+        setTimeout(checkBackend, 5000); // Retry every 5s
+    }
+}
+
+
 // ============================================================================
 // VISUALIZATION
 // ============================================================================
