@@ -390,8 +390,12 @@ $ xdg-open http://localhost:8080</pre>
             </div>
         </div>
     
-        <script src="dashboard.js"></script>
-    
+    <script>
+      // Define variables here so dashboard.js can see them
+      const API_BASE_URL = "{{ https://aura-mf-backend.onrender.com }}";
+    </script>
+    <script src="{{'https://thmscmpg.github.io/AURA-MF/assets/js/dashboard.js'}}"></script>
+
     <script>
         // Additional UI enhancements
         document.addEventListener('DOMContentLoaded', function() {
