@@ -53,7 +53,7 @@ const CONFIG = {
 async function updateDashboard() {
     const status = document.getElementById('statusIndicator');
     try {
-        const res = await fetch(`${CONFIG.API_BASE_URL}/api/simulate`);
+        const res = await fetch(`${API_BASE_URL}/api/simulate`);
         if (!res.ok) throw new Error('Offline');
         const data = await res.json();
         
