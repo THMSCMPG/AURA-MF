@@ -5,7 +5,119 @@ weight: 6
 ---
 
     <main>
+<div class="dashboard-container">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <h1>🌞 AURA-MF Dashboard</h1>
+            <p>Multi-Fidelity Photovoltaic Simulation - Real-Time Monitoring</p>
+        </header>
+        
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <span class="status-label">Connection</span>
+                <span class="status-value" id="statusIndicator">🟡 Connecting...</span>
+            </div>
+            
+            <div class="status-item">
+                <span class="status-label">Simulation Time</span>
+                <span class="status-value" id="simulationTime">0.0s</span>
+            </div>
+            
+            <div class="status-item">
+                <span class="status-label">Current Fidelity</span>
+                <span class="status-value" id="fidelityDisplay">—</span>
+            </div>
+        </div>
+        
+        <!-- Main Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Left Column: Temperature Heatmap -->
+            <div class="dashboard-card">
+                <div class="card-header">
+                    <h2 class="card-title">Temperature Field T(x,y,t)</h2>
+                    <span class="card-badge">10×10 Grid</span>
+                </div>
+                
+                <canvas id="temperatureHeatmap" width="500" height="500"></canvas>
+                
+                <div class="metrics-grid" style="margin-top: 20px;">
+                    <div class="metric-box">
+                        <div class="metric-label">Min Temperature</div>
+                        <div class="metric-value" id="minTemp">—</div>
+                    </div>
+                    <div class="metric-box">
+                        <div class="metric-label">Max Temperature</div>
+                        <div class="metric-value" id="maxTemp">—</div>
+                    </div>
+                    <div class="metric-box" style="grid-column: 1 / -1;">
+                        <div class="metric-label">Average Temperature</div>
+                        <div class="metric-value" id="avgTemp">—</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: Metrics & Controls -->
+            <div>
+                <!-- Fidelity Indicator -->
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <h2 class="card-title">ML Orchestrator</h2>
+                    </div>
+                    
+                    <div class="fidelity-indicator">
+                        <div style="font-size: 0.9rem; color: #666;">Active Fidelity Level</div>
+                        <div class="fidelity-level" id="fidelityLevel2">Medium (MF)</div>
+                    </div>
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <div class="metric-label">ML Confidence</div>
+                            <div class="metric-value" id="mlConfidence">—</div>
+                        </div>
+                        <div class="metric-box">
+                            <div class="metric-label">Energy Residuals</div>
+                            <div class="metric-value" id="energyResiduals">—</div>
+                        </div>
+                    </div>
+                    
+                    <div class="fidelity-history-box">
+                        <div class="fidelity-history-label">Fidelity History (Last 30)</div>
+                        <div id="fidelityHistory">Initializing...</div>
+                    </div>
+                </div>
+                
+                <!-- Additional Info Card -->
+                <div class="dashboard-card" style="margin-top: 20px;">
+                    <div class="card-header">
+                        <h2 class="card-title">About This Dashboard</h2>
+                    </div>
+                    
+                    <div style="line-height: 1.8; color: #666;">
+                        <p style="margin-bottom: 15px;">
+                            <strong>What you're seeing:</strong> Real-time data from a multi-fidelity 
+                            PV thermal simulation that intelligently switches between three resolution 
+                            levels (Low/Medium/High) based on machine learning.
+                        </p>
+                        
+                        <p style="margin-bottom: 15px;">
+                            <strong>Fidelity Levels:</strong><br>
+                            🟢 <strong>LF</strong> - Fast approximation (25×25 grid)<br>
+                            🟠 <strong>MF</strong> - Balanced accuracy (50×50 grid)<br>
+                            🔴 <strong>HF</strong> - Maximum detail (100×100 grid)
+                        </p>
+                        
+                        <p>
+                            <strong>Goal:</strong> Achieve 15× speedup while maintaining 
+                            &lt;2K temperature error vs. experimental data.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
+<!---============================================--->
+        
         <div class="hero-banner">
             <h2>📊 Real-Time PV Simulation Dashboard</h2>
             <p>Visualize multi-fidelity orchestration in real-time</p>
@@ -58,23 +170,6 @@ weight: 6
                     <li>MF: $50 \times 50$ (3.2 cm spacing)</li>
                     <li>HF: $100 \times 100$ (1.6 cm spacing)</li>
                 </ul>
-
-                <canvas id="temperatureHeatmap" width="500" height="500"></canvas>
-                
-                <div class="metrics-grid" style="margin-top: 20px;">
-                    <div class="metric-box">
-                        <div class="metric-label">Min Temperature</div>
-                        <div class="metric-value" id="minTemp">—</div>
-                    </div>
-                    <div class="metric-box">
-                        <div class="metric-label">Max Temperature</div>
-                        <div class="metric-value" id="maxTemp">—</div>
-                    </div>
-                    <div class="metric-box" style="grid-column: 1 / -1;">
-                        <div class="metric-label">Average Temperature</div>
-                        <div class="metric-value" id="avgTemp">—</div>
-                    </div>
-                </div>
             </div>
 
             <div class="feature-card">
@@ -89,29 +184,8 @@ weight: 6
                     <li>Switching frequency</li>
                     <li>Speedup factor vs. pure HF</li>
                 </ul>
-
-                <div class="fidelity-indicator">
-                        <div style="font-size: 0.9rem; color: #666;">Active Fidelity Level</div>
-                        <div class="fidelity-level" id="fidelityLevel2">Medium (MF)</div>
-                    </div>
-                    
-                    <div class="metrics-grid">
-                        <div class="metric-box">
-                            <div class="metric-label">ML Confidence</div>
-                            <div class="metric-value" id="mlConfidence">—</div>
-                        </div>
-                        <div class="metric-box">
-                            <div class="metric-label">Energy Residuals</div>
-                            <div class="metric-value" id="energyResiduals">—</div>
-                        </div>
-                    </div>
-
-                 <div class="fidelity-history-box">
-                        <div class="fidelity-history-label">Fidelity History (Last 30)</div>
-                        <div id="fidelityHistory">Initializing...</div>
-                    </div>
-                </div>
             </div>
+            
 
             <div class="feature-card">
                 <h4>🔋 Energy Balance Monitor</h4>
@@ -140,32 +214,6 @@ weight: 6
                 <p style="font-size: 0.9rem;">Values > 50% indicate high certainty</p>
             </div>
         </div>
-
-        <div class="dashboard-card" style="margin-top: 20px;">
-                    <div class="card-header">
-                        <h2 class="card-title">About This Dashboard</h2>
-                    </div>
-                    
-                    <div style="line-height: 1.8; color: #666;">
-                        <p style="margin-bottom: 15px;">
-                            <strong>What you're seeing:</strong> Real-time data from a multi-fidelity 
-                            PV thermal simulation that intelligently switches between three resolution 
-                            levels (Low/Medium/High) based on machine learning.
-                        </p>
-                        
-                        <p style="margin-bottom: 15px;">
-                            <strong>Fidelity Levels:</strong><br>
-                            🟢 <strong>LF</strong> - Fast approximation (25×25 grid)<br>
-                            🟠 <strong>MF</strong> - Balanced accuracy (50×50 grid)<br>
-                            🔴 <strong>HF</strong> - Maximum detail (100×100 grid)
-                        </p>
-                        
-                        <p>
-                            <strong>Goal:</strong> Achieve 15× speedup while maintaining 
-                            &lt;2K temperature error vs. experimental data.
-                        </p>
-                    </div>
-                </div>
         
 
         <div class="theory-box">
