@@ -140,8 +140,7 @@
 const CONFIG = {
     // API Configuration
     API_BASE_URL = 'https://aura-mf-backend.onrender.com';
-    FETCH_INTERVAL: 2000,  // 2 seconds
-    TIMEOUT: 5000,         // 5 second timeout
+    INTERVAL: 2000,  // 2 seconds
     
     // Dashboard Element IDs
     ELEMENTS: {
@@ -165,6 +164,24 @@ const CONFIG = {
     }
 };
 
+async function updateDashboard() {
+    const status = document.getElementById('statusIndicator');
+    try {
+        const res = await fetch(`${CONFIG.API_BASE_URL}/api/simulate`);
+        if (!res.ok) throw new Error('Offline');
+        const data = await res.json();
+        
+        status.innerText = "🟢 Connected";
+        status.style.color = "#2ecc71";
+        // Call your drawing functions here (drawHeatmap, etc.)
+    } catch (err) {
+        status.innerText = "⏳ Server waking up (30-60s)...";
+        status.style.color = "#f1c40f";
+    }
+}
+
+setInterval(updateDashboard, CONFIG.INTERVAL);
+        
 // ============================================================================
 // STATE MANAGEMENT
 // ============================================================================
