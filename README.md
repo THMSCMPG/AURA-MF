@@ -171,7 +171,7 @@ python3 -m pip install numpy matplotlib pandas
 
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/AURA-MF.git
+git clone https://github.com/THMSCMPG/AURA-MF.git
 cd AURA-MF
 
 # Build optimized executable
