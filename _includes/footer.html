@@ -1,0 +1,31 @@
+{% comment %} 1. Get all pages and sort them by weight {% endcomment %}
+{% assign all_pages = site.pages | sort: "weight" %}
+
+{% comment %} 2. Find the current page's index in the sorted list {% endcomment %}
+{% for p in all_pages %}
+  {% if p.url == page.url %}
+    {% assign current_index = forloop.index0 %}
+    {% assign prev_index = current_index | minus: 1 %}
+    {% assign next_index = current_index | plus: 1 %}
+  {% endif %}
+{% endfor %}
+
+{% comment %} 3. Assign the previous and next page objects {% endcomment %}
+{% if current_index > 0 %}
+  {% assign prev_page = all_pages[prev_index] %}
+{% endif %}
+
+{% if next_index < all_pages.size %}
+  {% assign next_page = all_pages[next_index] %}
+{% endif %}
+
+{% comment %} 4. Display the navigation links {% endcomment %}
+<div class="footer-nav">
+  {% if prev_page %}
+    <a href="{{ prev_page.url | relative_url }}">&larr; Previous: {{ prev_page.title }}</a>
+  {% endif %}
+
+  {% if next_page %}
+    <a href="{{ next_page.url | relative_url }}" style="float: right;">Next: {{ next_page.title }} &rarr;</a>
+  {% endif %}
+</div>
