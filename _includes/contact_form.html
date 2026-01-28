@@ -1,0 +1,558 @@
+<!-- 
+  AURA-MF Contact Form
+  ====================
+  
+  Professional contact section for GitHub Pages site.
+  Integrates with Flask backend on Alwaysdata.
+  
+  Features:
+    - Clean, accessible design matching site aesthetic
+    - Anti-spam honeypot protection
+    - Real-time validation
+    - Success/error messaging
+    - No page refresh on submission
+  
+  Add this section to your homepage HTML
+-->
+
+<!-- ============================================== -->
+<!-- CONTACT FORM HTML -->
+<!-- ============================================== -->
+
+<section class="demo-section" id="contact">
+    <div class="container">
+        <h3>📬 Contact Me</h3>
+        <p class="section-description">
+            Have questions about AURA-MF or want to collaborate? 
+            I'd love to hear from you!
+        </p>
+        
+        <div class="category-card contact-card">
+            <form id="contactForm" class="contact-form" novalidate>
+                <!-- ANTI-SPAM: Honeypot field (hidden from humans, visible to bots) -->
+                <input 
+                    type="text" 
+                    name="website_hp" 
+                    id="website_hp"
+                    style="display:none !important; position: absolute; left: -9999px;" 
+                    tabindex="-1" 
+                    autocomplete="off"
+                    aria-hidden="true">
+                
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label for="contactName">Name *</label>
+                    <input 
+                        type="text" 
+                        id="contactName" 
+                        name="name"
+                        placeholder="Your Name" 
+                        required
+                        minlength="2"
+                        maxlength="100"
+                        class="form-input">
+                    <span class="form-error" id="nameError"></span>
+                </div>
+                
+                <!-- Email Field -->
+                <div class="form-group">
+                    <label for="contactEmail">Email *</label>
+                    <input 
+                        type="email" 
+                        id="contactEmail" 
+                        name="email"
+                        placeholder="your.email@example.com" 
+                        required
+                        maxlength="150"
+                        class="form-input">
+                    <span class="form-error" id="emailError"></span>
+                </div>
+                
+                <!-- Message Field -->
+                <div class="form-group">
+                    <label for="contactMessage">Message *</label>
+                    <textarea 
+                        id="contactMessage" 
+                        name="message"
+                        placeholder="Type your message here..." 
+                        required
+                        minlength="10"
+                        maxlength="5000"
+                        rows="6"
+                        class="form-input form-textarea"></textarea>
+                    <span class="form-error" id="messageError"></span>
+                    <span class="character-count" id="charCount">0 / 5000</span>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn" id="submitBtn">
+                    <span class="btn-text">Send Message</span>
+                    <span class="btn-icon">📧</span>
+                </button>
+                
+                <!-- Response Message -->
+                <div id="formResponse" class="form-response" role="alert" aria-live="polite"></div>
+            </form>
+        </div>
+        
+        <!-- Alternative Contact Methods -->
+        <div class="contact-alternatives">
+            <p class="alt-contact-text">
+                Or reach out directly:
+                <a href="mailto:your.email@university.edu" class="contact-link">
+                    ✉️ your.email@university.edu
+                </a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================== -->
+<!-- CONTACT FORM CSS -->
+<!-- ============================================== -->
+
+<style>
+/* Contact Form Styles */
+.contact-card {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.section-description {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.95rem;
+}
+
+.form-input {
+    padding: 12px 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    background: #fff;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input.error {
+    border-color: #f44336;
+}
+
+.form-input.success {
+    border-color: #4CAF50;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-error {
+    color: #f44336;
+    font-size: 0.85rem;
+    min-height: 20px;
+    display: none;
+}
+
+.form-error.visible {
+    display: block;
+}
+
+.character-count {
+    text-align: right;
+    font-size: 0.85rem;
+    color: #999;
+}
+
+.submit-btn {
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.submit-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.submit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+.form-response {
+    padding: 15px;
+    border-radius: 8px;
+    font-weight: 500;
+    text-align: center;
+    display: none;
+    animation: slideIn 0.3s ease;
+}
+
+.form-response.visible {
+    display: block;
+}
+
+.success-msg {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 2px solid #4CAF50;
+}
+
+.error-msg {
+    background: #ffebee;
+    color: #c62828;
+    border: 2px solid #f44336;
+}
+
+.contact-alternatives {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.alt-contact-text {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.contact-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .contact-card {
+        padding: 20px;
+    }
+    
+    .submit-btn {
+        width: 100%;
+    }
+}
+</style>
+
+<!-- ============================================== -->
+<!-- CONTACT FORM JAVASCRIPT -->
+<!-- ============================================== -->
+
+<script>
+/**
+ * AURA-MF Contact Form Handler
+ * =============================
+ * 
+ * Features:
+ *   - Real-time validation
+ *   - Honeypot anti-spam
+ *   - AJAX submission (no page reload)
+ *   - Success/error feedback
+ *   - Character counting
+ */
+
+(function() {
+    'use strict';
+    
+    // Configuration
+    const CONFIG = {
+        API_URL: 'https://[your-app].alwaysdata.net/api/contact',  // UPDATE THIS!
+        MAX_MESSAGE_LENGTH: 5000,
+        MIN_MESSAGE_LENGTH: 10,
+        TIMEOUT: 10000  // 10 second timeout
+    };
+    
+    // Get form elements
+    const form = document.getElementById('contactForm');
+    const nameInput = document.getElementById('contactName');
+    const emailInput = document.getElementById('contactEmail');
+    const messageInput = document.getElementById('contactMessage');
+    const submitBtn = document.getElementById('submitBtn');
+    const responseDiv = document.getElementById('formResponse');
+    const charCount = document.getElementById('charCount');
+    
+    // Validation helpers
+    const validators = {
+        name: (value) => {
+            if (!value || value.trim().length < 2) {
+                return 'Name must be at least 2 characters';
+            }
+            if (value.length > 100) {
+                return 'Name is too long';
+            }
+            return null;
+        },
+        
+        email: (value) => {
+            if (!value) {
+                return 'Email is required';
+            }
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(value)) {
+                return 'Please enter a valid email address';
+            }
+            if (value.length > 150) {
+                return 'Email is too long';
+            }
+            return null;
+        },
+        
+        message: (value) => {
+            if (!value || value.trim().length < CONFIG.MIN_MESSAGE_LENGTH) {
+                return `Message must be at least ${CONFIG.MIN_MESSAGE_LENGTH} characters`;
+            }
+            if (value.length > CONFIG.MAX_MESSAGE_LENGTH) {
+                return `Message is too long (max ${CONFIG.MAX_MESSAGE_LENGTH} characters)`;
+            }
+            return null;
+        }
+    };
+    
+    // Show error message
+    function showError(inputId, message) {
+        const input = document.getElementById(inputId);
+        const errorSpan = document.getElementById(`${inputId.replace('contact', '').toLowerCase()}Error`);
+        
+        if (input && errorSpan) {
+            input.classList.add('error');
+            input.classList.remove('success');
+            errorSpan.textContent = message;
+            errorSpan.classList.add('visible');
+        }
+    }
+    
+    // Clear error message
+    function clearError(inputId) {
+        const input = document.getElementById(inputId);
+        const errorSpan = document.getElementById(`${inputId.replace('contact', '').toLowerCase()}Error`);
+        
+        if (input && errorSpan) {
+            input.classList.remove('error');
+            input.classList.add('success');
+            errorSpan.textContent = '';
+            errorSpan.classList.remove('visible');
+        }
+    }
+    
+    // Validate single field
+    function validateField(fieldName, value) {
+        const error = validators[fieldName](value);
+        const inputId = `contact${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}`;
+        
+        if (error) {
+            showError(inputId, error);
+            return false;
+        } else {
+            clearError(inputId);
+            return true;
+        }
+    }
+    
+    // Real-time validation
+    if (nameInput) {
+        nameInput.addEventListener('blur', () => {
+            validateField('name', nameInput.value);
+        });
+    }
+    
+    if (emailInput) {
+        emailInput.addEventListener('blur', () => {
+            validateField('email', emailInput.value);
+        });
+    }
+    
+    if (messageInput) {
+        messageInput.addEventListener('blur', () => {
+            validateField('message', messageInput.value);
+        });
+        
+        // Character counter
+        messageInput.addEventListener('input', () => {
+            if (charCount) {
+                const count = messageInput.value.length;
+                charCount.textContent = `${count} / ${CONFIG.MAX_MESSAGE_LENGTH}`;
+                
+                if (count > CONFIG.MAX_MESSAGE_LENGTH * 0.9) {
+                    charCount.style.color = '#f44336';
+                } else if (count > CONFIG.MAX_MESSAGE_LENGTH * 0.75) {
+                    charCount.style.color = '#FF9800';
+                } else {
+                    charCount.style.color = '#999';
+                }
+            }
+        });
+    }
+    
+    // Show response message
+    function showResponse(message, isSuccess) {
+        if (!responseDiv) return;
+        
+        responseDiv.textContent = message;
+        responseDiv.className = `form-response visible ${isSuccess ? 'success-msg' : 'error-msg'}`;
+        
+        // Auto-hide success message after 5 seconds
+        if (isSuccess) {
+            setTimeout(() => {
+                responseDiv.classList.remove('visible');
+            }, 5000);
+        }
+    }
+    
+    // Submit handler
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Clear previous response
+            if (responseDiv) {
+                responseDiv.classList.remove('visible');
+            }
+            
+            // Validate all fields
+            const isNameValid = validateField('name', nameInput.value);
+            const isEmailValid = validateField('email', emailInput.value);
+            const isMessageValid = validateField('message', messageInput.value);
+            
+            if (!isNameValid || !isEmailValid || !isMessageValid) {
+                showResponse('Please fix the errors above', false);
+                return;
+            }
+            
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            const btnText = submitBtn.querySelector('.btn-text');
+            const originalText = btnText.textContent;
+            btnText.textContent = 'Sending...';
+            
+            // Prepare form data
+            const formData = {
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                message: messageInput.value.trim(),
+                website_hp: document.getElementById('website_hp')?.value || ''
+            };
+            
+            // Submit to API
+            try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+                
+                const response = await fetch(CONFIG.API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData),
+                    signal: controller.signal
+                });
+                
+                clearTimeout(timeoutId);
+                
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'success') {
+                    showResponse(data.message || 'Thank you! Your message has been sent successfully.', true);
+                    form.reset();
+                    
+                    // Clear success styling
+                    [nameInput, emailInput, messageInput].forEach(input => {
+                        input.classList.remove('success');
+                    });
+                    
+                    // Reset character counter
+                    if (charCount) {
+                        charCount.textContent = '0 / 5000';
+                        charCount.style.color = '#999';
+                    }
+                    
+                } else {
+                    throw new Error(data.message || 'Failed to send message');
+                }
+                
+            } catch (error) {
+                console.error('Contact form error:', error);
+                
+                let errorMessage = 'Oops! Something went wrong. Please try again later.';
+                
+                if (error.name === 'AbortError') {
+                    errorMessage = 'Request timeout. Please check your connection and try again.';
+                } else if (error.message) {
+                    errorMessage = error.message;
+                }
+                
+                showResponse(errorMessage, false);
+                
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                btnText.textContent = originalText;
+            }
+        });
+    }
+    
+    console.log('✓ Contact form initialized');
+})();
+</script>
