@@ -14,62 +14,44 @@ Version: 1.0.0
 """
 
 import os
-import random
-import time
-from datetime import datetime
-from flask import Flask, jsonify, request, render_template_string
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_mail import Mail, Message
 
-# ============================================================================
-# FLASK APPLICATION SETUP
-# ============================================================================
-
 app = Flask(__name__)
 
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
+# Fixed CORS: No trailing slash on origins
+CORS(app, resources={r"/api/*": {"origins": ["https://thmscmpg.github.io/AURA-MF", "http://localhost:4000"]}})
 
-# 1. CORS CONFIGURATION
-# Replace with your actual GitHub Pages URL
-ALLOWED_ORIGINS = [
-    "https://thmscmpg.github.io",
-    "http://localhost:0000",  # For local testing
-]
-
-CORS(app, resources={
-    r"/api/*": {
-        "origins": ALLOWED_ORIGINS,
-        "methods": ["GET", "POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"],
-        "max_age": 3600
-    }
-})
-
-# 2. EMAIL CONFIGURATION (Alwaysdata SMTP)
-# IMPORTANT: Update these values with your Alwaysdata credentials
-ACCOUNT_NAME = os.environ.get("ALWAYSDATA_ACCOUNT", "your_alwaysdata_username")
-MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "your-email@yourdomain.com")
-MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD", "your_email_password")
-CONTACT_RECIPIENT = os.environ.get("CONTACT_EMAIL", "your-personal-email@gmail.com")
-
+# Updated Gmail SMTP Configuration
 app.config.update(
-    # Alwaysdata SMTP Configuration
-    MAIL_SERVER=f'smtp-{ACCOUNT_NAME}.alwaysdata.net',
-    MAIL_PORT=465,
-    MAIL_USE_SSL=True,
-    MAIL_USERNAME=MAIL_USERNAME,
-    MAIL_PASSWORD=MAIL_PASSWORD,
-    MAIL_DEFAULT_SENDER=MAIL_USERNAME,
-    
-    # Security
-    SECRET_KEY=os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production"),
-    
-    # Rate limiting simulation
-    RATE_LIMIT_WINDOW=60,  # seconds
-    RATE_LIMIT_MAX_REQUESTS=100
+    MAIL_SERVER='smtp.gmail.com',
+    MAIL_PORT=587,
+    MAIL_USE_TLS=True,
+    MAIL_USERNAME=os.environ.get("MAIL_USERNAME"),
+    MAIL_PASSWORD=os.environ.get("MAIL_PASSWORD"),
+    MAIL_DEFAULT_SENDER=os.environ.get("MAIL_USERNAME")
 )
+
+mail = Mail(app)
+
+@app.route('/api/contact', methods=['POST'])
+def contact():
+    data = request.json
+    # Honeypot check
+    if data.get('website_hp'):
+        return jsonify({"status": "error", "message": "Bot detected"}), 400
+        
+    msg = Message(f"New AURA-MF Message from {data['name']}",
+                  recipients=[os.environ.get("CONTACT_EMAIL")])
+    msg.body = f"From: {data['name']} ({data['email']})\n\n{data['message']}"
+    mail.send(msg)
+    return jsonify({"status": "success", "message": "Thank you! Message sent."})
+
+if __name__ == "__main__":
+    # Render binds to the PORT environment variable
+    app.run(host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))
+
 
 mail = Mail(app)
 
