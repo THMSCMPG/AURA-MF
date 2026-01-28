@@ -379,6 +379,28 @@
         }
 
         /* --- Footer --- */
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .nav-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+
+        .nav-footer a:hover {
+            background: var(--primary);
+            color: white;
+        }
         .footer { 
             text-align: center; 
             padding: 60px 0; 
