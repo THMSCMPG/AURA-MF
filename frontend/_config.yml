@@ -6,8 +6,8 @@ description: >- # This shows up in Google search results
   Aspiring Computational Physicist specializing in Photonics and Environmental Physics.
   
 # Site Settings
-url: "https://THMSCMPG.github.io"
-baseurl: "/AURA-MF"
+url: "https://THMSCMPG.github.io/"
+baseurl: ""
 backend_url: "https://aura-mf-backend.onrender.com"
 
 exclude:
