@@ -1,40 +1,40 @@
 - name: Home # 0
-  link: /frontend/index.html
+  link: https://thmscmpg.github.io/docs/index.html
 - name: Research # 1
-  link: /frontend/projects.html
+  link: https://thmscmpg.github.io/docs/projects.html
 - name: LabReports # 2
-  link: /frontend/reports.html
+  link: https://thmscmpg.github.io/docs/reports.html
 - name: CV # 3
-  link: /assets/Campagna_CV_2025.pdf
+  link: https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf
 - name: CircuitNotes # 4
-  link: /CircuitNotes/index.html
+  link: https://thmscmpg.github.io/CircuitNotes/index.html
 - name: MasterRef # 5
-  link: /CircuitNotes/docs/master-reference.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/master-reference.html
 - name: BasicCircuits # 6
-  link: /CircuitNotes/docs/basic-5v-circuits.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/basic-5v-circuits.html
 - name: LED # 7
-  link: /CircuitNotes/docs/led-demos.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/led-demos.html
 - name: Matrix # 8
-  link: /CircuitNotes/docs/matrix-keypad-theory.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/matrix-keypad-theory.html
 - name: OLED # 9
-  link: /CircuitNotes/docs/oled-buzzer-theory.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/oled-buzzer-theory.html
 - name: Photoresistor # 10
-  link: /CircuitNotes/docs/photoresistor-demos.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/photoresistor-demos.html
 - name: RGBLED # 11
-  link: /CircuitNotes/docs/rgb-led-demos.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/rgb-led-demos.html
 - name: Rotary # 12
-  link: /CircuitNotes/docs/rotary-encoder-demos.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/rotary-encoder-demos.html
 - name: SevenDip # 13
-  link: /CircuitNotes/docs/seven-segment-dip.html
+  link: https://thmscmpg.github.io/CircuitNotes/docs/seven-segment-dip.html
 - name: Landing # 14
-  link: /AURA-MF/frontend/index.html
+  link: https://thmscmpg.github.io/AURA-MF/docs/index.html
 - name: SimV1 # 15
-  link: /AURA-MF/frontend/docs/simv1-gold-standard.html
+  link: https://thmscmpg.github.io/AURA-MF/docs/pages/simv1-gold-standard.html
 - name: SimV2 # 16
-  link: /AURA-MF/frontend/docs/simv2-multifidelity.html
+  link: https://thmscmpg.github.io/AURA-MF/docs/pages/simv2-multifidelity.html
 - name: SimV3 # 17
-  link: /AURA-MF/frontend/docs/simv3-bayesian.html
+  link: https://thmscmpg.github.io/AURA-MF/docs/pages/simv3-bayesian.html
 - name: SimV4 # 18
-  link: /AURA-MF/frontend/docs/simv4-ml-orchestrator.html
+  link: https://thmscmpg.github.io/AURA-MF/docs/pages/simv4-ml-orchestrator.html
 - name: Dash # 19
-  link: /AURA-MF/frontend/interactive/dashboard.html
+  link: https://thmscmpg.github.io/AURA-MF/docs/pages/interactive/dashboard.html
