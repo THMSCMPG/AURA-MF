@@ -25,7 +25,7 @@
 
 const CONFIG = {
     // API Configuration
-    API_BASE_URL = 'https://aura-mf-backend.onrender.com';
+    API_BASE_URL : 'https://aura-mf-backend.onrender.com',
     INTERVAL: 2000,  // 2 seconds
     
     // Dashboard Element IDs
@@ -546,4 +546,4 @@ window.AURADashboard = {
     dashboardState,
     CONFIG
 };
-</script>
+
