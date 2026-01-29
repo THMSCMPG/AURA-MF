@@ -3,59 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA-MF | Multi-Fidelity Photovoltaic Simulation</title>
+    <title>{{ page.title }} | AURA-MF</title>
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
 </head>
 <body>
 
-   <button class="menu-btn" onclick="toggleSidebar()">MENU &#9662;</button>
+    <button class="menu-btn" onclick="toggleSidebar()">MENU &#9662;</button>
 
     <div id="mySidebar" class="sidebar">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
-                <li><a href="site.data.navigation[0].link">{{ site.data.navigation[0].name }}</a></li>
-                <li><a href="site.data.navigation[1].link">{{ site.data.navigation[1].name }}</a></li>
-                <li><a href="site.data.navigation[2].link">{{ site.data.navigation[2].name }}</a></li>
-
-                <a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank" rel="noopener noreferrer">CV</a>
-
-                <li><a href="site.data.navigation[4].link">{{ site.data.navigation[4].name }}</a></li>
-                <li><a href="site.data.navigation[5].link">{{ site.data.navigation[5].name }}</a></li>
-                <li><a href="site.data.navigation[14].link">{{ site.data.navigation[14].name }}</a></li>
+        {% for i in (0..2) %}
+            <a href="{{ site.data.navigation[i].link }}">{{ site.data.navigation[i].name }}</a>
+        {% endfor %}
+        <a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank">CV</a>
+        <a href="{{ site.data.navigation[4].link }}">{{ site.data.navigation[4].name }}</a>
+        <a href="{{ site.data.navigation[5].link }}">{{ site.data.navigation[5].name }}</a>
+        <a href="{{ site.data.navigation[14].link }}">{{ site.data.navigation[14].name }}</a>
     </div>
     
     <nav class="navbar">
         <div class="container">
-            <a href="https://github.com/THMSCMPG/" class="logo"><i class="fas fa-bolt-lightning" target="_blank" rel="noopener noreferrer"></i> THMSCMPG</a>
+            <a href="https://github.com/THMSCMPG/" class="logo" target="_blank">
+                <i class="fas fa-bolt-lightning"></i> THMSCMPG
+            </a>
             <ul class="nav-links">
-                <li><a href="site.data.navigation[0].link">{{ site.data.navigation[0].name }}</a></li>
-                <li><a href="site.data.navigation[1].link">{{ site.data.navigation[1].name }}</a></li>
-                <li><a href="site.data.navigation[2].link">{{ site.data.navigation[2].name }}</a></li>
-                <li><a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank" rel="noopener noreferrer">CV</a></li>
-                <li><a href="site.data.navigation[4].link">{{ site.data.navigation[4].name }}</a></li>
-                <li><a href="site.data.navigation[5].link">{{ site.data.navigation[5].name }}</a></li>
-                <li><a href="site.data.navigation[14].link">{{ site.data.navigation[14].name }}</a></li>
+                {% for i in (0..2) %}
+                    <li><a href="{{ site.data.navigation[i].link }}">{{ site.data.navigation[i].name }}</a></li>
+                {% endfor %}
+                <li><a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank">CV</a></li>
+                <li><a href="{{ site.data.navigation[14].link }}">{{ site.data.navigation[14].name }}</a></li>
+                
                 <li class="dropdown">
-                <span class="nav-label">Jump to Docs</i></span>
-                <a href="javascript:void(0)" class="dropbtn"><i class="fas fa-bars"></i></a>
-                <div class="dropdown-content">
-                    <a href="site.data.navigation[6].link">{{ site.data.navigation[6].name }}</a>
-                    <a href="site.data.navigation[7].link">{{ site.data.navigation[7].name }}</a>
-                    <a href="site.data.navigation[8].link">{{ site.data.navigation[8].name }}</a>
-                    <a href="site.data.navigation[9].link">{{ site.data.navigation[9].name }}</a>
-                    <a href="site.data.navigation[10].link">{{ site.data.navigation[10].name }}</a>
-                    <a href="site.data.navigation[11].link">{{ site.data.navigation[12].name }}</a>
-                    <a href="site.data.navigation[13].link">{{ site.data.navigation[13].name }}</a>
-                </div>
+                    <span class="nav-label">Jump to Docs</span>
+                    <a href="javascript:void(0)" class="dropbtn"><i class="fas fa-bars"></i></a>
+                    <div class="dropdown-content">
+                        {% for i in (6..13) %}
+                            <a href="{{ site.data.navigation[i].link }}">{{ site.data.navigation[i].name }}</a>
+                        {% endfor %}
+                    </div>
                 </li>
             </ul>
         </div>
@@ -64,51 +58,47 @@
     <div class="trigger-zone"></div> 
     
     <nav class="peek-nav">
-        <h2><a href="https://thmscmpg.github.io/AURA-MF/">AURA-MF Menu</a></h2>
+        <h2><a href="{{ site.data.navigation[14].link }}">AURA-MF Menu</a></h2>
         <ul>
             <li><a href="#overview" class="active">Overview</a></li>
             <li><a href="#architecture">Architecture</a></li>
             <li><a href="#simulations">Simulations</a>
                 <ul>
-                <li><a href="site.data.navigation[15].link">{{ site.data.navigation[15].name }}</a></li>
-                <li><a href="site.data.navigation[16].link">{{ site.data.navigation[16].name }}</a></li>
-                <li><a href="site.data.navigation[17].link">{{ site.data.navigation[17].name }}</a></li>
-                <li><a href="site.data.navigation[18].link">{{ site.data.navigation[18].name }}</a></li>
+                    <li><a href="{{ site.data.navigation[15].link }}">{{ site.data.navigation[15].name }}</a></li>
+                    <li><a href="{{ site.data.navigation[16].link }}">{{ site.data.navigation[16].name }}</a></li>
+                    <li><a href="{{ site.data.navigation[17].link }}">{{ site.data.navigation[17].name }}</a></li>
+                    <li><a href="{{ site.data.navigation[18].link }}">{{ site.data.navigation[18].name }}</a></li>
                 </ul>
             </li>
             <li><a href="#performance">Performance</a></li>
             <li><a href="#downloads">Downloads</a></li>
-            <li><a href="site.data.navigation[19].link">{{ site.data.navigation[19].name }}</a></li>
+            <li><a href="{{ site.data.navigation[19].link }}">{{ site.data.navigation[19].name }}</a></li>
         </ul>
     </nav>
 
-    <main>
-
-    <header class="page-header">
-        <div class="container">
-            <h1>{{ page.title }}</h1>
-        </div>
-    </header>
-
     <main class="container">
-        <div class="content-area">
-            {{ content }}
-        </div>
-    </main>
+        <header class="page-header">
+            <h1>{{ page.title }}</h1>
+        </header>
 
-        {% include contact_form.html %}
-        
-        {% include footer.html %}
+        <article class="content-area">
+            {{ content }}
+        </article>
+
+        {% if site.includes_enabled %}
+            {% include contact_form.html %}
+        {% endif %}
+    </main>
 
     <footer class="footer">
         <p>Thomas Campagna | Physics & Mathematics</p>
-        <p>&copy; 2026 CircuitNotes Project</p>
-            <p style="font-size: 0.8rem; margin-top: 10px;">Created by THMSCMPG</p>
-            <p style="font-size: 0.8rem; margin-top: 8px;">Licensed under the MIT License.</p>
-            <a href="https://github.com/THMSCMPG" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i>GitHub</a>
+        <p>&copy; 2026 AURA-MF Project</p>
+        <p style="font-size: 0.8rem;">Licensed under the MIT License.</p>
+        <a href="https://github.com/THMSCMPG" target="_blank"><i class="fab fa-github"></i> GitHub</a>
     </footer>
+
     <script>
-        // Auto-render math equations
+        // KaTeX Auto-render
         document.addEventListener("DOMContentLoaded", function() {
             renderMathInElement(document.body, {
                 delimiters: [
@@ -118,31 +108,27 @@
             });
         });
         
-        // Smooth scroll
+        // Sidebar Logic
+        function toggleSidebar() {
+            const sb = document.getElementById("mySidebar");
+            sb.style.width = (sb.style.width === "250px") ? "0" : "250px";
+        }
+
+        // Smooth Scroll & Active State
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                if(this.getAttribute('href').startsWith('#') && this.getAttribute('href').length > 1) {
+                const targetId = this.getAttribute('href');
+                if(targetId.length > 1) {
                     e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
+                    const target = document.querySelector(targetId);
                     if (target) {
                         target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        // Update active state in peek nav
                         document.querySelectorAll('.peek-nav a').forEach(a => a.classList.remove('active'));
                         this.classList.add('active');
                     }
                 }
             });
         });
-
-        function toggleSidebar() {
-            const sidebar = document.getElementById("mySidebar");
-            // Check if the sidebar is open (250px) or closed (0)
-            if (sidebar.style.width === "250px") {
-                sidebar.style.width = "0";
-            } else {
-                sidebar.style.width = "250px";
-            }
-        }
     </script>
 </body>    
 </html>
