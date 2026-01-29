@@ -149,9 +149,15 @@ def simulate():
 
 @app.route('/api/contact', methods=['POST', 'OPTIONS'])
 def contact():
-    if request.method == 'OPTIONS': return '', 204
+    if request.method == 'OPTIONS': 
+        return '', 204
     
-    data = request.get_json()
+    try:
+        data = request.get_json()
+    except Exception:
+        return jsonify({"status": "error", "message": "Invalid JSON"}), 400
+
+    # Honeypot check
     if data.get('website_hp'):
         return jsonify({"status": "success", "message": "Message received"}), 200
 
@@ -160,17 +166,17 @@ def contact():
         return jsonify({"status": "error", "message": error_msg}), 400
 
     try:
+        # Check every '(' has a matching ')'
         msg = Message(
-            subject=f"AURA-MF Contact: {data['name']}",
+            subject=f"AURA-MF Contact: {data.get('name')}",
+            sender=app.config.get('MAIL_USERNAME'),
             recipients=[CONTACT_RECIPIENT],
-            body: JSON.stringify(data
-        )
+            body=f"From: {data.get('name')} ({data.get('email')})\n\n{data.get('message')}"
+        ) # <--- MAKE SURE THIS PARENTHESIS IS HERE
+        
         mail.send(msg)
         return jsonify({"status": "success", "message": "Email sent!"}), 200
     except Exception as e:
         app.logger.error(f"Mail error: {e}")
         return jsonify({"status": "error", "message": "Mail server error"}), 500
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
