@@ -18,31 +18,48 @@
 </head>
 <body>
 
+   <button class="menu-btn" onclick="toggleSidebar()">MENU &#9662;</button>
+
+    <div id="mySidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+                <li><a href="site.data.navigation[0].link">{{ site.data.navigation[0].name }}</a></li>
+                <li><a href="site.data.navigation[1].link">{{ site.data.navigation[1].name }}</a></li>
+                <li><a href="site.data.navigation[2].link">{{ site.data.navigation[2].name }}</a></li>
+
+                <a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank" rel="noopener noreferrer">CV</a>
+
+                <li><a href="site.data.navigation[4].link">{{ site.data.navigation[4].name }}</a></li>
+                <li><a href="site.data.navigation[5].link">{{ site.data.navigation[5].name }}</a></li>
+                <li><a href="site.data.navigation[14].link">{{ site.data.navigation[14].name }}</a></li>
+    </div>
+    
     <nav class="navbar">
         <div class="container">
-            <a href="https://github.com/THMSCMPG/" class="logo"><i class="fas fa-bolt-lightning"></i> THMSCMPG</a>
+            <a href="https://github.com/THMSCMPG/" class="logo"><i class="fas fa-bolt-lightning" target="_blank" rel="noopener noreferrer"></i> THMSCMPG</a>
             <ul class="nav-links">
-                <li><a href="{{ site.data.navigation[0].link | relative_url }}">{{ site.data.navigation[0].name }}</a></li>
-                <li><a href="{{ site.data.navigation[1].link | relative_url }}">{{ site.data.navigation[1].name }}</a></li>
-                <li><a href="{{ site.data.navigation[2].link | relative_url }}">{{ site.data.navigation[2].name }}</a></li>
-                <li><a href="{{ site.data.navigation[3].link | relative_url }}">{{ site.data.navigation[3].name }}</a></li>
-                <li><a href="{{ site.data.navigation[4].link | relative_url }}">{{ site.data.navigation[4].name }}</a></li>
-                <li><a href="{{ site.data.navigation[5].link | relative_url }}">{{ site.data.navigation[5].name }}</a></li>
+                <li><a href="site.data.navigation[0].link">{{ site.data.navigation[0].name }}</a></li>
+                <li><a href="site.data.navigation[1].link">{{ site.data.navigation[1].name }}</a></li>
+                <li><a href="site.data.navigation[2].link">{{ site.data.navigation[2].name }}</a></li>
+                <li><a href="https://thmscmpg.github.io/assets/Campagna_CV_2025.pdf" target="_blank" rel="noopener noreferrer">CV</a></li>
+                <li><a href="site.data.navigation[4].link">{{ site.data.navigation[4].name }}</a></li>
+                <li><a href="site.data.navigation[5].link">{{ site.data.navigation[5].name }}</a></li>
+                <li><a href="site.data.navigation[14].link">{{ site.data.navigation[14].name }}</a></li>
+                <li class="dropdown">
+                <span class="nav-label">Jump to Docs</i></span>
+                <a href="javascript:void(0)" class="dropbtn"><i class="fas fa-bars"></i></a>
+                <div class="dropdown-content">
+                    <a href="site.data.navigation[6].link">{{ site.data.navigation[6].name }}</a>
+                    <a href="site.data.navigation[7].link">{{ site.data.navigation[7].name }}</a>
+                    <a href="site.data.navigation[8].link">{{ site.data.navigation[8].name }}</a>
+                    <a href="site.data.navigation[9].link">{{ site.data.navigation[9].name }}</a>
+                    <a href="site.data.navigation[10].link">{{ site.data.navigation[10].name }}</a>
+                    <a href="site.data.navigation[11].link">{{ site.data.navigation[12].name }}</a>
+                    <a href="site.data.navigation[13].link">{{ site.data.navigation[13].name }}</a>
+                </div>
+                </li>
             </ul>
         </div>
     </nav>
-
-    <button class="menu-btn" onclick="toggleSidebar()">MENU &#9662;</button>
-    <div id="mobileSidebar" class="sidebar-mobile">
-        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
-                <li><a href="{{ site.data.navigation[0].link | relative_url }}">{{ site.data.navigation[0].name }}</a></li>
-                <li><a href="{{ site.data.navigation[1].link | relative_url }}">{{ site.data.navigation[1].name }}</a></li>
-                <li><a href="{{ site.data.navigation[2].link | relative_url }}">{{ site.data.navigation[2].name }}</a></li>
-                <li><a href="{{ site.data.navigation[3].link | relative_url }}">{{ site.data.navigation[3].name }}</a></li>
-                <li><a href="{{ site.data.navigation[4].link | relative_url }}">{{ site.data.navigation[4].name }}</a></li>
-        <a href="#overview" onclick="toggleSidebar()">AURA Overview</a>
-        <a href="#downloads" onclick="toggleSidebar()">Downloads</a>
-    </div>
 
     <div class="trigger-zone"></div> 
     
@@ -53,15 +70,15 @@
             <li><a href="#architecture">Architecture</a></li>
             <li><a href="#simulations">Simulations</a>
                 <ul>
-                <li><a href="{{ site.data.navigation[15].link | relative_url }}">{{ site.data.navigation[15].name }}</a></li>
-                <li><a href="{{ site.data.navigation[16].link | relative_url }}">{{ site.data.navigation[16].name }}</a></li>
-                <li><a href="{{ site.data.navigation[17].link | relative_url }}">{{ site.data.navigation[17].name }}</a></li>
-                <li><a href="{{ site.data.navigation[18].link | relative_url }}">{{ site.data.navigation[18].name }}</a></li>
+                <li><a href="site.data.navigation[15].link">{{ site.data.navigation[15].name }}</a></li>
+                <li><a href="site.data.navigation[16].link">{{ site.data.navigation[16].name }}</a></li>
+                <li><a href="site.data.navigation[17].link">{{ site.data.navigation[17].name }}</a></li>
+                <li><a href="site.data.navigation[18].link">{{ site.data.navigation[18].name }}</a></li>
                 </ul>
             </li>
             <li><a href="#performance">Performance</a></li>
             <li><a href="#downloads">Downloads</a></li>
-            <li><a href="{{ site.data.navigation[19].link | relative_url }}">{{ site.data.navigation[19].name }}</a></li>
+            <li><a href="site.data.navigation[19].link">{{ site.data.navigation[19].name }}</a></li>
         </ul>
     </nav>
 
