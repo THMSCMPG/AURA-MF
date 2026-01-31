@@ -1,35 +1,13 @@
-<!-- 
-  AURA-MF Contact Form
-  ====================
-  
-  Professional contact section for GitHub Pages site.
-  Integrates with Flask backend on Alwaysdata.
-  
-  Features:
-    - Clean, accessible design matching site aesthetic
-    - Anti-spam honeypot protection
-    - Real-time validation
-    - Success/error messaging
-    - No page refresh on submission
-  
-  Add this section to your homepage HTML
--->
-
-<!-- ============================================== -->
-<!-- CONTACT FORM HTML -->
-<!-- ============================================== -->
-
 <section class="demo-section" id="contact">
     <div class="container">
         <h3>📬 Contact Me</h3>
         <p class="section-description">
-            Have questions about AURA-MF or want to collaborate? 
+            Have questions about my work or want to collaborate? 
             I'd love to hear from you!
         </p>
         
         <div class="category-card contact-card">
             <form id="contactForm" class="contact-form" novalidate>
-                <!-- ANTI-SPAM: Honeypot field (hidden from humans, visible to bots) -->
                 <input 
                     type="text" 
                     name="website_hp" 
@@ -39,7 +17,6 @@
                     autocomplete="off"
                     aria-hidden="true">
                 
-                <!-- Name Field -->
                 <div class="form-group">
                     <label for="contactName">Name *</label>
                     <input 
@@ -54,7 +31,6 @@
                     <span class="form-error" id="nameError"></span>
                 </div>
                 
-                <!-- Email Field -->
                 <div class="form-group">
                     <label for="contactEmail">Email *</label>
                     <input 
@@ -68,7 +44,6 @@
                     <span class="form-error" id="emailError"></span>
                 </div>
                 
-                <!-- Message Field -->
                 <div class="form-group">
                     <label for="contactMessage">Message *</label>
                     <textarea 
@@ -84,23 +59,17 @@
                     <span class="character-count" id="charCount">0 / 5000</span>
                 </div>
                 
-                <!-- Submit Button -->
                 <button type="submit" class="submit-btn" id="submitBtn">
                     <span class="btn-text">Send Message</span>
                     <span class="btn-icon">📧</span>
                 </button>
                 
-                <!-- Response Message -->
                 <div id="formResponse" class="form-response" role="alert" aria-live="polite"></div>
             </form>
         </div>
         </div>
     </div>
 </section>
-
-<!-- ============================================== -->
-<!-- CONTACT FORM CSS -->
-<!-- ============================================== -->
 
 <style>
 /* Contact Form Styles */
@@ -288,13 +257,9 @@
 }
 </style>
 
-<!-- ============================================== -->
-<!-- CONTACT FORM JAVASCRIPT -->
-<!-- ============================================== -->
-
 <script>
 /**
- * AURA-MF Contact Form Handler
+ * Contact Form Handler
  * =============================
  * 
  * Features:
@@ -310,10 +275,10 @@
     
     // Configuration
     const CONFIG = {
-        API_URL: "{{ https://aura-mf-backend.onrender.com }}/api/contact",  // UPDATE THIS!
+        API_URL: "{{ https://aura-mf-backend.onrender.com }}/api/contact", 
         MAX_MESSAGE_LENGTH: 5000,
         MIN_MESSAGE_LENGTH: 10,
-        TIMEOUT: 10000  // 10 second timeout
+        TIMEOUT: 10000
     };
     
     // Get form elements
