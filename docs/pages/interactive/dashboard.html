@@ -27,24 +27,6 @@ weight: 5
         </ul>
 
         <h2>Dashboard Components</h2>
-        
-        <!-- Status Bar -->
-        <div class="status-bar">
-            <div class="status-item">
-                <span class="status-label">Connection</span>
-                <span class="status-value" id="statusIndicator">🟡 Connecting...</span>
-            </div>
-            
-            <div class="status-item">
-                <span class="status-label">Simulation Time</span>
-                <span class="status-value" id="simulationTime">0.0s</span>
-            </div>
-            
-            <div class="status-item">
-                <span class="status-label">Current Fidelity</span>
-                <span class="status-value" id="fidelityDisplay">—</span>
-            </div>
-        </div>
 
         
         <div class="feature-grid">
@@ -218,6 +200,8 @@ weight: 5
     /fidelity [1440]
     /q_values [1440, 3]</pre>
 
+            {% include demo.html %}
+
         <h2>Future Enhancements</h2>
 
         <h3>3D Volume Rendering</h3>
@@ -278,43 +262,6 @@ $ xdg-open http://localhost:8080</pre>
                 <em>Computer Graphics Forum</em>, 28(3), 983-990.</li>
         </ol>
 
-
-<div class="dashboard-container">
-        <!-- Header -->
-        <header class="dashboard-header">
-            <h1>🌞 AURA-MF Dashboard</h1>
-            <p>Multi-Fidelity Photovoltaic Simulation - Real-Time Monitoring</p>
-        </header>
-        {% include demo.html %}
-        
-        <!-- Main Dashboard Grid -->
-        <div class="dashboard-grid">            
-            <!-- Additional Info Card -->
-            <div class="dashboard-card" style="margin-top: 20px;">
-                <div class="card-header">
-                    <h2 class="card-title">About This Dashboard</h2>
-                </div>
-                    
-                <div style="line-height: 1.8; color: #666;">
-                    <p style="margin-bottom: 15px;">
-                        <strong>What you're seeing:</strong> Real-time data from a 
-                        PV thermal simulation.
-                    </p>
-                        
-                    <p style="margin-bottom: 15px;">
-                        <strong>Fidelity Levels:</strong><br>
-                        🟢 <strong>LF</strong> - Fast approximation (25×25 grid)<br>
-                        🟠 <strong>MF</strong> - Balanced accuracy (50×50 grid)<br>
-                        🔴 <strong>HF</strong> - Maximum detail (100×100 grid)
-                    </p>
-                        
-                    <p>
-                        <strong>Goal:</strong> Achieve 15× speedup while maintaining 
-                        &lt;2K temperature error vs. experimental data.
-                    </p>
-                </div>
-            </div>
-        </div>
     
     <script>
       // Define variables here so dashboard.js can see them
