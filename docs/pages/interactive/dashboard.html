@@ -174,35 +174,8 @@ weight: 5
             <li><strong>SimV4 adaptive:</strong> Tracks Pareto frontier dynamically</li>
         </ul>
 
-        <h2>Data Export Options</h2>
-
-        <h3>CSV Time-Series Export</h3>
-
-        <p>Fields included: time, T_peak, T_mean, fidelity, epsilon_E, q-values, cost_cumulative</p>
-
-        <pre>time,T_peak,T_mean,fidelity,epsilon_E,q_LF,q_MF,q_HF,cost
-0.0,298.15,298.15,0,0.0,0.0,0.0,0.0,0.0
-60.0,310.2,309.8,0,0.4,3.2,2.1,1.5,1.2
-120.0,318.7,317.9,1,1.2,1.8,4.3,2.7,9.7</pre>
-
-        <h3>HDF5 Full-Field Export</h3>
-
-        <p>For post-processing in ParaView/VisIt:</p>
-
-        <pre>/simulation
-  /metadata
-    - t_total: 86400.0
-    - n_timesteps: 1440
-  /fields
-    /T [1440, 100, 100]
-    /u [1440, 100, 100, 3]
-  /ml_decisions
-    /fidelity [1440]
-    /q_values [1440, 3]</pre>
-
         <div>{% include demo.html %}</div>
             
-
         <h2>Future Enhancements</h2>
 
         <h3>3D Volume Rendering</h3>
