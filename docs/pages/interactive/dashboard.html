@@ -110,21 +110,6 @@ weight: 5
 
         <h2>Technical Implementation</h2>
 
-        <h3>WebSocket Data Streaming</h3>
-
-        <p>Dashboard receives simulation state via WebSocket protocol at <strong>10 Hz update frequency</strong>:</p>
-
-        <pre>{
-  "timestamp": 1738105234.567,
-  "t_sim": 3600.0,
-  "fidelity": 1,
-  "T_field": [[320.2, 320.5, ...], ...],
-  "q_values": [2.31, 4.12, 1.84],
-  "epsilon_E": 0.021,
-  "budget_remaining": 45673.2,
-  "state_features": [0.021, 0.015, 38.7, ...]
-}</pre>
-
         <h3>Numerical Stability Indicator</h3>
 
         <p>Dashboard monitors <strong>Courant-Friedrichs-Lewy (CFL) condition</strong> for temporal stability:</p>
@@ -139,40 +124,6 @@ weight: 5
             <p><strong>Stability criterion:</strong> CFL $< 0.5$ (explicit schemes)</p>
             <p><strong>Alert:</strong> Red warning if CFL $> 0.9$ (risk of numerical instability)</p>
         </div>
-
-        <h2>Performance Metrics Display</h2>
-
-        <h3>Live Statistics Panel</h3>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Metric</th>
-                    <th>Value</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Simulation time</td><td>1.2 hrs</td></tr>
-                <tr><td>Peak temperature</td><td>323.7 K</td></tr>
-                <tr><td>Mean temperature</td><td>320.4 K</td></tr>
-                <tr><td>Energy error</td><td>0.8%</td></tr>
-                <tr><td>Fidelity level</td><td>MF</td></tr>
-                <tr><td>Step compute time</td><td>8.7 s</td></tr>
-                <tr style="background: #ecfdf5;"><td><strong>Cumulative speedup</strong></td>
-                    <td style="color: var(--primary); font-weight: 600;">14.2×</td></tr>
-            </tbody>
-        </table>
-
-        <h3>Accuracy vs. Cost Tradeoff</h3>
-
-        <p>Pareto frontier visualization plots $(c(a), \text{RMSE}_a)$ for all three fidelity levels:</p>
-
-        <ul>
-            <li><strong>LF:</strong> Fast but inaccurate (bottom-right)</li>
-            <li><strong>HF:</strong> Slow but accurate (top-left)</li>
-            <li><strong>MF:</strong> Balanced compromise (middle)</li>
-            <li><strong>SimV4 adaptive:</strong> Tracks Pareto frontier dynamically</li>
-        </ul>
 
         <div>{% include demo.html %}</div>
             
@@ -197,28 +148,6 @@ weight: 5
 
         <p>Display prediction interval: $[\hat{T} - 2\sigma_{\text{LSTM}}, \hat{T} + 2\sigma_{\text{LSTM}}]$</p>
 
-        <h2>Deployment Instructions</h2>
-
-        <h3>Prerequisites</h3>
-
-        <ul>
-            <li><strong>Backend:</strong> Python 3.9+ with Flask, NumPy, Matplotlib</li>
-            <li><strong>Frontend:</strong> Modern browser with WebGL 2.0 support</li>
-            <li><strong>Fortran bridge:</strong> f2py compiled shared library</li>
-        </ul>
-
-        <h3>Launch Commands</h3>
-
-        <pre># Start simulation engine
-$ cd aura-mf/src
-$ ./simv4_command --config dashboard_mode.json &
-
-# Launch dashboard server
-$ cd ../dashboard
-$ python app.py --port 8080
-
-# Open browser
-$ xdg-open http://localhost:8080</pre>
 
         <div class="warning-box">
             <h3 style="margin-top: 0;">⚠️ Development in Progress</h3>
