@@ -69,6 +69,12 @@
         </div>
         </div>
     </div>
+    <iframe 
+    id="backend-bridge" 
+    src="https://thmscmpg.github.io/backend-bridge/" 
+    style="display:none; width:0; height:0; border:0;"
+    title="backend-bridge">
+</iframe>
 </section>
 
 <style>
@@ -258,30 +264,65 @@
 </style>
 
 <script>
-/**
- * Contact Form Handler
- * =============================
- * 
- * Features:
- *   - Real-time validation
- *   - Honeypot anti-spam
- *   - AJAX submission (no page reload)
- *   - Success/error feedback
- *   - Character counting
- */
-
 (function() {
     'use strict';
     
     // Configuration
     const CONFIG = {
-        API_URL: "{{ https://aura-mf-backend.onrender.com }}/api/contact", 
+        // We no longer need the API_URL here, the Bridge handles it.
         MAX_MESSAGE_LENGTH: 5000,
         MIN_MESSAGE_LENGTH: 10,
-        TIMEOUT: 10000
+        TIMEOUT: 10000 
     };
     
-    // Get form elements
+    // --- BRIDGE COMMUNICATION FUNCTION ---
+    function sendToBridge(payload) {
+        return new Promise((resolve, reject) => {
+            const iframe = document.getElementById('backend-bridge');
+            if (!iframe) {
+                reject(new Error("Bridge iframe not found"));
+                return;
+            }
+
+            const requestId = Date.now(); // Unique ID for this specific request
+
+            // Define listener for the response
+            const handleResponse = (event) => {
+                // Security check
+                if (event.origin !== window.location.origin) return;
+                // Only handle the message meant for this specific request ID
+                if (!event.data.id || event.data.id !== requestId) return;
+
+                // Cleanup: Remove listener so it doesn't pile up
+                window.removeEventListener('message', handleResponse);
+
+                if (event.data.status === 'success') {
+                    resolve(event.data.data);
+                } else {
+                    reject(new Error(event.data.error));
+                }
+            };
+
+            // Start listening
+            window.addEventListener('message', handleResponse);
+
+            // Send message to Iframe
+            iframe.contentWindow.postMessage({ 
+                action: 'SUBMIT_CONTACT', 
+                id: requestId,
+                payload: payload 
+            }, '*');
+            
+            // Safety timeout in case the bridge never replies
+            setTimeout(() => {
+                window.removeEventListener('message', handleResponse);
+                reject(new Error("Request timed out - Bridge did not respond"));
+            }, CONFIG.TIMEOUT);
+        });
+    }
+
+    // --- FORM LOGIC (Unchanged mostly, except the submit handler) ---
+    
     const form = document.getElementById('contactForm');
     const nameInput = document.getElementById('contactName');
     const emailInput = document.getElementById('contactEmail');
@@ -290,48 +331,16 @@
     const responseDiv = document.getElementById('formResponse');
     const charCount = document.getElementById('charCount');
     
-    // Validation helpers
+    // ... [Validation Helpers match your original code] ...
     const validators = {
-        name: (value) => {
-            if (!value || value.trim().length < 2) {
-                return 'Name must be at least 2 characters';
-            }
-            if (value.length > 100) {
-                return 'Name is too long';
-            }
-            return null;
-        },
-        
-        email: (value) => {
-            if (!value) {
-                return 'Email is required';
-            }
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(value)) {
-                return 'Please enter a valid email address';
-            }
-            if (value.length > 150) {
-                return 'Email is too long';
-            }
-            return null;
-        },
-        
-        message: (value) => {
-            if (!value || value.trim().length < CONFIG.MIN_MESSAGE_LENGTH) {
-                return `Message must be at least ${CONFIG.MIN_MESSAGE_LENGTH} characters`;
-            }
-            if (value.length > CONFIG.MAX_MESSAGE_LENGTH) {
-                return `Message is too long (max ${CONFIG.MAX_MESSAGE_LENGTH} characters)`;
-            }
-            return null;
-        }
+        name: (value) => (!value || value.trim().length < 2) ? 'Name must be at least 2 characters' : (value.length > 100 ? 'Name is too long' : null),
+        email: (value) => (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) ? 'Invalid email' : (value.length > 150 ? 'Email is too long' : null),
+        message: (value) => (!value || value.trim().length < CONFIG.MIN_MESSAGE_LENGTH) ? `Message too short` : (value.length > CONFIG.MAX_MESSAGE_LENGTH ? `Message too long` : null)
     };
-    
-    // Show error message
+
     function showError(inputId, message) {
         const input = document.getElementById(inputId);
         const errorSpan = document.getElementById(`${inputId.replace('contact', '').toLowerCase()}Error`);
-        
         if (input && errorSpan) {
             input.classList.add('error');
             input.classList.remove('success');
@@ -339,12 +348,10 @@
             errorSpan.classList.add('visible');
         }
     }
-    
-    // Clear error message
+
     function clearError(inputId) {
         const input = document.getElementById(inputId);
         const errorSpan = document.getElementById(`${inputId.replace('contact', '').toLowerCase()}Error`);
-        
         if (input && errorSpan) {
             input.classList.remove('error');
             input.classList.add('success');
@@ -352,98 +359,50 @@
             errorSpan.classList.remove('visible');
         }
     }
-    
-    // Validate single field
+
     function validateField(fieldName, value) {
         const error = validators[fieldName](value);
         const inputId = `contact${fieldName.charAt(0).toUpperCase() + fieldName.slice(1)}`;
-        
-        if (error) {
-            showError(inputId, error);
-            return false;
-        } else {
-            clearError(inputId);
-            return true;
-        }
+        if (error) { showError(inputId, error); return false; }
+        else { clearError(inputId); return true; }
     }
-    
-    // Real-time validation
-    if (nameInput) {
-        nameInput.addEventListener('blur', () => {
-            validateField('name', nameInput.value);
-        });
-    }
-    
-    if (emailInput) {
-        emailInput.addEventListener('blur', () => {
-            validateField('email', emailInput.value);
-        });
-    }
-    
+
+    // Event Listeners for validation
+    if (nameInput) nameInput.addEventListener('blur', () => validateField('name', nameInput.value));
+    if (emailInput) emailInput.addEventListener('blur', () => validateField('email', emailInput.value));
     if (messageInput) {
-        messageInput.addEventListener('blur', () => {
-            validateField('message', messageInput.value);
-        });
-        
-        // Character counter
+        messageInput.addEventListener('blur', () => validateField('message', messageInput.value));
         messageInput.addEventListener('input', () => {
-            if (charCount) {
-                const count = messageInput.value.length;
-                charCount.textContent = `${count} / ${CONFIG.MAX_MESSAGE_LENGTH}`;
-                
-                if (count > CONFIG.MAX_MESSAGE_LENGTH * 0.9) {
-                    charCount.style.color = '#f44336';
-                } else if (count > CONFIG.MAX_MESSAGE_LENGTH * 0.75) {
-                    charCount.style.color = '#FF9800';
-                } else {
-                    charCount.style.color = '#999';
-                }
-            }
+            if (charCount) charCount.textContent = `${messageInput.value.length} / ${CONFIG.MAX_MESSAGE_LENGTH}`;
         });
     }
-    
-    // Show response message
+
     function showResponse(message, isSuccess) {
         if (!responseDiv) return;
-        
         responseDiv.textContent = message;
         responseDiv.className = `form-response visible ${isSuccess ? 'success-msg' : 'error-msg'}`;
-        
-        // Auto-hide success message after 5 seconds
-        if (isSuccess) {
-            setTimeout(() => {
-                responseDiv.classList.remove('visible');
-            }, 5000);
-        }
+        if (isSuccess) setTimeout(() => responseDiv.classList.remove('visible'), 5000);
     }
-    
-    // Submit handler
+
+    // --- NEW SUBMIT HANDLER ---
     if (form) {
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            if (responseDiv) responseDiv.classList.remove('visible');
             
-            // Clear previous response
-            if (responseDiv) {
-                responseDiv.classList.remove('visible');
-            }
+            // Validate all
+            const v1 = validateField('name', nameInput.value);
+            const v2 = validateField('email', emailInput.value);
+            const v3 = validateField('message', messageInput.value);
+            if (!v1 || !v2 || !v3) { showResponse('Please fix errors', false); return; }
             
-            // Validate all fields
-            const isNameValid = validateField('name', nameInput.value);
-            const isEmailValid = validateField('email', emailInput.value);
-            const isMessageValid = validateField('message', messageInput.value);
-            
-            if (!isNameValid || !isEmailValid || !isMessageValid) {
-                showResponse('Please fix the errors above', false);
-                return;
-            }
-            
-            // Disable button and show loading state
+            // UI Loading State
             submitBtn.disabled = true;
             const btnText = submitBtn.querySelector('.btn-text');
             const originalText = btnText.textContent;
             btnText.textContent = 'Sending...';
             
-            // Prepare form data
+            // Prepare Data
             const formData = {
                 name: nameInput.value.trim(),
                 email: emailInput.value.trim(),
@@ -451,64 +410,26 @@
                 website_hp: document.getElementById('website_hp')?.value || ''
             };
             
-            // Submit to API
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), CONFIG.TIMEOUT);
+                // !!! HERE IS THE CHANGE: Use Bridge instead of Fetch !!!
+                const data = await sendToBridge(formData);
                 
-                const response = await fetch(CONFIG.API_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData),
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                
-                const data = await response.json();
-                
-                if (response.ok && data.status === 'success') {
-                    showResponse(data.message || 'Thank you! Your message has been sent successfully.', true);
-                    form.reset();
-                    
-                    // Clear success styling
-                    [nameInput, emailInput, messageInput].forEach(input => {
-                        input.classList.remove('success');
-                    });
-                    
-                    // Reset character counter
-                    if (charCount) {
-                        charCount.textContent = '0 / 5000';
-                        charCount.style.color = '#999';
-                    }
-                    
-                } else {
-                    throw new Error(data.message || 'Failed to send message');
-                }
-                
+                // Success Handling
+                showResponse(data.message || 'Message sent successfully!', true);
+                form.reset();
+                [nameInput, emailInput, messageInput].forEach(i => i.classList.remove('success'));
+                if (charCount) charCount.textContent = '0 / 5000';
+
             } catch (error) {
-                console.error('Contact form error:', error);
-                
-                let errorMessage = 'Oops! Something went wrong. Please try again later.';
-                
-                if (error.name === 'AbortError') {
-                    errorMessage = 'Request timeout. Please check your connection and try again.';
-                } else if (error.message) {
-                    errorMessage = error.message;
-                }
-                
-                showResponse(errorMessage, false);
-                
+                console.error('Bridge Error:', error);
+                showResponse(error.message || 'Failed to send message via bridge.', false);
             } finally {
-                // Re-enable button
                 submitBtn.disabled = false;
                 btnText.textContent = originalText;
             }
         });
     }
     
-    console.log('✓ Contact form initialized');
+    console.log('✓ Contact form initialized with Bridge');
 })();
 </script>
