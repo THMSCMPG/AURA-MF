@@ -20,7 +20,7 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-remote_theme: THMSCMPG/backend-hub/middend
+remote_theme: THMSCMPG/backend-hub
 
 kramdown:
   math_engine: mathjax
