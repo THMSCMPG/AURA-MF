@@ -420,298 +420,313 @@
 </div>
 
 <script>
-    // ========================================================================
-    // CONFIGURATION
-    // ========================================================================
+(function() {
+    'use strict';
+
+    // ════════════════════════════════════════════════════════════════════
+    // GUARD: If dashboard_scripts.js is already loaded (i.e., we are on
+    // the dashboard page), it handles sliders, runSimulation, and all
+    // dashboard updates. This script only needs to provide resetParameters
+    // and toggleLiveUpdates in that case. Skipping duplicate init avoids
+    // double event listeners on every slider.
+    // ════════════════════════════════════════════════════════════════════
+    const DASHBOARD_LOADED = (typeof window.AURADashboard !== 'undefined');
+
+    // ── CONFIG ──────────────────────────────────────────────────────────
     const CONFIG = {
         API_URL: 'https://aura-mf-backend.onrender.com/api/simulate',
         LIVE_INTERVAL: 5000,
         COLD_START_TIMEOUT: 30000  // 30 seconds for backend cold start
     };
-    
+
     let liveRefreshTimer = null;
-    let fidelityHistory = [];
-    
-    // ========================================================================
-    // SLIDER INITIALIZATION
-    // ========================================================================
+    let fidelityHistory  = [];
+
+    // ── SLIDER DEFINITIONS ──────────────────────────────────────────────
     const sliderConfigs = [
-        {id: 'solar-irradiance', display: 'solar-value', format: v => v},
-        {id: 'ambient-temperature', display: 'temp-value', format: v => (v - 273.15).toFixed(1)},
-        {id: 'wind-speed', display: 'wind-value', format: v => parseFloat(v).toFixed(1)},
-        {id: 'cell-efficiency', display: 'efficiency-value', format: v => (v * 100).toFixed(0)},
-        {id: 'thermal-conductivity', display: 'conductivity-value', format: v => v},
-        {id: 'absorptivity', display: 'absorptivity-value', format: v => parseFloat(v).toFixed(2)},
-        {id: 'emissivity', display: 'emissivity-value', format: v => parseFloat(v).toFixed(2)}
+        {id: 'solar-irradiance',      display: 'solar-value',         format: function(v) { return v; }},
+        {id: 'ambient-temperature',   display: 'temp-value',          format: function(v) { return (v - 273.15).toFixed(1); }},
+        {id: 'wind-speed',            display: 'wind-value',          format: function(v) { return parseFloat(v).toFixed(1); }},
+        {id: 'cell-efficiency',       display: 'efficiency-value',    format: function(v) { return (v * 100).toFixed(0); }},
+        {id: 'thermal-conductivity',  display: 'conductivity-value',  format: function(v) { return v; }},
+        {id: 'absorptivity',          display: 'absorptivity-value',  format: function(v) { return parseFloat(v).toFixed(2); }},
+        {id: 'emissivity',            display: 'emissivity-value',    format: function(v) { return parseFloat(v).toFixed(2); }}
     ];
-    
-    sliderConfigs.forEach(s => {
-        const el = document.getElementById(s.id);
-        const disp = document.getElementById(s.display);
-        if (el && disp) {
-            el.addEventListener('input', () => { disp.textContent = s.format(el.value); });
-        }
-    });
-    
-    // ========================================================================
-    // MAIN SIMULATION FUNCTION
-    // ========================================================================
-    async function runSimulation() {
-        const btn = document.getElementById('run-button');
-        const loading = document.getElementById('loading');
-        const results = document.getElementById('results-container');
-        const error = document.getElementById('error-message');
-    
-        // Disable button and show loading
-        if (btn) btn.disabled = true;
-        if (loading) loading.classList.add('active');
-        if (error) error.classList.remove('active');
-    
-        try {
-            // CRITICAL: Collect parameters (ambient temp is already in Kelvin from slider)
-            const params = {
-                solar: parseFloat(document.getElementById('solar-irradiance').value),
-                ambient: parseFloat(document.getElementById('ambient-temperature').value), // Already in Kelvin
-                wind: parseFloat(document.getElementById('wind-speed').value),
-                cell_efficiency: parseFloat(document.getElementById('cell-efficiency').value),
-                thermal_conductivity: parseFloat(document.getElementById('thermal-conductivity').value),
-                absorptivity: parseFloat(document.getElementById('absorptivity').value),
-                emissivity: parseFloat(document.getElementById('emissivity').value)
-            };
-    
-            console.log('Sending parameters:', params);
-    
-            // Make API request with extended timeout for cold starts
-            const response = await fetch(CONFIG.API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(params),
-                signal: AbortSignal.timeout(CONFIG.COLD_START_TIMEOUT)
-            });
-    
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `Server error ${response.status}`);
+
+    // ── SLIDER INIT (only if dashboard_scripts.js is NOT loaded) ────────
+    if (!DASHBOARD_LOADED) {
+        sliderConfigs.forEach(function(s) {
+            var el   = document.getElementById(s.id);
+            var disp = document.getElementById(s.display);
+            if (el && disp) {
+                el.addEventListener('input', function() { disp.textContent = s.format(el.value); });
             }
-    
-            const data = await response.json();
-            console.log('Received data:', data);
-            
-            // Update dashboard and show results
-            updateDashboard(data);
-            if (results) results.style.display = 'block';
-            updateConnectionStatus(true);
-            
-        } catch (err) {
-            console.error('Simulation error:', err);
-            
-            // Handle different error types
-            let errorMessage = err.message;
-            if (err.name === 'AbortError' || err.name === 'TimeoutError') {
-                errorMessage = 'Backend is waking up (cold start). Please try again in 10 seconds.';
-            } else if (err.message.includes('Failed to fetch')) {
-                errorMessage = 'Cannot connect to backend. Check if https://aura-mf-backend.onrender.com is online.';
+        });
+    }
+
+    // ── MAIN SIMULATION FUNCTION ────────────────────────────────────────
+    // Only define if dashboard_scripts.js hasn't already provided it.
+    if (!DASHBOARD_LOADED) {
+        window.runSimulation = async function() {
+            var btn     = document.getElementById('run-button');
+            var loading = document.getElementById('loading');
+            var results = document.getElementById('results-container');
+            var error   = document.getElementById('error-message');
+
+            if (btn)     btn.disabled = true;
+            if (loading) loading.classList.add('active');
+            if (error)   error.classList.remove('active');
+
+            try {
+                // Ambient slider value IS already Kelvin (280–330 range)
+                var params = {
+                    solar:                  parseFloat(document.getElementById('solar-irradiance').value),
+                    ambient:                parseFloat(document.getElementById('ambient-temperature').value),
+                    wind:                   parseFloat(document.getElementById('wind-speed').value),
+                    cell_efficiency:        parseFloat(document.getElementById('cell-efficiency').value),
+                    thermal_conductivity:   parseFloat(document.getElementById('thermal-conductivity').value),
+                    absorptivity:           parseFloat(document.getElementById('absorptivity').value),
+                    emissivity:             parseFloat(document.getElementById('emissivity').value)
+                };
+
+                console.log('Sending parameters:', params);
+
+                // FIX: AbortSignal.timeout() is not supported in Safari < 16.4.
+                // Use AbortController + setTimeout instead.
+                var controller = new AbortController();
+                var timeoutId  = setTimeout(function() { controller.abort(); }, CONFIG.COLD_START_TIMEOUT);
+
+                var response = await fetch(CONFIG.API_URL, {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(params),
+                    signal:  controller.signal
+                });
+
+                clearTimeout(timeoutId);
+
+                if (!response.ok) {
+                    var errorData = {};
+                    try { errorData = await response.json(); } catch(_) {}
+                    throw new Error(errorData.error || 'Server error ' + response.status);
+                }
+
+                var data = await response.json();
+                console.log('Received data:', data);
+
+                updateDashboard(data);
+                if (results) results.style.display = 'block';
+                updateConnectionStatus(true);
+
+            } catch (err) {
+                console.error('Simulation error:', err);
+
+                var errorMessage = err.message;
+                if (err.name === 'AbortError' || err.name === 'TimeoutError') {
+                    errorMessage = 'Backend is waking up (cold start). Please try again in 10 seconds.';
+                } else if (err.message && err.message.includes('Failed to fetch')) {
+                    errorMessage = 'Cannot connect to backend. Check if https://aura-mf-backend.onrender.com is online.';
+                }
+
+                if (error) {
+                    error.textContent = '❌ ' + errorMessage;
+                    error.classList.add('active');
+                }
+                updateConnectionStatus(false);
+
+            } finally {
+                if (loading) loading.classList.remove('active');
+                if (btn)     btn.disabled = false;
             }
-            
-            if (error) {
-                error.textContent = `❌ ${errorMessage}`;
-                error.classList.add('active');
+        };
+    }
+
+    // ── DASHBOARD UPDATE (only if not provided by dashboard_scripts.js) ─
+    if (!DASHBOARD_LOADED) {
+        function updateDashboard(data) {
+            var s = data.stats;
+
+            // Fidelity Level
+            var fidelityEl = document.getElementById('fidelityLevel');
+            if (fidelityEl) {
+                var colors = ['#4CAF50', '#FF9800', '#F44336'];
+                var icons  = ['⚡', '⚙️', '🔥'];
+                fidelityEl.textContent = icons[data.fidelity_level] + ' ' + data.fidelity_name;
+                fidelityEl.style.color = colors[data.fidelity_level];
             }
-            updateConnectionStatus(false);
-            
-        } finally {
-            // Re-enable button and hide loading
-            if (loading) loading.classList.remove('active');
-            if (btn) btn.disabled = false;
+
+            // Energy Residuals
+            var residualsEl = document.getElementById('energyResiduals');
+            if (residualsEl) {
+                residualsEl.textContent = data.energy_residuals.toExponential(2);
+                if (data.energy_residuals < 1e-4)      residualsEl.style.color = '#4CAF50';
+                else if (data.energy_residuals < 1e-2) residualsEl.style.color = '#FF9800';
+                else                                   residualsEl.style.color = '#F44336';
+            }
+
+            // ML Confidence
+            var mlConfEl = document.getElementById('mlConfidence');
+            if (mlConfEl) {
+                mlConfEl.textContent = (data.ml_confidence * 100).toFixed(1) + '%';
+                if (data.ml_confidence > 0.9)      mlConfEl.style.color = '#4CAF50';
+                else if (data.ml_confidence > 0.8) mlConfEl.style.color = '#FF9800';
+                else                               mlConfEl.style.color = '#F44336';
+            }
+
+            // Temperature Stats — already Celsius from backend
+            var avgEl = document.getElementById('avgTemp');
+            if (avgEl) avgEl.textContent = s.avg_t.toFixed(1) + ' °C';
+
+            var maxEl = document.getElementById('maxTemp');
+            if (maxEl) maxEl.textContent = s.max_t.toFixed(1) + ' °C';
+
+            // Runtime
+            var runtimeEl = document.getElementById('simulationTime');
+            if (runtimeEl) runtimeEl.textContent = s.runtime_ms.toFixed(1) + ' ms';
+
+            // Heatmap
+            drawHeatmap(data.temperature_field);
+
+            // Legend
+            var minValEl = document.getElementById('heatmap-min-val');
+            var maxValEl = document.getElementById('heatmap-max-val');
+            if (minValEl) minValEl.textContent = s.min_t.toFixed(1) + '°C';
+            if (maxValEl) maxValEl.textContent = s.max_t.toFixed(1) + '°C';
+
+            // Fidelity History
+            var icon = ['⚡', '⚙️', '🔥'][data.fidelity_level];
+            fidelityHistory.unshift(icon);
+            if (fidelityHistory.length > 10) fidelityHistory.pop();
+            var historyEl = document.getElementById('fidelityHistory');
+            if (historyEl) historyEl.textContent = fidelityHistory.join(' ');
         }
     }
-    
-    // ========================================================================
-    // DASHBOARD UPDATE FUNCTION
-    // ========================================================================
-    function updateDashboard(data) {
-        const s = data.stats;
-        
-        // CRITICAL FIX: Update using correct element IDs matching the HTML
-        // Fidelity Level
-        const fidelityEl = document.getElementById('fidelityLevel');
-        if (fidelityEl) {
-            const colors = ['#4CAF50', '#FF9800', '#F44336'];
-            const icons = ['⚡', '⚙️', '🔥'];
-            fidelityEl.textContent = `${icons[data.fidelity_level]} ${data.fidelity_name}`;
-            fidelityEl.style.color = colors[data.fidelity_level];
-        }
-        
-        // Energy Residuals
-        const residualsEl = document.getElementById('energyResiduals');
-        if (residualsEl) {
-            residualsEl.textContent = data.energy_residuals.toExponential(2);
-            // Color code based on magnitude
-            if (data.energy_residuals < 1e-4) {
-                residualsEl.style.color = '#4CAF50';
-            } else if (data.energy_residuals < 1e-2) {
-                residualsEl.style.color = '#FF9800';
-            } else {
-                residualsEl.style.color = '#F44336';
-            }
-        }
-        
-        // ML Confidence
-        const mlConfEl = document.getElementById('mlConfidence');
-        if (mlConfEl) {
-            mlConfEl.textContent = `${(data.ml_confidence * 100).toFixed(1)}%`;
-            if (data.ml_confidence > 0.9) {
-                mlConfEl.style.color = '#4CAF50';
-            } else if (data.ml_confidence > 0.8) {
-                mlConfEl.style.color = '#FF9800';
-            } else {
-                mlConfEl.style.color = '#F44336';
-            }
-        }
-        
-        // Temperature Stats (already in Celsius from backend)
-        const avgTempEl = document.getElementById('avgTemp');
-        if (avgTempEl) avgTempEl.textContent = `${s.avg_t.toFixed(1)} °C`;
-        
-        const maxTempEl = document.getElementById('maxTemp');
-        if (maxTempEl) maxTempEl.textContent = `${s.max_t.toFixed(1)} °C`;
-        
-        // Runtime
-        const runtimeEl = document.getElementById('simulationTime');
-        if (runtimeEl) runtimeEl.textContent = `${s.runtime_ms.toFixed(1)} ms`;
-        
-        // CRITICAL FIX: Draw heatmap with proper temperature field
-        drawHeatmap(data.temperature_field, s.min_t, s.max_t);
-        
-        // Update legend
-        const minValEl = document.getElementById('heatmap-min-val');
-        const maxValEl = document.getElementById('heatmap-max-val');
-        if (minValEl) minValEl.textContent = `${s.min_t.toFixed(1)}°C`;
-        if (maxValEl) maxValEl.textContent = `${s.max_t.toFixed(1)}°C`;
-        
-        // Fidelity History
-        const icon = ['⚡', '⚙️', '🔥'][data.fidelity_level];
-        fidelityHistory.unshift(icon);
-        if (fidelityHistory.length > 10) fidelityHistory.pop();
-        const historyEl = document.getElementById('fidelityHistory');
-        if (historyEl) historyEl.textContent = fidelityHistory.join(' ');
-    }
-    
-    // ========================================================================
-    // HEATMAP RENDERING
-    // ========================================================================
-    function drawHeatmap(temperatureField, minTemp, maxTemp) {
-        const canvas = document.getElementById('temperatureHeatmap');
+
+    // ── HEATMAP RENDERING ───────────────────────────────────────────────
+    // Always define locally — dashboard_scripts.js has its own copy but
+    // this one is scoped to this IIFE and only called from the local
+    // updateDashboard above.
+    function drawHeatmap(temperatureField) {
+        var canvas = document.getElementById('temperatureHeatmap');
         if (!canvas) return;
-        
-        const ctx = canvas.getContext('2d');
-        const grid = temperatureField;  // 2D array from backend
-        
+
+        var ctx  = canvas.getContext('2d');
+        var grid = temperatureField;
+
         if (!grid || !grid.length) {
             console.error('Invalid temperature field data');
             return;
         }
-        
-        const rows = grid.length;
-        const cols = grid[0].length;
-        const cellWidth = canvas.width / cols;
-        const cellHeight = canvas.height / rows;
-        
-        // Convert Kelvin to Celsius for display
-        const minC = minTemp;  // Already in Celsius from backend
-        const maxC = maxTemp;  // Already in Celsius from backend
-        const range = maxC - minC || 1;  // Avoid division by zero
-        
-        // CRITICAL FIX: Iterate correctly over 2D grid
-        for (let row = 0; row < rows; row++) {
-            for (let col = 0; col < cols; col++) {
-                const tempKelvin = grid[row][col];
-                const tempCelsius = tempKelvin - 273.15;
-                
-                // Normalize temperature to 0-1 range
-                const normalized = (tempCelsius - minC) / range;
-                
-                // Turbo-inspired colormap (Blue → Cyan → Yellow → Red)
-                const hue = (1 - normalized) * 240;  // 240 (blue) to 0 (red)
-                const saturation = 70 + normalized * 20;  // 70-90%
-                const lightness = 45 + normalized * 10;   // 45-55%
-                
-                ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+
+        var rows      = grid.length;
+        var cols      = grid[0].length;
+        var cellWidth = canvas.width  / cols;
+        var cellHeight= canvas.height / rows;
+
+        // Derive min/max directly from the raw Kelvin field for pixel-perfect
+        // consistency (avoids any rounding disagreement with backend stats).
+        var minK = Infinity, maxK = -Infinity;
+        for (var r = 0; r < rows; r++) {
+            for (var c = 0; c < cols; c++) {
+                var val = grid[r][c];
+                if (val < minK) minK = val;
+                if (val > maxK) maxK = val;
+            }
+        }
+
+        var minC  = minK - 273.15;
+        var maxC  = maxK - 273.15;
+        var range = maxC - minC || 1;  // Avoid division by zero
+
+        for (var row = 0; row < rows; row++) {
+            for (var col = 0; col < cols; col++) {
+                var tempC      = grid[row][col] - 273.15;
+                var normalized = (tempC - minC) / range;
+
+                // Turbo-inspired colormap: Blue (240°) → Red (0°)
+                var hue        = (1 - normalized) * 240;
+                var saturation = 70 + normalized * 20;
+                var lightness  = 45 + normalized * 10;
+
+                ctx.fillStyle = 'hsl(' + hue + ', ' + saturation + '%, ' + lightness + '%)';
                 ctx.fillRect(
-                    col * cellWidth, 
-                    row * cellHeight, 
-                    cellWidth + 1,   // +1 to avoid gaps
-                    cellHeight + 1
+                    Math.floor(col * cellWidth),
+                    Math.floor(row * cellHeight),
+                    Math.ceil(cellWidth  + 1),   // +1 to avoid sub-pixel gaps
+                    Math.ceil(cellHeight + 1)
                 );
             }
         }
     }
-    
-    // ========================================================================
-    // UTILITY FUNCTIONS
-    // ========================================================================
+
+    // ── UTILITY FUNCTIONS ───────────────────────────────────────────────
     function updateConnectionStatus(online) {
-        const status = document.getElementById('statusIndicator');
+        var status = document.getElementById('statusIndicator');
         if (!status) return;
-        
+
         if (online) {
             status.innerHTML = '🟢 Engine Connected';
-            status.className = 'status-online';
+            status.className  = 'status-online';
         } else {
             status.innerHTML = '🔴 Connection Lost';
-            status.className = '';
+            status.className  = '';
         }
     }
-    
-    function toggleLiveUpdates(enabled) {
+
+    // Exposed globally so the toggle checkbox can call it
+    window.toggleLiveUpdates = function(enabled) {
         if (enabled) {
-            runSimulation();
-            liveRefreshTimer = setInterval(runSimulation, CONFIG.LIVE_INTERVAL);
+            if (typeof window.runSimulation === 'function') window.runSimulation();
+            liveRefreshTimer = setInterval(function() {
+                if (typeof window.runSimulation === 'function') window.runSimulation();
+            }, CONFIG.LIVE_INTERVAL);
         } else {
             clearInterval(liveRefreshTimer);
         }
-    }
-    
-    function resetParameters() {
-        document.getElementById('solar-irradiance').value = 1000;
-        document.getElementById('ambient-temperature').value = 298.15;
-        document.getElementById('wind-speed').value = 2;
-        document.getElementById('cell-efficiency').value = 0.20;
-        document.getElementById('thermal-conductivity').value = 130;
-        document.getElementById('absorptivity').value = 0.95;
-        document.getElementById('emissivity').value = 0.90;
-        
-        // Trigger input events to update displays
-        sliderConfigs.forEach(s => {
-            const el = document.getElementById(s.id);
+    };
+
+    // Exposed globally so the reset button can call it
+    window.resetParameters = function() {
+        document.getElementById('solar-irradiance').value      = 1000;
+        document.getElementById('ambient-temperature').value   = 298.15;
+        document.getElementById('wind-speed').value            = 2;
+        document.getElementById('cell-efficiency').value       = 0.20;
+        document.getElementById('thermal-conductivity').value  = 130;
+        document.getElementById('absorptivity').value          = 0.95;
+        document.getElementById('emissivity').value            = 0.90;
+
+        // Trigger input events so display labels update
+        sliderConfigs.forEach(function(s) {
+            var el = document.getElementById(s.id);
             if (el) el.dispatchEvent(new Event('input'));
         });
-    }
-    
-    // ========================================================================
-    // INITIALIZATION
-    // ========================================================================
-    window.onload = () => {
+    };
+
+    // ── INITIALIZATION ──────────────────────────────────────────────────
+    window.onload = function() {
         console.log('🚀 AURA-MF Demo initialized');
         console.log('API URL:', CONFIG.API_URL);
-        
-        // Initialize slider displays
-        sliderConfigs.forEach(s => {
-            const el = document.getElementById(s.id);
+        console.log('Dashboard scripts loaded:', DASHBOARD_LOADED);
+
+        // Populate all slider display labels with their initial values
+        sliderConfigs.forEach(function(s) {
+            var el = document.getElementById(s.id);
             if (el) el.dispatchEvent(new Event('input'));
         });
-        
+
         updateConnectionStatus(false);
-        
-        // Check backend health
-        fetch(`${CONFIG.API_URL.replace('/api/simulate', '/api/health')}`)
-            .then(response => response.json())
-            .then(data => {
+
+        // Warm the backend
+        fetch(CONFIG.API_URL.replace('/api/simulate', '/api/health'))
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
                 console.log('Backend health check:', data);
                 updateConnectionStatus(true);
             })
-            .catch(err => {
+            .catch(function(err) {
                 console.warn('Backend not immediately available (may be in cold start):', err.message);
             });
     };
+
+})();
 </script>
