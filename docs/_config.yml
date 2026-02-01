@@ -20,6 +20,8 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+remote_theme: THMSCMPG/backend-hub/middend
+
 kramdown:
   math_engine: mathjax
   input: GFM # GitHub Flavored Markdown
