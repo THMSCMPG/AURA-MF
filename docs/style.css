@@ -211,7 +211,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 5px; /* 15px trigger zone */
+            width: 15px; /* 15px trigger zone */
             height: 100vh;
             z-index: 989;
         }
