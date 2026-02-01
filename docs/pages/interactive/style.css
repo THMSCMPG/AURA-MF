@@ -400,39 +400,6 @@
             border-radius: 0 8px 8px 0; 
         }
 
-        /* --- Footer --- */
-        .nav-footer {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 4rem;
-            padding-top: 2rem;
-            border-top: 2px solid var(--border);
-        }
-
-        .nav-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            padding: 10px 20px;
-            border: 2px solid var(--primary);
-            border-radius: 4px;
-            transition: 0.2s;
-        }
-
-        .nav-footer a:hover {
-            background: var(--primary);
-            color: white;
-        }
-        .footer { 
-            text-align: center; 
-            padding: 60px 0; 
-            border-top: 1px solid var(--border); 
-            color: var(--text-light); 
-            font-size: 0.9rem; 
-            background: var(--light);
-            margin-top: 60px;
-        }
-
         /* --- Mobile Navigation Logic --- */
         .menu-btn {
             display: none; /* Hidden on Desktop */
@@ -498,3 +465,29 @@
             main { padding: 2rem 20px; }
             body { padding-top: 20px; }
         }
+
+            .footer { 
+            text-align: center; 
+            padding: 60px 20px; 
+            background: var(--dark-muted); /* Dark background to match navbar */
+            color: #94a3b8;               /* Muted slate text */
+            margin-top: 60px;
+            border-top: 3px solid var(--primary); /* Emerald accent line */
+        }
+            
+            .footer p {
+                margin-bottom: 8px;
+                color: inherit; /* Ensures it uses the muted slate color */
+            }
+            
+            .footer a {
+                color: var(--primary); /* Emerald links */
+                text-decoration: none;
+                font-weight: 600;
+            }
+            
+            .footer a:hover {
+                text-decoration: underline;
+                color: white;
+            }
+
