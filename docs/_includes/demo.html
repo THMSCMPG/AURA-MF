@@ -57,6 +57,13 @@
 
                     <button class="run-button" id="run-button" onclick="runSimulation()">🚀 Run Simulation</button>
                     <button class="reset-button" onclick="resetParameters()">↺ Reset to Defaults</button>
+                    <div class="toggle-container">
+                        <label class="switch">
+                            <input type="checkbox" onchange="toggleLiveUpdates(this.checked)">
+                            <span class="slider"></span>
+                        </label>
+                        <span>Live Refresh (Every 5s)</span>
+                    </div>
                 </div>
                 
                 <div class="visualization">
