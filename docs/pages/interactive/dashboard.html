@@ -164,10 +164,17 @@ title: AURA-MF Interactive Dashboard
                 <em>Computer Graphics Forum</em>, 28(3), 983-990.</li>
         </ol>
 
+        <iframe 
+            id="backend-bridge" 
+            src="https://thmscmpg.github.io/backend-hub" 
+            style="display:none; width:0; height:0; border:0;">
+        </iframe>
     
     <script>
-      // Define variables here so dashboard.js can see them
-      const API_BASE_URL = "https://aura-mf-backend.onrender.com";
+      // Make config available globally for dashboard_scripts.js
+      window.DASHBOARD_CONFIG = {
+        API_BASE_URL: "https://aura-mf-backend.onrender.com"
+      };
     </script>
     <script src="https://thmscmpg.github.io/backend-hub/assets/js/dashboard_scripts.js"></script>
 
