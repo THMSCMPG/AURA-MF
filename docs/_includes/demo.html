@@ -68,25 +68,35 @@
                 
                 <div class="visualization">
                     <div class="error" id="error-message"></div>
+                    <div id="statusIndicator">⚪ Checking Connection...</div>
+                    
                     <div class="loading" id="loading">
                         <div class="spinner"></div>
-                        <p>Running simulation...</p>
+                        <p>Running AURA-MF Engine...</p>
                     </div>
                     
-                    <div id="results-container" style="display: none; width: 100%;">
-                        <div class="canvas-container">
-                            <canvas id="temperatureHeatmap" width="400" height="400"></canvas>
+                    <div id="results-container" style="display: none;">
+                        <div class="legend">
+                            <span id="heatmap-min-val">-</span>
+                            <span>Temperature Field (°C)</span>
+                            <span id="heatmap-max-val">-</span>
                         </div>
+                        
+                        <canvas id="temperatureHeatmap" width="400" height="400"></canvas>
+                        
                         <div class="results">
-                            <h3>📊 Simulation Results</h3>
                             <div class="result-grid">
-                                <div class="result-item"><label>Mean Temp</label><div class="value" id="temp-mean">-</div></div>
-                                <div class="result-item"><label>Max Temp</label><div class="value" id="temp-max">-</div></div>
-                                <div class="result-item"><label>Total Power</label><div class="value" id="power-total">-</div></div>
-                                <div class="result-item"><label>Avg Efficiency</label><div class="value" id="efficiency-avg">-</div></div>
+                                <div class="result-item"><label>Status</label><div id="fidelityLevel" class="value">-</div></div>
+                                <div class="result-item"><label>Residuals</label><div id="energyResiduals" class="value">-</div></div>
+                                <div class="result-item"><label>ML Conf.</label><div id="mlConfidence" class="value">-</div></div>
+                                <div class="result-item"><label>Avg Temp</label><div id="avgTemp" class="value">-</div></div>
+                                <div class="result-item"><label>Max Temp</label><div id="maxTemp" class="value">-</div></div>
+                                <div class="result-item"><label>Runtime</label><div id="simulationTime" class="value">-</div></div>
                             </div>
-                            <div style="margin-top: 15px; text-align: center; color: #6c757d; font-size: 0.9em;">
-                                Computation time: <span id="runtime">-</span> ms
+                            
+                            <div style="text-align: center;">
+                                <label style="font-size: 0.7em; color: #718096; display: block; margin-top: 15px;">FIDELITY HISTORY</label>
+                                <div id="fidelityHistory"></div>
                             </div>
                         </div>
                     </div>
@@ -114,6 +124,39 @@
             box-sizing: border-box;
         }
 
+        /* Legend Styling */
+        .aura-demo-wrapper .legend {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        
+        /* Updated Result Grid for 3 columns (to fit the new metrics) */
+        .aura-demo-wrapper .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            width: 100%;
+        }
+        
+        .aura-demo-wrapper .result-item label {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #718096;
+            margin-bottom: 4px;
+        }
+        
+        .aura-demo-wrapper .result-item .value {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+        
         .aura-demo-wrapper .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -145,6 +188,66 @@
             border-right: 1px solid #dee2e6;
         }
 
+        /* Fidelity History Ticker */
+        #fidelityHistory {
+            letter-spacing: 2px;
+            font-size: 1.2em;
+            background: #1a202c;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        /* Status Indicator Pulse */
+        #statusIndicator {
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        /* Toggle Switch Container */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+            padding: 10px;
+            background: #edf2f7;
+            border-radius: 8px;
+        }
+        
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+            margin-right: 10px;
+        }
+        
+        .switch input { opacity: 0; width: 0; height: 0; }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px; width: 16px;
+            left: 3px; bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider { background-color: #667eea; }
+        input:checked + .slider:before { transform: translateX(18px); }
+                
         .aura-demo-wrapper .parameter-group { margin-bottom: 20px; }
         .aura-demo-wrapper .parameter-group label { display: block; font-weight: 600; margin-bottom: 8px; }
         .aura-demo-wrapper .parameter-value { color: #667eea; font-weight: 700; float: right; }
@@ -159,6 +262,21 @@
             font-weight: 700; cursor: pointer;
         }
 
+        .aura-demo-wrapper .loading { display: none; }
+        .aura-demo-wrapper .loading.active { display: flex; flex-direction: column; align-items: center; }
+        
+        .aura-demo-wrapper .error {
+            display: none;
+            background: #fff5f5;
+            color: #c53030;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #feb2b2;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .aura-demo-wrapper .error.active { display: block; }
+
         .aura-demo-wrapper .visualization { padding: 30px; display: flex; flex-direction: column; align-items: center; background: #fff; }
 
         .aura-demo-wrapper .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -172,6 +290,25 @@
             border-radius: 50%; width: 40px; height: 40px;
             animation: aura-spin 1s linear infinite; margin: 0 auto;
         }
+        #statusIndicator {
+            padding: 8px 12px;
+            border-radius: 20px;
+            background: #f0f4f8;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        /* Pulsing effect for 🟢 Connected */
+        .status-online {
+            color: #2f855a;
+            animation: status-pulse 2s infinite;
+        }
+        
+        @keyframes status-pulse {
+            0% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.02); }
+            100% { opacity: 1; transform: scale(1); }
+        }
 
         @keyframes aura-spin {
             0% { transform: rotate(0deg); }
@@ -184,124 +321,167 @@
     </style>
 </div>
 
-
-    <script>
-        // Update slider value displays
-        const sliders = [
-            {id: 'solar-irradiance', display: 'solar-value', format: v => v},
-            {id: 'ambient-temperature', display: 'temp-value', format: v => (v - 273.15).toFixed(1)},
-            {id: 'wind-speed', display: 'wind-value', format: v => parseFloat(v).toFixed(1)},
-            {id: 'cell-efficiency', display: 'efficiency-value', format: v => (v * 100).toFixed(0)},
-            {id: 'thermal-conductivity', display: 'conductivity-value', format: v => v},
-            {id: 'absorptivity', display: 'absorptivity-value', format: v => parseFloat(v).toFixed(2)},
-            {id: 'emissivity', display: 'emissivity-value', format: v => parseFloat(v).toFixed(2)}
-        ];
-        
-        sliders.forEach(slider => {
-            const element = document.getElementById(slider.id);
-            const display = document.getElementById(slider.display);
-            
-            element.addEventListener('input', function() {
-                display.textContent = slider.format(this.value);
-            });
-        });
-        
-        async function runSimulation() {
-            // Collect parameters — keys match what app.py reads via data.get()
+<script>
+    // Configuration
+    const CONFIG = {
+        API_URL: 'https://aura-mf-backend.onrender.com/api/simulate',
+        LIVE_INTERVAL: 5000
+    };
+    
+    let liveRefreshTimer = null;
+    let fidelityHistory = [];
+    
+    // Initialize Sliders
+    const sliderConfigs = [
+        {id: 'solar-irradiance', display: 'solar-value', format: v => v},
+        {id: 'ambient-temperature', display: 'temp-value', format: v => (v - 273.15).toFixed(1)},
+        {id: 'wind-speed', display: 'wind-value', format: v => parseFloat(v).toFixed(1)},
+        {id: 'cell-efficiency', display: 'efficiency-value', format: v => (v * 100).toFixed(0)},
+        {id: 'thermal-conductivity', display: 'conductivity-value', format: v => v},
+        {id: 'absorptivity', display: 'absorptivity-value', format: v => parseFloat(v).toFixed(2)},
+        {id: 'emissivity', display: 'emissivity-value', format: v => parseFloat(v).toFixed(2)}
+    ];
+    
+    sliderConfigs.forEach(s => {
+        const el = document.getElementById(s.id);
+        const disp = document.getElementById(s.display);
+        el.addEventListener('input', () => { disp.textContent = s.format(el.value); });
+    });
+    
+    async function runSimulation() {
+        const btn = document.getElementById('run-button');
+        const loading = document.getElementById('loading');
+        const results = document.getElementById('results-container');
+        const error = document.getElementById('error-message');
+    
+        btn.disabled = true;
+        loading.classList.add('active');
+        error.classList.remove('active');
+    
+        try {
             const params = {
-                solar:                parseFloat(document.getElementById('solar-irradiance').value),
-                ambient:              parseFloat(document.getElementById('ambient-temperature').value),
-                wind:                 parseFloat(document.getElementById('wind-speed').value),
-                cell_efficiency:      parseFloat(document.getElementById('cell-efficiency').value),
+                solar: parseFloat(document.getElementById('solar-irradiance').value),
+                ambient: parseFloat(document.getElementById('ambient-temperature').value),
+                wind: parseFloat(document.getElementById('wind-speed').value),
+                cell_efficiency: parseFloat(document.getElementById('cell-efficiency').value),
                 thermal_conductivity: parseFloat(document.getElementById('thermal-conductivity').value),
-                absorptivity:         parseFloat(document.getElementById('absorptivity').value),
-                emissivity:           parseFloat(document.getElementById('emissivity').value)
+                absorptivity: parseFloat(document.getElementById('absorptivity').value),
+                emissivity: parseFloat(document.getElementById('emissivity').value)
             };
-            
-            // Show loading, hide results and errors
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('results-container').style.display = 'none';
-            document.getElementById('error-message').classList.remove('active');
-            document.getElementById('run-button').disabled = true;
-            
-            try {
-                const response = await fetch('/api/simulate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(params)
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || 'Simulation failed');
-                }
-                
-                displayResults(data);
-                
-            } catch (error) {
-                document.getElementById('error-message').textContent = 
-                    '❌ Error: ' + error.message;
-                document.getElementById('error-message').classList.add('active');
-            } finally {
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('run-button').disabled = false;
-            }
-        }
-        
-        function displayResults(data) {
-            // All result values live in data.stats; temperatures arrive already
-            // converted to °C, power/eff/runtime are ready to display directly.
-            const stats = data.stats;
-
-            // Heatmap
-            if (data.visualization) {
-                document.getElementById('visualization-image').src =
-                    'data:image/png;base64,' + data.visualization;
-            }
-
-            // Temperature cards
-            document.getElementById('temp-mean').textContent =
-                stats.avg_t.toFixed(1) + ' °C';
-            document.getElementById('temp-max').textContent =
-                stats.max_t.toFixed(1) + ' °C';
-
-            // Power & efficiency (eff_avg already converted to % by the backend)
-            document.getElementById('power-total').textContent =
-                stats.power_total.toFixed(2) + ' W';
-            document.getElementById('efficiency-avg').textContent =
-                stats.eff_avg.toFixed(1) + ' %';
-
-            // Runtime
-            document.getElementById('runtime').textContent =
-                stats.runtime_ms.toFixed(1);
-
-            document.getElementById('results-container').style.display = 'block';
-        }
-        
-        function resetParameters() {
-            document.getElementById('solar-irradiance').value = 1000;
-            document.getElementById('ambient-temperature').value = 300;
-            document.getElementById('wind-speed').value = 1;
-            document.getElementById('cell-efficiency').value = 0.20;
-            document.getElementById('thermal-conductivity').value = 130;
-            document.getElementById('absorptivity').value = 0.95;
-            document.getElementById('emissivity').value = 0.90;
-            
-            // Trigger input events to update displays
-            sliders.forEach(slider => {
-                const element = document.getElementById(slider.id);
-                element.dispatchEvent(new Event('input'));
+    
+            const response = await fetch(CONFIG.API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(params)
             });
+    
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || 'Server error');
+    
+            updateDashboard(data);
+            results.style.display = 'block';
+            updateConnectionStatus(true);
+        } catch (err) {
+            error.textContent = `❌ ${err.message}`;
+            error.classList.add('active');
+            updateConnectionStatus(false);
+        } finally {
+            loading.classList.remove('active');
+            btn.disabled = false;
         }
+    }
+    
+    function updateDashboard(data) {
+        const s = data.stats;
+        if(document.getElementById('temp-mean')) {
+            document.getElementById('temp-mean').textContent = `${s.avg_t.toFixed(1)} °C`;
+        }
+        if(document.getElementById('temp-max')) {
+            document.getElementById('temp-max').textContent = `${s.max_t.toFixed(1)} °C`;
+        }
+        if(document.getElementById('power-total')) {
+            document.getElementById('power-total').textContent = `${s.power_total.toFixed(2)} W`;
+        }
+        if(document.getElementById('efficiency-avg')) {
+            document.getElementById('efficiency-avg').textContent = `${s.eff_avg.toFixed(1)} %`;
+        }
+        if(document.getElementById('runtime')) {
+            document.getElementById('runtime').textContent = s.runtime_ms.toFixed(1);
+        }
+    
+        if(document.getElementById('fidelityLevel')) {
+            document.getElementById('fidelityLevel').textContent = s.fidelity.toUpperCase();
+        }
+        if(document.getElementById('energyResiduals')) {
+            document.getElementById('energyResiduals').textContent = s.residuals.toExponential(2);
+        }
+        if(document.getElementById('mlConfidence')) {
+            document.getElementById('mlConfidence').textContent = `${(s.confidence * 100).toFixed(1)}%`;
+        }
+    
+        drawHeatmap(data.grid, s.min_t, s.max_t);
         
-        // Initialize displays
-        window.addEventListener('load', () => {
-            sliders.forEach(slider => {
-                const element = document.getElementById(slider.id);
-                element.dispatchEvent(new Event('input'));
+        document.getElementById('heatmap-min-val').textContent = `${s.min_t.toFixed(1)}°C`;
+        document.getElementById('heatmap-max-val').textContent = `${s.max_t.toFixed(1)}°C`;
+    
+        const icon = s.fidelity === 'high' ? '💎' : '⚡';
+        fidelityHistory.unshift(icon);
+        if(fidelityHistory.length > 10) fidelityHistory.pop();
+        document.getElementById('fidelityHistory').textContent = fidelityHistory.join(' ');
+    }
+    
+    function drawHeatmap(grid, min, max) {
+        const canvas = document.getElementById('temperatureHeatmap');
+        const ctx = canvas.getContext('2d');
+        const size = grid.length;
+        const cellW = canvas.width / size;
+        const cellH = canvas.height / size;
+    
+        grid.forEach((row, y) => {
+            row.forEach((temp, x) => {
+                const norm = (temp - min) / (max - min || 1);
+                // Turbo-style colormap (Blue -> Red)
+                const hue = (1 - norm) * 240; 
+                ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
+                ctx.fillRect(x * cellW, y * cellH, cellW + 1, cellH + 1);
             });
         });
-    </script>
+    }
+    
+    function updateConnectionStatus(online) {
+        const status = document.getElementById('statusIndicator');
+        if (online) {
+            status.innerHTML = '🟢 Engine Connected';
+            status.className = 'status-online';
+        } else {
+            status.innerHTML = '🔴 Connection Lost';
+            status.className = '';
+        }
+    }
+    
+    function toggleLiveUpdates(enabled) {
+        if (enabled) {
+            runSimulation();
+            liveRefreshTimer = setInterval(runSimulation, CONFIG.LIVE_INTERVAL);
+        } else {
+            clearInterval(liveRefreshTimer);
+        }
+    }
+    
+    // Global Reset
+    function resetParameters() {
+        document.getElementById('solar-irradiance').value = 1000;
+        document.getElementById('ambient-temperature').value = 300;
+        document.getElementById('wind-speed').value = 1;
+        document.getElementById('cell-efficiency').value = 0.20;
+        document.getElementById('thermal-conductivity').value = 130;
+        document.getElementById('absorptivity').value = 0.95;
+        document.getElementById('emissivity').value = 0.90;
+        sliderConfigs.forEach(s => document.getElementById(s.id).dispatchEvent(new Event('input')));
+    }
+    
+    window.onload = () => {
+        sliderConfigs.forEach(s => document.getElementById(s.id).dispatchEvent(new Event('input')));
+        updateConnectionStatus(true);
+    };
+</script>
