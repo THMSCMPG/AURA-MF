@@ -19,6 +19,7 @@ markdown: kramdown
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-remote-theme
 
 remote_theme: THMSCMPG/backend-hub
 sass:
