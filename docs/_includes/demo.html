@@ -188,6 +188,15 @@
             {id: 'absorptivity', display: 'absorptivity-value', format: v => parseFloat(v).toFixed(2)},
             {id: 'emissivity', display: 'emissivity-value', format: v => parseFloat(v).toFixed(2)}
         ];
+
+        const params = {
+            solar:   parseFloat(document.getElementById('solar-irradiance').value),
+            ambient: parseFloat(document.getElementById('ambient-temperature').value),
+            wind:    parseFloat(document.getElementById('wind-speed').value)
+    // cell_efficiency, thermal_conductivity, absorptivity, emissivity
+    // are not yet implemented in the backend solver — remove sliders
+    // or add these parameters to app.py's AURA_Physics_Solver.
+        };
         
         sliders.forEach(slider => {
             const element = document.getElementById(slider.id);
@@ -197,27 +206,28 @@
                 display.textContent = slider.format(this.value);
             });
         });
-        
+
         function displayResults(data) {
-            const results = data.results;
-            
-            // Show visualization
-            document.getElementById('visualization-image').src = 
-                'data:image/png;base64,' + data.visualization;
-            
-            // Update result values
+            // Visualization (this part was correct)
+            if (data.visualization) {
+                document.getElementById('visualization-image').src = 
+                    'data:image/png;base64,' + data.visualization;
+            }
+
+            // Map to actual backend response shape
             document.getElementById('temp-mean').textContent = 
-                (results.temperature_mean - 273.15).toFixed(1) + ' °C';
+                data.stats.avg_t + ' °C';
             document.getElementById('temp-max').textContent = 
-                (results.temperature_max - 273.15).toFixed(1) + ' °C';
+                data.stats.max_t + ' °C';
+
+            // These fields don't exist on the backend — show fidelity info instead
             document.getElementById('power-total').textContent = 
-                results.power_total.toFixed(2) + ' W';
+                data.fidelity_name;
             document.getElementById('efficiency-avg').textContent = 
-                (results.efficiency_avg * 100).toFixed(1) + ' %';
+                (data.ml_confidence * 100).toFixed(1) + ' %';
             document.getElementById('runtime').textContent = 
-                results.runtime_ms.toFixed(1);
-            
-            // Show results
+                data.timestamp;
+
             document.getElementById('results-container').style.display = 'block';
         }
         
