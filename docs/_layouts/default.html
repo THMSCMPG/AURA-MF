@@ -19,7 +19,7 @@
 
     <button class="menu-btn" onclick="toggleSidebar()">MENU &#9662;</button>
 
-    <div id="mySidebar" class="sidebar">
+    <div id="mySidebar" class="sidebar-mobile">
         <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
         {% for i in (0..2) %}
             <a href="{{ site.data.navigation[i].link }}">{{ site.data.navigation[i].name }}</a>
