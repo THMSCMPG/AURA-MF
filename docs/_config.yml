@@ -23,7 +23,6 @@ plugins:
 remote_theme: THMSCMPG/backend-hub
 sass:
   sass_dir: _sass
-  style: compressed # or expanded
 
 kramdown:
   math_engine: mathjax
