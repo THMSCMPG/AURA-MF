@@ -1,394 +1,181 @@
-
-<section class="demo-section">
-    <div class="container">
-        <div class="header">
-            <h1>⚡ AURA-MF Interactive Demo</h1>
-            <p>Adaptive Unified Radiative Analysis - Multi-Fidelity Framework</p>
-            <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
-                Low-Fidelity 25×25 Resolution Demo
-            </p>
-        </div>
-        
-        <div class="content">
-            <div class="controls">
-                <h2 style="color: #2c3e50; margin-bottom: 25px;">Simulation Parameters</h2>
-                
-                <div class="parameter-group">
-                    <label>
-                        Solar Irradiance
-                        <span class="parameter-value" id="solar-value">1000</span> W/m²
-                    </label>
-                    <input type="range" id="solar-irradiance" min="800" max="1200" value="1000" step="10">
-                    <div class="param-info">Incident solar radiation on panel surface</div>
-                </div>
-                
-                <div class="parameter-group">
-                    <label>
-                        Ambient Temperature
-                        <span class="parameter-value" id="temp-value">27</span> °C
-                    </label>
-                    <input type="range" id="ambient-temperature" min="280" max="330" value="300" step="1">
-                    <div class="param-info">Surrounding air temperature</div>
-                </div>
-                
-                <div class="parameter-group">
-                    <label>
-                        Wind Speed
-                        <span class="parameter-value" id="wind-value">1.0</span> m/s
-                    </label>
-                    <input type="range" id="wind-speed" min="0" max="10" value="1" step="0.1">
-                    <div class="param-info">Affects convective cooling rate</div>
-                </div>
-                
-                <div class="parameter-group">
-                    <label>
-                        Cell Efficiency
-                        <span class="parameter-value" id="efficiency-value">20</span> %
-                    </label>
-                    <input type="range" id="cell-efficiency" min="0.10" max="0.30" value="0.20" step="0.01">
-                    <div class="param-info">Base electrical conversion efficiency</div>
-                </div>
-                
-                <div class="parameter-group">
-                    <label>
-                        Thermal Conductivity
-                        <span class="parameter-value" id="conductivity-value">130</span> W/(m·K)
-                    </label>
-                    <input type="range" id="thermal-conductivity" min="100" max="200" value="130" step="5">
-                    <div class="param-info">In-plane heat conduction</div>
-                </div>
-                
-                <div class="parameter-group">
-                    <label>
-                        Absorptivity
-                        <span class="parameter-value" id="absorptivity-value">0.95</span>
-                    </label>
-                    <input type="range" id="absorptivity" min="0.85" max="0.98" value="0.95" step="0.01">
-                    <div class="param-info">Fraction of incident solar radiation absorbed</div>
-                </div>
-                
-                <div class="parameter-group">
-                    <label>
-                        Emissivity
-                        <span class="parameter-value" id="emissivity-value">0.90</span>
-                    </label>
-                    <input type="range" id="emissivity" min="0.80" max="0.95" value="0.90" step="0.01">
-                    <div class="param-info">Radiative heat loss efficiency</div>
-                </div>
-                
-                <button class="run-button" id="run-button" onclick="runSimulation()">
-                    🚀 Run Simulation
-                </button>
-                
-                <button class="reset-button" onclick="resetParameters()">
-                    ↺ Reset to Defaults
-                </button>
+<div class="aura-demo-wrapper">
+    <section class="demo-section">
+        <div class="container">
+            <div class="header">
+                <h1>⚡ AURA-MF Interactive Demo</h1>
+                <p>Adaptive Unified Radiative Analysis - Multi-Fidelity Framework</p>
+                <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
+                    Low-Fidelity 25×25 Resolution Demo
+                </p>
             </div>
             
-            <div class="visualization">
-                <div class="error" id="error-message"></div>
-                
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p>Running simulation...</p>
+            <div class="content">
+                <div class="controls">
+                    <h2 style="color: #2c3e50; margin-bottom: 25px;">Simulation Parameters</h2>
+                    
+                    <div class="parameter-group">
+                        <label>Solar Irradiance <span class="parameter-value" id="solar-value">1000</span> W/m²</label>
+                        <input type="range" id="solar-irradiance" min="800" max="1200" value="1000" step="10">
+                        <div class="param-info">Incident solar radiation on panel surface</div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <label>Ambient Temperature <span class="parameter-value" id="temp-value">27</span> °C</label>
+                        <input type="range" id="ambient-temperature" min="280" max="330" value="300" step="1">
+                        <div class="param-info">Surrounding air temperature</div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <label>Wind Speed <span class="parameter-value" id="wind-value">1.0</span> m/s</label>
+                        <input type="range" id="wind-speed" min="0" max="10" value="1" step="0.1">
+                        <div class="param-info">Affects convective cooling rate</div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <label>Cell Efficiency <span class="parameter-value" id="efficiency-value">20</span> %</label>
+                        <input type="range" id="cell-efficiency" min="0.10" max="0.30" value="0.20" step="0.01">
+                        <div class="param-info">Base electrical conversion efficiency</div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <label>Thermal Conductivity <span class="parameter-value" id="conductivity-value">130</span> W/(m·K)</label>
+                        <input type="range" id="thermal-conductivity" min="100" max="200" value="130" step="5">
+                        <div class="param-info">In-plane heat conduction</div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <label>Absorptivity <span class="parameter-value" id="absorptivity-value">0.95</span></label>
+                        <input type="range" id="absorptivity" min="0.85" max="0.98" value="0.95" step="0.01">
+                        <div class="param-info">Fraction of incident solar radiation absorbed</div>
+                    </div>
+
+                    <div class="parameter-group">
+                        <label>Emissivity <span class="parameter-value" id="emissivity-value">0.90</span></label>
+                        <input type="range" id="emissivity" min="0.80" max="0.95" value="0.90" step="0.01">
+                        <div class="param-info">Radiative heat loss efficiency</div>
+                    </div>
+
+                    <button class="run-button" id="run-button" onclick="runSimulation()">🚀 Run Simulation</button>
+                    <button class="reset-button" onclick="resetParameters()">↺ Reset to Defaults</button>
                 </div>
                 
-                <div id="results-container" style="display: none; width: 100%;">
-                    <img id="visualization-image" src="" alt="Simulation Results">
+                <div class="visualization">
+                    <div class="error" id="error-message"></div>
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>Running simulation...</p>
+                    </div>
                     
-                    <div class="results">
-                        <h3>📊 Simulation Results</h3>
-                        <div class="result-grid">
-                            <div class="result-item">
-                                <label>Mean Temperature</label>
-                                <div class="value" id="temp-mean">-</div>
+                    <div id="results-container" style="display: none; width: 100%;">
+                        <img id="visualization-image" src="" alt="Simulation Results">
+                        <div class="results">
+                            <h3>📊 Simulation Results</h3>
+                            <div class="result-grid">
+                                <div class="result-item"><label>Mean Temp</label><div class="value" id="temp-mean">-</div></div>
+                                <div class="result-item"><label>Max Temp</label><div class="value" id="temp-max">-</div></div>
+                                <div class="result-item"><label>Total Power</label><div class="value" id="power-total">-</div></div>
+                                <div class="result-item"><label>Avg Efficiency</label><div class="value" id="efficiency-avg">-</div></div>
                             </div>
-                            <div class="result-item">
-                                <label>Max Temperature</label>
-                                <div class="value" id="temp-max">-</div>
+                            <div style="margin-top: 15px; text-align: center; color: #6c757d; font-size: 0.9em;">
+                                Computation time: <span id="runtime">-</span> ms
                             </div>
-                            <div class="result-item">
-                                <label>Total Power Output</label>
-                                <div class="value" id="power-total">-</div>
-                            </div>
-                            <div class="result-item">
-                                <label>Average Efficiency</label>
-                                <div class="value" id="efficiency-avg">-</div>
-                            </div>
-                        </div>
-                        <div style="margin-top: 15px; text-align: center; color: #6c757d; font-size: 0.9em;">
-                            Computation time: <span id="runtime">-</span> ms
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-<iframe 
-    id="backend-bridge" 
-    src="https://thmscmpg.github.io/backend-hub/" 
-    style="display:none; width:0; height:0; border:0;"
-    title="backend-hub">
-</iframe>
+    </section>
+    
+    <iframe 
+        id="backend-bridge" 
+        src="https://thmscmpg.github.io/backend-hub/" 
+        style="display:none; width:0; height:0; border:0;"
+        title="backend-hub">
+    </iframe>
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
+        /* Scope everything to this specific container */
+        .aura-demo-wrapper {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px;
+            /* If you want the gradient background only behind the demo: */
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+        }
+
+        .aura-demo-wrapper * {
             box-sizing: border-box;
         }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .container {
-            max-width: 1400px;
+
+        .aura-demo-wrapper .container {
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
+            color: #333; /* Reset color in case site is dark mode */
         }
-        
-        .header {
+
+        .aura-demo-wrapper .header {
             background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
             color: white;
             padding: 30px;
             text-align: center;
         }
-        
-        .header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        .header p {
-            font-size: 1.1em;
-            opacity: 0.9;
-        }
-        
-        .content {
+
+        .aura-demo-wrapper .header h1 { color: white; margin: 0; }
+
+        .aura-demo-wrapper .content {
             display: grid;
-            grid-template-columns: 400px 1fr;
+            grid-template-columns: 350px 1fr;
             gap: 0;
         }
-        
-        .controls {
+
+        .aura-demo-wrapper .controls {
             background: #f8f9fa;
-            padding: 30px;
+            padding: 25px;
             border-right: 1px solid #dee2e6;
-            overflow-y: auto;
-            max-height: calc(100vh - 200px);
         }
+
+        .aura-demo-wrapper .parameter-group { margin-bottom: 20px; }
+        .aura-demo-wrapper .parameter-group label { display: block; font-weight: 600; margin-bottom: 8px; }
+        .aura-demo-wrapper .parameter-value { color: #667eea; font-weight: 700; float: right; }
         
-        .visualization {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .parameter-group {
-            margin-bottom: 25px;
-        }
-        
-        .parameter-group label {
-            display: block;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-        }
-        
-        .parameter-value {
-            color: #667eea;
-            font-weight: 700;
-            float: right;
-        }
-        
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: #d3d3d3;
-            outline: none;
-        }
-        
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        input[type="range"]::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-        
-        .param-info {
-            font-size: 0.85em;
-            color: #6c757d;
-            margin-top: 4px;
-        }
-        
-        .run-button {
-            width: 100%;
-            padding: 15px;
+        /* Slider styling scoped */
+        .aura-demo-wrapper input[type="range"] { width: 100%; }
+
+        .aura-demo-wrapper .run-button {
+            width: 100%; padding: 15px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1.1em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 20px;
+            color: white; border: none; border-radius: 8px;
+            font-weight: 700; cursor: pointer;
         }
+
+        .aura-demo-wrapper .visualization { padding: 30px; display: flex; flex-direction: column; align-items: center; background: #fff; }
+
+        .aura-demo-wrapper .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .aura-demo-wrapper .result-item { background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea; }
+
+        .aura-demo-wrapper .loading { display: none; text-align: center; }
+        .aura-demo-wrapper .loading.active { display: block; }
         
-        .run-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        .aura-demo-wrapper .spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid #667eea;
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: aura-spin 1s linear infinite; margin: 0 auto;
         }
-        
-        .run-button:active {
-            transform: translateY(0);
-        }
-        
-        .run-button:disabled {
-            background: #95a5a6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        
-        .reset-button {
-            width: 100%;
-            padding: 12px;
-            background: #95a5a6;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        
-        .reset-button:hover {
-            background: #7f8c8d;
-        }
-        
-        #visualization-image {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .results {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            width: 100%;
-            max-width: 800px;
-        }
-        
-        .results h3 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        
-        .result-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-        
-        .result-item {
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .result-item label {
-            display: block;
-            font-size: 0.9em;
-            color: #6c757d;
-            margin-bottom: 5px;
-        }
-        
-        .result-item .value {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #2c3e50;
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px;
-        }
-        
-        .loading.active {
-            display: block;
-        }
-        
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #667eea;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
+
+        @keyframes aura-spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        
-        .error {
-            background: #fee;
-            color: #c00;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .error.active {
-            display: block;
-        }
-        
-        @media (max-width: 1024px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-            
-            .controls {
-                border-right: none;
-                border-bottom: 1px solid #dee2e6;
-                max-height: none;
-            }
+
+        @media (max-width: 900px) {
+            .aura-demo-wrapper .content { grid-template-columns: 1fr; }
         }
     </style>
-</section>
+</div>
 
 
     <script>
