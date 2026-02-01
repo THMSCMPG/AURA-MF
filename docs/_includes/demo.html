@@ -5,7 +5,7 @@
                 <h1>⚡ AURA-MF Interactive Demo</h1>
                 <p>Adaptive Unified Radiative Analysis - Multi-Fidelity Framework</p>
                 <p style="font-size: 0.9em; margin-top: 10px; opacity: 0.8;">
-                    Low-Fidelity 25×25 Resolution Demo
+                    20×20 Grid Resolution Demo
                 </p>
             </div>
             
@@ -20,14 +20,14 @@
                     </div>
 
                     <div class="parameter-group">
-                        <label>Ambient Temperature <span class="parameter-value" id="temp-value">27</span> °C</label>
-                        <input type="range" id="ambient-temperature" min="280" max="330" value="300" step="1">
-                        <div class="param-info">Surrounding air temperature</div>
+                        <label>Ambient Temperature <span class="parameter-value" id="temp-value">25.0</span> °C</label>
+                        <input type="range" id="ambient-temperature" min="280" max="330" value="298.15" step="1">
+                        <div class="param-info">Surrounding air temperature (internally converted to Kelvin)</div>
                     </div>
 
                     <div class="parameter-group">
-                        <label>Wind Speed <span class="parameter-value" id="wind-value">1.0</span> m/s</label>
-                        <input type="range" id="wind-speed" min="0" max="10" value="1" step="0.1">
+                        <label>Wind Speed <span class="parameter-value" id="wind-value">2.0</span> m/s</label>
+                        <input type="range" id="wind-speed" min="0" max="10" value="2" step="0.1">
                         <div class="param-info">Affects convective cooling rate</div>
                     </div>
 
@@ -68,7 +68,7 @@
                 
                 <div class="visualization">
                     <div class="error" id="error-message"></div>
-                    <div id="statusIndicator">⚪ Checking Connection...</div>
+                    <div id="statusIndicator">⚪ Ready to Run...</div>
                     
                     <div class="loading" id="loading">
                         <div class="spinner"></div>
@@ -86,7 +86,7 @@
                         
                         <div class="results">
                             <div class="result-grid">
-                                <div class="result-item"><label>Status</label><div id="fidelityLevel" class="value">-</div></div>
+                                <div class="result-item"><label>Fidelity</label><div id="fidelityLevel" class="value">-</div></div>
                                 <div class="result-item"><label>Residuals</label><div id="energyResiduals" class="value">-</div></div>
                                 <div class="result-item"><label>ML Conf.</label><div id="mlConfidence" class="value">-</div></div>
                                 <div class="result-item"><label>Avg Temp</label><div id="avgTemp" class="value">-</div></div>
@@ -103,11 +103,6 @@
                 </div>
             </div>
         </div>
-           <iframe 
-        id="backend-bridge" 
-        src="https://thmscmpg.github.io/backend-hub/" 
-        style="display:none; width:0; height:0; border:0;">
-    </iframe>
     </section>
     
     <style>
@@ -115,7 +110,6 @@
         .aura-demo-wrapper {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 20px;
-            /* If you want the gradient background only behind the demo: */
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 20px;
         }
@@ -136,12 +130,19 @@
             color: #4a5568;
         }
         
-        /* Updated Result Grid for 3 columns (to fit the new metrics) */
+        /* Updated Result Grid for 3 columns */
         .aura-demo-wrapper .result-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
             width: 100%;
+        }
+        
+        .aura-demo-wrapper .result-item {
+            background: #f7fafc;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
         }
         
         .aura-demo-wrapper .result-item label {
@@ -150,11 +151,13 @@
             letter-spacing: 0.05em;
             color: #718096;
             margin-bottom: 4px;
+            display: block;
         }
         
         .aura-demo-wrapper .result-item .value {
             font-size: 1.1em;
             font-weight: 700;
+            color: #2c3e50;
         }
         
         .aura-demo-wrapper .container {
@@ -164,7 +167,7 @@
             border-radius: 15px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             overflow: hidden;
-            color: #333; /* Reset color in case site is dark mode */
+            color: #333;
         }
 
         .aura-demo-wrapper .header {
@@ -174,140 +177,233 @@
             text-align: center;
         }
 
-        .aura-demo-wrapper .header h1 { color: white; margin: 0; }
+        .aura-demo-wrapper .header h1 { 
+            color: white; 
+            margin: 0; 
+            font-size: 2rem;
+        }
+
+        .aura-demo-wrapper .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
 
         .aura-demo-wrapper .content {
             display: grid;
-            grid-template-columns: 350px 1fr;
-            gap: 0;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 30px;
         }
 
-        .aura-demo-wrapper .controls {
-            background: #f8f9fa;
-            padding: 25px;
-            border-right: 1px solid #dee2e6;
+        .aura-demo-wrapper .controls h2 {
+            margin-top: 0;
         }
 
-        /* Fidelity History Ticker */
-        #fidelityHistory {
-            letter-spacing: 2px;
-            font-size: 1.2em;
-            background: #1a202c;
-            padding: 5px 10px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-top: 10px;
+        .aura-demo-wrapper .parameter-group {
+            margin-bottom: 25px;
         }
-        
-        /* Status Indicator Pulse */
-        #statusIndicator {
-            font-size: 0.85em;
+
+        .aura-demo-wrapper .parameter-group label {
+            display: block;
+            margin-bottom: 8px;
             font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .aura-demo-wrapper .parameter-value {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .aura-demo-wrapper input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .aura-demo-wrapper input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        .aura-demo-wrapper input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .aura-demo-wrapper .param-info {
+            font-size: 0.8em;
+            color: #718096;
+            margin-top: 4px;
+        }
+
+        .aura-demo-wrapper .run-button,
+        .aura-demo-wrapper .reset-button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
             margin-bottom: 10px;
         }
 
-        /* Toggle Switch Container */
-        .toggle-container {
-            display: flex;
-            align-items: center;
-            margin-top: 15px;
-            padding: 10px;
-            background: #edf2f7;
-            border-radius: 8px;
+        .aura-demo-wrapper .run-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
         }
-        
-        .switch {
+
+        .aura-demo-wrapper .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .aura-demo-wrapper .run-button:disabled {
+            background: #cbd5e0;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .aura-demo-wrapper .reset-button {
+            background: #edf2f7;
+            color: #2c3e50;
+        }
+
+        .aura-demo-wrapper .reset-button:hover {
+            background: #e2e8f0;
+        }
+
+        .aura-demo-wrapper .visualization {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .aura-demo-wrapper #statusIndicator {
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            background: #f7fafc;
+            color: #718096;
+        }
+
+        .aura-demo-wrapper .status-online {
+            background: #e8f5e9 !important;
+            color: #2e7d32 !important;
+        }
+
+        .aura-demo-wrapper .error {
+            display: none;
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .aura-demo-wrapper .error.active {
+            display: block;
+        }
+
+        .aura-demo-wrapper .loading {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .aura-demo-wrapper .loading.active {
+            display: flex;
+        }
+
+        .aura-demo-wrapper .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e2e8f0;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: aura-spin 1s linear infinite;
+        }
+
+        .aura-demo-wrapper .results {
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .aura-demo-wrapper #fidelityHistory {
+            font-size: 1.2em;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        .aura-demo-wrapper canvas {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Toggle Switch */
+        .aura-demo-wrapper .switch {
             position: relative;
             display: inline-block;
-            width: 40px;
-            height: 22px;
-            margin-right: 10px;
+            width: 50px;
+            height: 24px;
         }
-        
-        .switch input { opacity: 0; width: 0; height: 0; }
-        
-        .slider {
+
+        .aura-demo-wrapper .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .aura-demo-wrapper .slider {
             position: absolute;
             cursor: pointer;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: #cbd5e0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
             transition: .4s;
-            border-radius: 34px;
+            border-radius: 24px;
         }
-        
-        .slider:before {
+
+        .aura-demo-wrapper .slider:before {
             position: absolute;
             content: "";
-            height: 16px; width: 16px;
-            left: 3px; bottom: 3px;
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
             background-color: white;
             transition: .4s;
             border-radius: 50%;
         }
-        
-        input:checked + .slider { background-color: #667eea; }
-        input:checked + .slider:before { transform: translateX(18px); }
-                
-        .aura-demo-wrapper .parameter-group { margin-bottom: 20px; }
-        .aura-demo-wrapper .parameter-group label { display: block; font-weight: 600; margin-bottom: 8px; }
-        .aura-demo-wrapper .parameter-value { color: #667eea; font-weight: 700; float: right; }
-        
-        /* Slider styling scoped */
-        .aura-demo-wrapper input[type="range"] { width: 100%; }
 
-        .aura-demo-wrapper .run-button {
-            width: 100%; padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white; border: none; border-radius: 8px;
-            font-weight: 700; cursor: pointer;
+        .aura-demo-wrapper input:checked + .slider {
+            background-color: #667eea;
         }
 
-        .aura-demo-wrapper .loading { display: none; }
-        .aura-demo-wrapper .loading.active { display: flex; flex-direction: column; align-items: center; }
-        
-        .aura-demo-wrapper .error {
-            display: none;
-            background: #fff5f5;
-            color: #c53030;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #feb2b2;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-        .aura-demo-wrapper .error.active { display: block; }
-
-        .aura-demo-wrapper .visualization { padding: 30px; display: flex; flex-direction: column; align-items: center; background: #fff; }
-
-        .aura-demo-wrapper .result-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .aura-demo-wrapper .result-item { background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea; }
-
-        .aura-demo-wrapper .loading { display: none; text-align: center; }
-        .aura-demo-wrapper .loading.active { display: block; }
-        
-        .aura-demo-wrapper .spinner {
-            border: 4px solid #f3f3f3; border-top: 4px solid #667eea;
-            border-radius: 50%; width: 40px; height: 40px;
-            animation: aura-spin 1s linear infinite; margin: 0 auto;
-        }
-        #statusIndicator {
-            padding: 8px 12px;
-            border-radius: 20px;
-            background: #f0f4f8;
-            display: inline-block;
-            transition: all 0.3s ease;
-        }
-        
-        /* Pulsing effect for 🟢 Connected */
-        .status-online {
-            color: #2f855a;
-            animation: status-pulse 2s infinite;
-        }
-        
-        @keyframes status-pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.02); }
-            100% { opacity: 1; transform: scale(1); }
+        .aura-demo-wrapper input:checked + .slider:before {
+            transform: translateX(26px);
         }
 
         @keyframes aura-spin {
@@ -316,22 +412,29 @@
         }
 
         @media (max-width: 900px) {
-            .aura-demo-wrapper .content { grid-template-columns: 1fr; }
+            .aura-demo-wrapper .content { 
+                grid-template-columns: 1fr; 
+            }
         }
     </style>
 </div>
 
 <script>
-    // Configuration
+    // ========================================================================
+    // CONFIGURATION
+    // ========================================================================
     const CONFIG = {
         API_URL: 'https://aura-mf-backend.onrender.com/api/simulate',
-        LIVE_INTERVAL: 5000
+        LIVE_INTERVAL: 5000,
+        COLD_START_TIMEOUT: 30000  // 30 seconds for backend cold start
     };
     
     let liveRefreshTimer = null;
     let fidelityHistory = [];
     
-    // Initialize Sliders
+    // ========================================================================
+    // SLIDER INITIALIZATION
+    // ========================================================================
     const sliderConfigs = [
         {id: 'solar-irradiance', display: 'solar-value', format: v => v},
         {id: 'ambient-temperature', display: 'temp-value', format: v => (v - 273.15).toFixed(1)},
@@ -345,23 +448,30 @@
     sliderConfigs.forEach(s => {
         const el = document.getElementById(s.id);
         const disp = document.getElementById(s.display);
-        el.addEventListener('input', () => { disp.textContent = s.format(el.value); });
+        if (el && disp) {
+            el.addEventListener('input', () => { disp.textContent = s.format(el.value); });
+        }
     });
     
+    // ========================================================================
+    // MAIN SIMULATION FUNCTION
+    // ========================================================================
     async function runSimulation() {
         const btn = document.getElementById('run-button');
         const loading = document.getElementById('loading');
         const results = document.getElementById('results-container');
         const error = document.getElementById('error-message');
     
-        btn.disabled = true;
-        loading.classList.add('active');
-        error.classList.remove('active');
+        // Disable button and show loading
+        if (btn) btn.disabled = true;
+        if (loading) loading.classList.add('active');
+        if (error) error.classList.remove('active');
     
         try {
+            // CRITICAL: Collect parameters (ambient temp is already in Kelvin from slider)
             const params = {
                 solar: parseFloat(document.getElementById('solar-irradiance').value),
-                ambient: parseFloat(document.getElementById('ambient-temperature').value),
+                ambient: parseFloat(document.getElementById('ambient-temperature').value), // Already in Kelvin
                 wind: parseFloat(document.getElementById('wind-speed').value),
                 cell_efficiency: parseFloat(document.getElementById('cell-efficiency').value),
                 thermal_conductivity: parseFloat(document.getElementById('thermal-conductivity').value),
@@ -369,87 +479,181 @@
                 emissivity: parseFloat(document.getElementById('emissivity').value)
             };
     
+            console.log('Sending parameters:', params);
+    
+            // Make API request with extended timeout for cold starts
             const response = await fetch(CONFIG.API_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(params)
+                body: JSON.stringify(params),
+                signal: AbortSignal.timeout(CONFIG.COLD_START_TIMEOUT)
             });
+    
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || `Server error ${response.status}`);
+            }
     
             const data = await response.json();
-            if (!response.ok) throw new Error(data.error || 'Server error');
-    
+            console.log('Received data:', data);
+            
+            // Update dashboard and show results
             updateDashboard(data);
-            results.style.display = 'block';
+            if (results) results.style.display = 'block';
             updateConnectionStatus(true);
+            
         } catch (err) {
-            error.textContent = `❌ ${err.message}`;
-            error.classList.add('active');
+            console.error('Simulation error:', err);
+            
+            // Handle different error types
+            let errorMessage = err.message;
+            if (err.name === 'AbortError' || err.name === 'TimeoutError') {
+                errorMessage = 'Backend is waking up (cold start). Please try again in 10 seconds.';
+            } else if (err.message.includes('Failed to fetch')) {
+                errorMessage = 'Cannot connect to backend. Check if https://aura-mf-backend.onrender.com is online.';
+            }
+            
+            if (error) {
+                error.textContent = `❌ ${errorMessage}`;
+                error.classList.add('active');
+            }
             updateConnectionStatus(false);
+            
         } finally {
-            loading.classList.remove('active');
-            btn.disabled = false;
+            // Re-enable button and hide loading
+            if (loading) loading.classList.remove('active');
+            if (btn) btn.disabled = false;
         }
     }
     
+    // ========================================================================
+    // DASHBOARD UPDATE FUNCTION
+    // ========================================================================
     function updateDashboard(data) {
         const s = data.stats;
-        if(document.getElementById('temp-mean')) {
-            document.getElementById('temp-mean').textContent = `${s.avg_t.toFixed(1)} °C`;
-        }
-        if(document.getElementById('temp-max')) {
-            document.getElementById('temp-max').textContent = `${s.max_t.toFixed(1)} °C`;
-        }
-        if(document.getElementById('power-total')) {
-            document.getElementById('power-total').textContent = `${s.power_total.toFixed(2)} W`;
-        }
-        if(document.getElementById('efficiency-avg')) {
-            document.getElementById('efficiency-avg').textContent = `${s.eff_avg.toFixed(1)} %`;
-        }
-        if(document.getElementById('runtime')) {
-            document.getElementById('runtime').textContent = s.runtime_ms.toFixed(1);
-        }
-    
-        if(document.getElementById('fidelityLevel')) {
-            document.getElementById('fidelityLevel').textContent = s.fidelity.toUpperCase();
-        }
-        if(document.getElementById('energyResiduals')) {
-            document.getElementById('energyResiduals').textContent = s.residuals.toExponential(2);
-        }
-        if(document.getElementById('mlConfidence')) {
-            document.getElementById('mlConfidence').textContent = `${(s.confidence * 100).toFixed(1)}%`;
-        }
-    
-        drawHeatmap(data.grid, s.min_t, s.max_t);
         
-        document.getElementById('heatmap-min-val').textContent = `${s.min_t.toFixed(1)}°C`;
-        document.getElementById('heatmap-max-val').textContent = `${s.max_t.toFixed(1)}°C`;
-    
-        const icon = s.fidelity === 'high' ? '💎' : '⚡';
+        // CRITICAL FIX: Update using correct element IDs matching the HTML
+        // Fidelity Level
+        const fidelityEl = document.getElementById('fidelityLevel');
+        if (fidelityEl) {
+            const colors = ['#4CAF50', '#FF9800', '#F44336'];
+            const icons = ['⚡', '⚙️', '🔥'];
+            fidelityEl.textContent = `${icons[data.fidelity_level]} ${data.fidelity_name}`;
+            fidelityEl.style.color = colors[data.fidelity_level];
+        }
+        
+        // Energy Residuals
+        const residualsEl = document.getElementById('energyResiduals');
+        if (residualsEl) {
+            residualsEl.textContent = data.energy_residuals.toExponential(2);
+            // Color code based on magnitude
+            if (data.energy_residuals < 1e-4) {
+                residualsEl.style.color = '#4CAF50';
+            } else if (data.energy_residuals < 1e-2) {
+                residualsEl.style.color = '#FF9800';
+            } else {
+                residualsEl.style.color = '#F44336';
+            }
+        }
+        
+        // ML Confidence
+        const mlConfEl = document.getElementById('mlConfidence');
+        if (mlConfEl) {
+            mlConfEl.textContent = `${(data.ml_confidence * 100).toFixed(1)}%`;
+            if (data.ml_confidence > 0.9) {
+                mlConfEl.style.color = '#4CAF50';
+            } else if (data.ml_confidence > 0.8) {
+                mlConfEl.style.color = '#FF9800';
+            } else {
+                mlConfEl.style.color = '#F44336';
+            }
+        }
+        
+        // Temperature Stats (already in Celsius from backend)
+        const avgTempEl = document.getElementById('avgTemp');
+        if (avgTempEl) avgTempEl.textContent = `${s.avg_t.toFixed(1)} °C`;
+        
+        const maxTempEl = document.getElementById('maxTemp');
+        if (maxTempEl) maxTempEl.textContent = `${s.max_t.toFixed(1)} °C`;
+        
+        // Runtime
+        const runtimeEl = document.getElementById('simulationTime');
+        if (runtimeEl) runtimeEl.textContent = `${s.runtime_ms.toFixed(1)} ms`;
+        
+        // CRITICAL FIX: Draw heatmap with proper temperature field
+        drawHeatmap(data.temperature_field, s.min_t, s.max_t);
+        
+        // Update legend
+        const minValEl = document.getElementById('heatmap-min-val');
+        const maxValEl = document.getElementById('heatmap-max-val');
+        if (minValEl) minValEl.textContent = `${s.min_t.toFixed(1)}°C`;
+        if (maxValEl) maxValEl.textContent = `${s.max_t.toFixed(1)}°C`;
+        
+        // Fidelity History
+        const icon = ['⚡', '⚙️', '🔥'][data.fidelity_level];
         fidelityHistory.unshift(icon);
-        if(fidelityHistory.length > 10) fidelityHistory.pop();
-        document.getElementById('fidelityHistory').textContent = fidelityHistory.join(' ');
+        if (fidelityHistory.length > 10) fidelityHistory.pop();
+        const historyEl = document.getElementById('fidelityHistory');
+        if (historyEl) historyEl.textContent = fidelityHistory.join(' ');
     }
     
-    function drawHeatmap(grid, min, max) {
+    // ========================================================================
+    // HEATMAP RENDERING
+    // ========================================================================
+    function drawHeatmap(temperatureField, minTemp, maxTemp) {
         const canvas = document.getElementById('temperatureHeatmap');
+        if (!canvas) return;
+        
         const ctx = canvas.getContext('2d');
-        const size = grid.length;
-        const cellW = canvas.width / size;
-        const cellH = canvas.height / size;
-    
-        grid.forEach((row, y) => {
-            row.forEach((temp, x) => {
-                const norm = (temp - min) / (max - min || 1);
-                // Turbo-style colormap (Blue -> Red)
-                const hue = (1 - norm) * 240; 
-                ctx.fillStyle = `hsl(${hue}, 70%, 50%)`;
-                ctx.fillRect(x * cellW, y * cellH, cellW + 1, cellH + 1);
-            });
-        });
+        const grid = temperatureField;  // 2D array from backend
+        
+        if (!grid || !grid.length) {
+            console.error('Invalid temperature field data');
+            return;
+        }
+        
+        const rows = grid.length;
+        const cols = grid[0].length;
+        const cellWidth = canvas.width / cols;
+        const cellHeight = canvas.height / rows;
+        
+        // Convert Kelvin to Celsius for display
+        const minC = minTemp;  // Already in Celsius from backend
+        const maxC = maxTemp;  // Already in Celsius from backend
+        const range = maxC - minC || 1;  // Avoid division by zero
+        
+        // CRITICAL FIX: Iterate correctly over 2D grid
+        for (let row = 0; row < rows; row++) {
+            for (let col = 0; col < cols; col++) {
+                const tempKelvin = grid[row][col];
+                const tempCelsius = tempKelvin - 273.15;
+                
+                // Normalize temperature to 0-1 range
+                const normalized = (tempCelsius - minC) / range;
+                
+                // Turbo-inspired colormap (Blue → Cyan → Yellow → Red)
+                const hue = (1 - normalized) * 240;  // 240 (blue) to 0 (red)
+                const saturation = 70 + normalized * 20;  // 70-90%
+                const lightness = 45 + normalized * 10;   // 45-55%
+                
+                ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+                ctx.fillRect(
+                    col * cellWidth, 
+                    row * cellHeight, 
+                    cellWidth + 1,   // +1 to avoid gaps
+                    cellHeight + 1
+                );
+            }
+        }
     }
     
+    // ========================================================================
+    // UTILITY FUNCTIONS
+    // ========================================================================
     function updateConnectionStatus(online) {
         const status = document.getElementById('statusIndicator');
+        if (!status) return;
+        
         if (online) {
             status.innerHTML = '🟢 Engine Connected';
             status.className = 'status-online';
@@ -468,20 +672,46 @@
         }
     }
     
-    // Global Reset
     function resetParameters() {
         document.getElementById('solar-irradiance').value = 1000;
-        document.getElementById('ambient-temperature').value = 300;
-        document.getElementById('wind-speed').value = 1;
+        document.getElementById('ambient-temperature').value = 298.15;
+        document.getElementById('wind-speed').value = 2;
         document.getElementById('cell-efficiency').value = 0.20;
         document.getElementById('thermal-conductivity').value = 130;
         document.getElementById('absorptivity').value = 0.95;
         document.getElementById('emissivity').value = 0.90;
-        sliderConfigs.forEach(s => document.getElementById(s.id).dispatchEvent(new Event('input')));
+        
+        // Trigger input events to update displays
+        sliderConfigs.forEach(s => {
+            const el = document.getElementById(s.id);
+            if (el) el.dispatchEvent(new Event('input'));
+        });
     }
     
+    // ========================================================================
+    // INITIALIZATION
+    // ========================================================================
     window.onload = () => {
-        sliderConfigs.forEach(s => document.getElementById(s.id).dispatchEvent(new Event('input')));
-        updateConnectionStatus(true);
+        console.log('🚀 AURA-MF Demo initialized');
+        console.log('API URL:', CONFIG.API_URL);
+        
+        // Initialize slider displays
+        sliderConfigs.forEach(s => {
+            const el = document.getElementById(s.id);
+            if (el) el.dispatchEvent(new Event('input'));
+        });
+        
+        updateConnectionStatus(false);
+        
+        // Check backend health
+        fetch(`${CONFIG.API_URL.replace('/api/simulate', '/api/health')}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log('Backend health check:', data);
+                updateConnectionStatus(true);
+            })
+            .catch(err => {
+                console.warn('Backend not immediately available (may be in cold start):', err.message);
+            });
     };
 </script>
