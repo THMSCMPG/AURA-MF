@@ -189,7 +189,7 @@
             width: 260px;
             height: calc(100vh - 30px);
             background: var(--dark-muted);
-            border-right: 3px solid var(--primary);
+            border-right: 5px solid var(--primary);
             transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 990;
             padding: 2rem 1.5rem;
