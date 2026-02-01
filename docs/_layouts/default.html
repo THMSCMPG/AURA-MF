@@ -107,59 +107,6 @@
                 ]
             });
         });
-        
-        // Sidebar Logic
-        function toggleSidebar() {
-            const sb = document.getElementById("mySidebar");
-            sb.style.width = (sb.style.width === "250px") ? "0" : "250px";
-        }
-
-        // Smooth Scroll & Active State
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if(targetId.length > 1) {
-                    e.preventDefault();
-                    const target = document.querySelector(targetId);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        document.querySelectorAll('.peek-nav a').forEach(a => a.classList.remove('active'));
-                        this.classList.add('active');
-                    }
-                }
-            });
-        });
-
-        function sendToBridge(payload) {
-            return new Promise((resolve, reject) => {
-            const iframe = document.getElementById('backend-bridge');
-            const requestId = Date.now(); // Unique ID for this request
-
-            // Define a one-time listener for the response
-            const handleResponse = (event) => {
-                if (event.origin !== window.location.origin) return;
-                if (event.data.id !== requestId) return; // Ignore other requests
-
-                window.removeEventListener('message', handleResponse); // Cleanup
-
-                if (event.data.status === 'success') {
-                    resolve(event.data.data);
-                } else {
-                    reject(event.data.error);
-                }
-            };
-
-            // Listen for the bridge's reply
-            window.addEventListener('message', handleResponse);
-
-            // "Ping" the bridge
-            iframe.contentWindow.postMessage({ 
-                action: 'PING_BACKEND', 
-                id: requestId,
-                payload: payload 
-            }, '*');
-        });
-    }
     </script>
 </body>    
 </html>
