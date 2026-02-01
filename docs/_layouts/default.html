@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title }} | AURA-MF</title>
     
+    <!-- Centralized Middend CSS from backend-hub -->
+    <link rel="stylesheet" href="https://thmscmpg.github.io/backend-hub/middend/style.css">
+    
+    <!-- KaTeX for Mathematical Rendering (AURA-MF specific) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
     
+    <!-- External Libraries via CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://thmscmpg.github.io/AURA-MF/style.css">
+    
+    <!-- Site-specific overrides (if needed) -->
+    <link rel="stylesheet" href="{{ '/assets/custom.css' | relative_url }}">
 </head>
 <body>
 
@@ -54,27 +62,6 @@
         </div>
     </nav>
 
-    <div class="trigger-zone"></div> 
-    
-    <nav class="peek-nav">
-        <h2><a href="{{ site.data.navigation[14].link }}">AURA-MF Menu</a></h2>
-        <ul>
-            <li><a href="#overview" class="active">Overview</a></li>
-            <li><a href="#architecture">Architecture</a></li>
-            <li><a href="#simulations">Simulations</a>
-                <ul>
-                    <li><a href="{{ site.data.navigation[15].link }}">{{ site.data.navigation[15].name }}</a></li>
-                    <li><a href="{{ site.data.navigation[16].link }}">{{ site.data.navigation[16].name }}</a></li>
-                    <li><a href="{{ site.data.navigation[17].link }}">{{ site.data.navigation[17].name }}</a></li>
-                    <li><a href="{{ site.data.navigation[18].link }}">{{ site.data.navigation[18].name }}</a></li>
-                </ul>
-            </li>
-            <li><a href="#performance">Performance</a></li>
-            <li><a href="#downloads">Downloads</a></li>
-            <li><a href="{{ site.data.navigation[19].link }}">{{ site.data.navigation[19].name }}</a></li>
-        </ul>
-    </nav>
-
     <main class="container">
         <header class="page-header">
             <h1>{{ page.title }}</h1>
@@ -92,26 +79,36 @@
     <footer class="footer">
         <p>Thomas Campagna | Physics & Mathematics</p>
         <p>&copy; 2025 AURA-MF Project</p>
-        <p>&copy; 2026 CircuitNotes Project</p>
         <p style="font-size: 0.8rem;">Licensed under the MIT License.</p>
         <a href="https://github.com/THMSCMPG" target="_blank"><i class="fab fa-github"></i> GitHub</a>
     </footer>
     
+    <!-- Backend Bridge iframe -->
+    <iframe 
+        id="backend-bridge" 
+        src="https://thmscmpg.github.io/backend-hub" 
+        style="display:none; width:0; height:0; border:0;"
+        aria-hidden="true">
+    </iframe>
+
     <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('mySidebar');
+            sidebar.classList.toggle('open');
+            document.body.classList.toggle('sidebar-open');
+        }
+
         // KaTeX Auto-render
         document.addEventListener("DOMContentLoaded", function() {
-            renderMathInElement(document.body, {
-                delimiters: [
-                    {left: "$$", right: "$$", display: true},
-                    {left: "$", right: "$", display: false}
-                ]
-            });
+            if (typeof renderMathInElement !== 'undefined') {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        {left: "$$", right: "$$", display: true},
+                        {left: "$", right: "$", display: false}
+                    ]
+                });
+            }
         });
     </script>
-    <iframe 
-    id="backend-bridge" 
-    src="https://thmscmpg.github.io/backend-hub" 
-    style="display:none; width:0; height:0; border:0;">
-    </iframe>
 </body>    
 </html>
