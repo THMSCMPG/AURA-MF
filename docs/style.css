@@ -184,7 +184,7 @@
         /* --- "Peek-a-Boo" Side Navigation --- */
         .peek-nav {
             position: fixed;
-            left: -300px; /* Hide completely off-screen */
+            left: -280px; /* Hide completely off-screen */
             top: 30px;    /* Just below main navbar */
             width: 260px;
             height: calc(100vh - 30px);
