@@ -55,7 +55,7 @@
                         <div class="param-info">Radiative heat loss efficiency</div>
                     </div>
 
-                    <button class="run-button" id="run-button" onclick="runSimulation()">🚀 Run Simulation</button>
+                    <button class="run-button" id="run-button" onclick="runSimulationThroughBridge()">🚀 Run Simulation</button>
                     <button class="reset-button" onclick="resetParameters()">↺ Reset to Defaults</button>
                 </div>
                 
@@ -198,52 +198,6 @@
             });
         });
         
-        async function runSimulation() {
-            // Collect parameters
-            const params = {
-                solar_irradiance: parseFloat(document.getElementById('solar-irradiance').value),
-                ambient_temperature: parseFloat(document.getElementById('ambient-temperature').value),
-                wind_speed: parseFloat(document.getElementById('wind-speed').value),
-                cell_efficiency: parseFloat(document.getElementById('cell-efficiency').value),
-                thermal_conductivity: parseFloat(document.getElementById('thermal-conductivity').value),
-                absorptivity: parseFloat(document.getElementById('absorptivity').value),
-                emissivity: parseFloat(document.getElementById('emissivity').value)
-            };
-            
-            // Show loading, hide results and errors
-            document.getElementById('loading').classList.add('active');
-            document.getElementById('results-container').style.display = 'none';
-            document.getElementById('error-message').classList.remove('active');
-            document.getElementById('run-button').disabled = true;
-            
-            try {
-                const response = await fetch('/api/simulate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(params)
-                });
-                
-                const data = await response.json();
-                
-                if (!response.ok) {
-                    throw new Error(data.error || 'Simulation failed');
-                }
-                
-                // Display results
-                displayResults(data);
-                
-            } catch (error) {
-                document.getElementById('error-message').textContent = 
-                    '❌ Error: ' + error.message;
-                document.getElementById('error-message').classList.add('active');
-            } finally {
-                document.getElementById('loading').classList.remove('active');
-                document.getElementById('run-button').disabled = false;
-            }
-        }
-        
         function displayResults(data) {
             const results = data.results;
             
@@ -291,3 +245,5 @@
             });
         });
     </script>
+<script src="https://thmscmpg.github.io/backend-hub/simulation-bridge-integration.js"></script>
+
