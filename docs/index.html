@@ -3,173 +3,170 @@ layout: AURA-MF
 title: Multi-Fidelity Photovoltaic Simulation Framework
 ---
 
-    <main>
-        <header style="margin-bottom: 40px; text-align: center;">
-            <h1 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 800;">AURA-MF</h1>
-            <div style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 1px;">Multi-Fidelity Photovoltaic Simulation Framework</div>
-        </header>
+<header style="margin-bottom: 40px; text-align: center;">
+    <h1 style="color: var(--primary); font-size: 2.5rem; margin-bottom: 0.5rem; font-weight: 800;">AURA-MF</h1>
+    <div style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 1px;">Multi-Fidelity Photovoltaic Simulation Framework</div>
+</header>
 
-        <section id="overview" class="hero">
-            <h2>15× Faster PV Simulations</h2>
-            <p>
-                AURA-MF combines Monte Carlo photon transport, high-fidelity CFD, and machine learning 
-                to deliver unprecedented computational efficiency without sacrificing accuracy. 
-                Achieve <strong>RMSE &lt; 2.0 K</strong> at <strong>15× speedup</strong> over traditional methods.
-            </p>
-        </section>
-        
-        <section id="architecture">
-            <div style="border-left: 4px solid var(--primary); padding-left: 20px; margin: 60px 0 30px;">
-                <h2>Multi-Fidelity Architecture</h2>
-            </div>
-            
-            <p style="color: var(--text); margin-bottom: 2rem; max-width: 800px;">
-                The framework intelligently switches between three fidelity levels based on physics-informed 
-                machine learning, optimizing the accuracy-cost tradeoff in real-time.
-            </p>
-            
-            <div class="project-grid">
-                <div class="project-card">
-                    <div class="card-label">Low Fidelity (LF)</div>
-                    <div class="card-value">1.0s</div>
-                    <div class="card-desc">
-                        Poisson + Coarse CFD<br>
-                        25×25 grid
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="card-label">Medium Fidelity (MF)</div>
-                    <div class="card-value">8.5s</div>
-                    <div class="card-desc">
-                        Diffusion BTE + S₄ DOM<br>
-                        50×50 grid
-                    </div>
-                </div>
-                
-                <div class="project-card">
-                    <div class="card-label">High Fidelity (HF)</div>
-                    <div class="card-value">100s</div>
-                    <div class="card-desc">
-                        Monte Carlo + Fine CFD<br>
-                        100×100 grid
-                    </div>
-                </div>
-                
-                <div class="project-card" style="border-color: var(--primary);">
-                    <div class="card-label" style="color: var(--primary);">ML Orchestrated (SimV4)</div>
-                    <div class="card-value" style="color: var(--primary);">(placeholder)</div>
-                    <div class="card-desc">
-                        Adaptive LF/MF/HF selection<br>
-                        <strong>(placeholder)</strong>
-                        25x25 grid
-                    </div>
-                </div>
+<section id="overview" class="hero">
+    <h2>15× Faster PV Simulations</h2>
+    <p>
+        AURA-MF combines Monte Carlo photon transport, high-fidelity CFD, and machine learning 
+        to deliver unprecedented computational efficiency without sacrificing accuracy. 
+        Achieve <strong>RMSE &lt; 2.0 K</strong> at <strong>15× speedup</strong> over traditional methods.
+    </p>
+</section>
 
-                <div class="project-card">
-                    <div class="card-label">ML Orchestrated (SimV4)</div>
-                    <div class="card-value">(placeholder)</div>
-                    <div class="card-desc">
-                        Adaptive LF/MF/HF selection<br>
-                        <strong>(placeholder)</strong>
-                        50×50 grid
-                    </div>
-                </div>
+<section id="architecture">
+    <div style="border-left: 4px solid var(--primary); padding-left: 20px; margin: 60px 0 30px;">
+        <h2>Multi-Fidelity Architecture</h2>
+    </div>
+    
+    <p style="color: var(--text); margin-bottom: 2rem; max-width: 800px;">
+        The framework intelligently switches between three fidelity levels based on physics-informed 
+        machine learning, optimizing the accuracy-cost tradeoff in real-time.
+    </p>
+    
+    <div class="project-grid">
+        <div class="project-card">
+            <div class="card-label">Low Fidelity (LF)</div>
+            <div class="card-value">1.0s</div>
+            <div class="card-desc">
+                Poisson + Coarse CFD<br>
+                25×25 grid
+            </div>
+        </div>
+        
+        <div class="project-card">
+            <div class="card-label">Medium Fidelity (MF)</div>
+            <div class="card-value">8.5s</div>
+            <div class="card-desc">
+                Diffusion BTE + S₄ DOM<br>
+                50×50 grid
+            </div>
+        </div>
+        
+        <div class="project-card">
+            <div class="card-label">High Fidelity (HF)</div>
+            <div class="card-value">100s</div>
+            <div class="card-desc">
+                Monte Carlo + Fine CFD<br>
+                100×100 grid
+            </div>
+        </div>
+        
+        <div class="project-card" style="border-color: var(--primary);">
+            <div class="card-label" style="color: var(--primary);">ML Orchestrated (SimV4)</div>
+            <div class="card-value" style="color: var(--primary);">(placeholder)</div>
+            <div class="card-desc">
+                Adaptive LF/MF/HF selection<br>
+                <strong>(placeholder)</strong>
+                25x25 grid
+            </div>
+        </div>
 
-                <div class="project-card">
-                    <div class="card-label">ML Orchestrated (SimV4)</div>
-                    <div class="card-value">(placeholder)</div>
-                    <div class="card-desc">
-                        Adaptive LF/MF/HF selection<br>
-                        <strong>(placeholder)</strong>
-                        100×100 grid
-                    </div>
-                </div>
+        <div class="project-card">
+            <div class="card-label">ML Orchestrated (SimV4)</div>
+            <div class="card-value">(placeholder)</div>
+            <div class="card-desc">
+                Adaptive LF/MF/HF selection<br>
+                <strong>(placeholder)</strong>
+                50×50 grid
             </div>
-        </section>
-        
-        <section id="performance">
-            <div style="border-left: 4px solid var(--primary); padding-left: 20px; margin: 60px 0 30px;">
-                <h2>Validation Metrics</h2>
+        </div>
+
+        <div class="project-card">
+            <div class="card-label">ML Orchestrated (SimV4)</div>
+            <div class="card-value">(placeholder)</div>
+            <div class="card-desc">
+                Adaptive LF/MF/HF selection<br>
+                <strong>(placeholder)</strong>
+                100×100 grid
             </div>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>Metric</th>
-                        <th style="text-align: center;">SimV1 (HF)</th>
-                        <th style="text-align: center;">SimV4 (ML)</th>
-                        <th style="text-align: center;">Target</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Temperature RMSE [K]</td>
-                        <td style="text-align: center; color: var(--primary);">0.5 ± 0.1</td>
-                        <td style="text-align: center; color: var(--primary);">0.7 ± 0.15</td>
-                        <td style="text-align: center;">&lt; 2.0</td>
-                    </tr>
-                    <tr>
-                        <td>Energy Error [%]</td>
-                        <td style="text-align: center; color: var(--primary);">&lt; 0.5</td>
-                        <td style="text-align: center; color: var(--primary);">&lt; 1.8</td>
-                        <td style="text-align: center;">&lt; 2.0</td>
-                    </tr>
-                    <tr>
-                        <td>Wall-Clock Time [s]</td>
-                        <td style="text-align: center;">100.0</td>
-                        <td style="text-align: center; color: var(--dark); font-weight: bold;">6.5</td>
-                        <td style="text-align: center;">—</td>
-                    </tr>
-                    <tr style="background: #ecfdf5;">
-                        <td style="font-weight: 600;">Speedup Factor</td>
-                        <td style="text-align: center;">1.0×</td>
-                        <td style="text-align: center; color: var(--primary); font-weight: 800; font-size: 1.1rem;">15.4×</td>
-                        <td style="text-align: center;">&gt; 10×</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        
-        <section id="downloads">
-            <div style="border-left: 4px solid var(--primary); padding-left: 20px; margin: 60px 0 30px;">
-                <h2>Download Resources</h2>
+        </div>
+    </div>
+</section>
+
+<section id="performance">
+    <div style="border-left: 4px solid var(--primary); padding-left: 20px; margin: 60px 0 30px;">
+        <h2>Validation Metrics</h2>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th style="text-align: center;">SimV1 (HF)</th>
+                <th style="text-align: center;">SimV4 (ML)</th>
+                <th style="text-align: center;">Target</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Temperature RMSE [K]</td>
+                <td style="text-align: center; color: var(--primary);">0.5 ± 0.1</td>
+                <td style="text-align: center; color: var(--primary);">0.7 ± 0.15</td>
+                <td style="text-align: center;">&lt; 2.0</td>
+            </tr>
+            <tr>
+                <td>Energy Error [%]</td>
+                <td style="text-align: center; color: var(--primary);">&lt; 0.5</td>
+                <td style="text-align: center; color: var(--primary);">&lt; 1.8</td>
+                <td style="text-align: center;">&lt; 2.0</td>
+            </tr>
+            <tr>
+                <td>Wall-Clock Time [s]</td>
+                <td style="text-align: center;">100.0</td>
+                <td style="text-align: center; color: var(--dark); font-weight: bold;">6.5</td>
+                <td style="text-align: center;">—</td>
+            </tr>
+            <tr style="background: #ecfdf5;">
+                <td style="font-weight: 600;">Speedup Factor</td>
+                <td style="text-align: center;">1.0×</td>
+                <td style="text-align: center; color: var(--primary); font-weight: 800; font-size: 1.1rem;">15.4×</td>
+                <td style="text-align: center;">&gt; 10×</td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+<section id="downloads">
+    <div style="border-left: 4px solid var(--primary); padding-left: 20px; margin: 60px 0 30px;">
+        <h2>Download Resources</h2>
+    </div>
+    
+    <div class="project-grid">
+        <a href="{{ '/downloads/AURA-MF_source_v1.0.zip' | relative_url }}" class="download-btn">
+            <span class="icon">📦</span>
+            <div>
+                <strong>Source Code v1.0</strong>
+                <span>Fortran 90/95 repository</span>
             </div>
-            
-            <div class="project-grid">
-                <a href="downloads/AURA-MF_source_v1.0.zip" class="download-btn">
-                    <span class="icon">📦</span>
-                    <div>
-                        <strong>Source Code v1.0</strong>
-                        <span>Fortran 90/95 repository</span>
-                    </div>
-                </a>
-                
-                <a href="downloads/Theory_Manual.pdf" class="download-btn">
-                    <span class="icon">📘</span>
-                    <div>
-                        <strong>Theory Manual</strong>
-                        <span>Mathematical foundations</span>
-                    </div>
-                </a>
-                
-                <a href="downloads/User_Guide.pdf" class="download-btn">
-                    <span class="icon">🚀</span>
-                    <div>
-                        <strong>User Guide</strong>
-                        <span>Installation & tutorials</span>
-                    </div>
-                </a>
+        </a>
+        
+        <a href="{{ '/downloads/Theory_Manual.pdf' | relative_url }}" class="download-btn">
+            <span class="icon">📘</span>
+            <div>
+                <strong>Theory Manual</strong>
+                <span>Mathematical foundations</span>
             </div>
-        </section>
+        </a>
         
-        <section class="theory-box">
-            <h3 style="margin-top: 0; color: var(--info);">Publication Ready</h3>
-            <p style="margin-bottom: 0; color: var(--text);">
-                AURA-MF has been validated against the <strong>Sandia PVMC dataset</strong> 
-                (318-328 K operating temperature) and is ready for submission to 
-                <em>Solar Energy</em> or <em>Applied Energy</em> journals.
-            </p>
-        </section>
-        
-    </main>
+        <a href="{{ '/downloads/User_Guide.pdf' | relative_url }}" class="download-btn">
+            <span class="icon">🚀</span>
+            <div>
+                <strong>User Guide</strong>
+                <span>Installation & tutorials</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<section class="theory-box">
+    <h3 style="margin-top: 0; color: var(--info);">Publication Ready</h3>
+    <p style="margin-bottom: 0; color: var(--text);">
+        AURA-MF has been validated against the <strong>Sandia PVMC dataset</strong> 
+        (318-328 K operating temperature) and is ready for submission to 
+        <em>Solar Energy</em> or <em>Applied Energy</em> journals.
+    </p>
+</section>
