@@ -628,7 +628,7 @@
         }
             
             .footer p {
-                margin-bottom: 8px;
+                margin-bottom: 4px;
                 color: inherit; /* Ensures it uses the muted slate color */
             }
             
