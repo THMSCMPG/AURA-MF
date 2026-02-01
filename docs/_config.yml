@@ -1,35 +1,109 @@
+# =============================================================================
+# AURA-MF - Configuration
+# =============================================================================
+# Multi-Fidelity Photovoltaic Simulation Framework
+# URL: https://thmscmpg.github.io/AURA-MF/
+# =============================================================================
+
 # Site Metadata
 name: ""
-title: Thomas Campagna - AURA-MF
+title: AURA-MF - Multi-Fidelity Photovoltaic Simulation
 email: thmscmpgn@gmail.com
 description: >-
-  Multi-Fidelity Photovoltaic Simulation Framework combining Monte Carlo 
-  photon transport, CFD, and machine learning.
+  AURA-MF: Atmospheric Unified Radiation Assessment with Multi-Fidelity.
+  A physics-based simulation framework combining Monte Carlo photon transport,
+  high-fidelity CFD, and machine learning for photovoltaic performance modeling.
+  Achieves 15× speedup with RMSE < 2.0 K.
+author: Thomas Campagna
+lang: en-US
+timezone: America/Chicago
 
-# Site Settings
+# Deployment Settings
 url: "https://THMSCMPG.github.io"
-baseurl: "/AURA-MF"  # Subfolder path
+baseurl: "/AURA-MF"
 
 # Build Settings
 markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Plugins
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
   - jekyll-remote-theme
 
-# Remote Theme - ADD @main
+# Remote Theme Configuration
 remote_theme: THMSCMPG/backend-hub@main
 
 # Sass Configuration
 sass:
   sass_dir: _sass
   style: compressed
+  sourcemap: never
 
 # Kramdown Configuration
 kramdown:
   math_engine: mathjax
   input: GFM
   syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: true
 
-# Optional features
-includes_enabled: true  # Enable contact form in AURA-MF layout
+# MathJax Configuration
+mathjax:
+  extensions:
+    - tex2jax.js
+  config: TeX-AMS-MML_HTMLorMML
+
+# SEO & Social
+social:
+  name: Thomas Campagna
+  links:
+    - https://github.com/THMSCMPG
+
+# Site Assets
+favicon: /assets/favicon.png
+
+# AURA-MF Specific Features
+includes_enabled: true  # Enable contact form and backend bridge
+
+# Collections (for simulation pages)
+# collections:
+#   simulations:
+#     output: true
+#     permalink: /pages/:name/
+
+# Exclude from processing
+exclude:
+  - README.md
+  - LICENSE
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git
+  - .gitignore
+  - .sass-cache
+  - package.json
+  - package-lock.json
+  - physics_sim  # Fortran code (not for web)
+
+# Include dotfiles (if needed)
+include:
+  - .well-known
+
+# Defaults for front matter
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: "AURA-MF"
+      author: "Thomas Campagna"
+  - scope:
+      path: "pages"
+    values:
+      layout: "AURA-MF"
+      author: "Thomas Campagna"
