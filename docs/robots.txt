@@ -1,0 +1,15 @@
+# Robots.txt for THMSCMPG GitHub Pages Sites
+# Allows all search engines to crawl all content
+
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: {{ site.url }}{{ site.baseurl }}/sitemap.xml
+
+# Crawl delay (optional - removes if causing issues)
+# Crawl-delay: 1
+
+# Disallow crawling of specific paths (uncomment if needed)
+# Disallow: /assets/
+# Disallow: /404.html
