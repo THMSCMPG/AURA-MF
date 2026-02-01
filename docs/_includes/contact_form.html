@@ -271,7 +271,7 @@
         // We no longer need the API_URL here, the Bridge handles it.
         MAX_MESSAGE_LENGTH: 5000,
         MIN_MESSAGE_LENGTH: 10,
-        TIMEOUT: 10000 
+        TIMEOUT: 45000 
     };
     
     // --- BRIDGE COMMUNICATION FUNCTION ---
@@ -288,7 +288,7 @@
             // Define listener for the response
             const handleResponse = (event) => {
                 // Security check
-                if (event.origin !== window.location.origin) return;
+                if (!event.origin.includes('thmscmpg.github.io')) return;
                 // Only handle the message meant for this specific request ID
                 if (!event.data.id || event.data.id !== requestId) return;
 
