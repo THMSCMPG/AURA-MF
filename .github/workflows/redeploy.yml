@@ -1,0 +1,14 @@
+name: Redeploy on Hub Update
+on:
+  repository_dispatch:
+    types: [hub_update]
+
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Force GitHub Pages Redeploy
+        # This "touches" the repo to force GitHub Pages to clear its cache
+        uses: actions/checkout@v4
+      - name: Build/Deploy
+        run: echo "The Hub has updated. Refreshing frontend..."
