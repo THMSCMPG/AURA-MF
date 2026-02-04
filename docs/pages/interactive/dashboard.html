@@ -123,9 +123,15 @@ title: AURA-MF Interactive Dashboard
             <p><strong>Stability criterion:</strong> CFL $< 0.5$ (explicit schemes)</p>
             <p><strong>Alert:</strong> Red warning if CFL $> 0.9$ (risk of numerical instability)</p>
         </div>
-
-        <div>{% include demo.html %}</div>
             
+        <div>
+            {% if isSidebarVisible %}
+                {% include bte_ns_simulator_mobile.html %}
+            {% else %}
+                {% include bte_ns_simulator.html %}
+            {% endif %}
+        </div>
+
         <h2>Future Enhancements</h2>
 
         <h3>3D Volume Rendering</h3>
@@ -174,6 +180,12 @@ title: AURA-MF Interactive Dashboard
     <script src="https://thmscmpg.github.io/backend-hub/assets/js/dashboard_scripts.js"></script>
         
     <script>
+        // Function to check if mobile sidebar is visible
+        function isSidebarVisible() {
+            const sidebar = document.getElementById("mobileSidebar");
+            return sidebar && sidebar.classList.contains('open');
+        }
+
         // Additional UI enhancements
         document.addEventListener('DOMContentLoaded', function() {
             // Sync fidelity displays
