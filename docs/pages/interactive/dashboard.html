@@ -125,7 +125,7 @@ title: AURA-MF Interactive Dashboard
         </div>
             
         <div>
-            {% if SidebarVisible $}
+            {% if isOpen $}
                 {% include bte_ns_simulator_mobile.html %}
             {% else %}
                 {% include bte_ns_simulator.html %}
@@ -183,7 +183,10 @@ title: AURA-MF Interactive Dashboard
         // Function to check if mobile sidebar is visible
         function isSidebarVisible() {
             const sidebar = document.getElementById("mobileSidebar");
-            return !!(sidebar && sidebar.classList.contains('open'));
+            if (sidebar) {
+                const isOpen = sidebar.classList.contains('open');
+                return isOpen;
+            }
         }
 
         // Additional UI enhancements
