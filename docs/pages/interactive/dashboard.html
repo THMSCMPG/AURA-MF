@@ -125,7 +125,7 @@ title: AURA-MF Interactive Dashboard
         </div>
             
         <div>
-            {% isSidebarVisible $}
+            {% if isSidebarVisible $}
                 {% include bte_ns_simulator_mobile.html %}
             {% else %}
                 {% include bte_ns_simulator.html %}
