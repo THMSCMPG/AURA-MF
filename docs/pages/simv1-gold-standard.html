@@ -9,9 +9,9 @@ title: SimV1 High-Fidelity Gold Standard
             <p>
                 SimV1 represents the <strong>benchmark reference</strong> for all AURA-MF multi-fidelity simulations. 
                 This module implements full-physics modeling of photovoltaic thermal behavior using Monte Carlo photon 
-                transport coupled with high-resolution Navier-Stokes computational fluid dynamics (CFD). SimV1 achieves 
+                transport coupled with high-resolution Navier-Stokes computational fluid dynamics (CFD). The goal for SimV1 is to achieve 
                 temperature prediction accuracy of <strong>RMSE < 1.0 K</strong> when validated against the Sandia 
-                National Laboratories PVMC dataset, establishing it as the "gold standard" for subsequent fidelity approximations.
+                National Laboratories PVMC dataset, to establish it as the "gold standard" for subsequent fidelity approximations.
             </p>
         </div>
 
@@ -53,10 +53,10 @@ title: SimV1 High-Fidelity Gold Standard
             $$
         </p>
 
-        <p>
+        <!--<p>
             This geometric progression captures the sharp silicon bandgap absorption edge at $\lambda_g \approx 1100$ nm 
             (corresponding to $E_g = 1.12$ eV).
-        </p>
+        </p>-->
 
         <h3>Conjugate Heat Transfer Interface</h3>
 
@@ -126,7 +126,7 @@ title: SimV1 High-Fidelity Gold Standard
         <h3>Shockley-Queisser Single-Diode Model</h3>
 
         <p>
-            SimV1 predicts electrical performance using the modified diode equation with series ($R_s$) and 
+            SimV1 attempts to predict electrical performance using the modified diode equation with series ($R_s$) and 
             shunt ($R_{sh}$) resistances:
         </p>
 
@@ -164,21 +164,21 @@ title: SimV1 High-Fidelity Gold Standard
         <h3>Sandia PVMC Benchmark</h3>
 
         <p>
-            SimV1 was validated against outdoor measurements from the Photovoltaic Module Characterization (PVMC) 
+            SimV1 will be validated against outdoor measurements from the Photovoltaic Module Characterization (PVMC) 
             facility in Albuquerque, New Mexico (1619 m elevation, 35.05°N, 106.54°W).
         </p>
 
         <div class="theory-box">
             <h4>Test Conditions:</h4>
             <ul>
-                <li>Incident irradiance: $G = 1000 \pm 50$ W m$^{-2}$ (pyranometer-measured)</li>
+                <li>Incident irradiance: $G = 1100 \pm 50$ W m$^{-2}$ (pyranometer-measured)</li>
                 <li>Ambient temperature: $T_\infty = 298.15 \pm 2$ K</li>
                 <li>Wind speed: $u_\infty = 1.0 \pm 0.5$ m s$^{-1}$</li>
                 <li>Relative humidity: RH $= 12 \pm 5\%$</li>
             </ul>
         </div>
 
-        <h4>Performance Metrics:</h4>
+        <!--<h4>Performance Metrics:</h4>
 
         <table>
             <thead>
@@ -246,7 +246,7 @@ title: SimV1 High-Fidelity Gold Standard
             </li>
             
             <li><strong>Automated Quality Control:</strong> Built-in diagnostics flag non-physical states (negative temperatures, superluminal photons, etc.) and trigger adaptive mesh refinement.</li>
-        </ol>
+        </ol>-->
 
         <h2>References</h2>
 

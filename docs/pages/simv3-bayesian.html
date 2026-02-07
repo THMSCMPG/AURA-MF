@@ -7,9 +7,9 @@ title: SimV3 Bayesian Optimization & Surrogate Modeling
 
         <div class="executive-summary">
             <h2>Executive Summary</h2>
-            <p>SimV3 introduces <strong>Gaussian Process (GP) surrogates</strong> and <strong>Bayesian optimization</strong> 
+            <p>SimV3 will introduce <strong>Gaussian Process (GP) surrogates</strong> and <strong>Bayesian optimization</strong> 
             to enable efficient design space exploration and parameter identification for photovoltaic thermal systems. By constructing 
-            probabilistic emulators of the expensive SimV1/SimV2 solvers, SimV3 reduces the cost of optimization from thousands of 
+            probabilistic emulators of the expensive SimV1/SimV2 solvers, SimV3 hopes to reduce the cost of optimization from thousands of 
             HF evaluations to fewer than <strong>100 strategically selected queries</strong>, achieving global optima with quantified 
             uncertainty bounds.</p>
         </div>
@@ -48,7 +48,7 @@ title: SimV3 Bayesian Optimization & Surrogate Modeling
 
         <h3>Matérn 5/2 Kernel</h3>
 
-        <p>SimV3 employs the Matérn 5/2 kernel for its balance between smoothness and flexibility:</p>
+        <p>SimV3 will employ the Matérn 5/2 kernel for its balance between smoothness and flexibility:</p>
 
         <p style="text-align: center; margin: 2rem 0;">
             $$k_{\text{M52}}(\mathbf{x}, \mathbf{x}') = \sigma_f^2 \left(1 + \frac{\sqrt{5}r}{\ell} + \frac{5r^2}{3\ell^2}\right) 
@@ -85,7 +85,7 @@ title: SimV3 Bayesian Optimization & Surrogate Modeling
             $$\mathbf{x}_{t+1} = \underset{\mathbf{x} \in \mathcal{X}}{\arg\max} \, \text{EI}(\mathbf{x} \mid \mathcal{D}_t)$$
         </p>
 
-        <h2>Case Study: Encapsulant Thickness Optimization</h2>
+        <!--<h2>Case Study: Encapsulant Thickness Optimization</h2>
 
         <h3>Problem Setup</h3>
 
@@ -176,7 +176,7 @@ title: SimV3 Bayesian Optimization & Surrogate Modeling
                 (achieves global optima in <100 HF evaluations)</li>
             <li><strong>Rigorous uncertainty quantification</strong> for design decisions (credible intervals guide risk-informed choices)</li>
             <li><strong>Open-source implementation</strong> (GPyTorch + BoTorch, GPU-accelerated)</li>
-        </ol>
+        </ol>-->
 
         <h2>References</h2>
 

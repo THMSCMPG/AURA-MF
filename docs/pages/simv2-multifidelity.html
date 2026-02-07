@@ -8,8 +8,8 @@ title: SimV2 Multi-Fidelity Orchestration
         <div class="executive-summary">
             <h2>Executive Summary</h2>
             <p>
-                SimV2 introduces the <strong>adaptive multi-fidelity framework</strong> that intelligently combines low-fidelity (LF) 
-                and high-fidelity (HF) simulations to achieve computational speedups of 8-12× while maintaining prediction accuracy 
+                SimV2 introduces the <strong>adaptive multi-fidelity framework</strong> that combines low-fidelity (LF) 
+                and high-fidelity (HF) simulations. We hope to achieve computational speedups of 8-12× while maintaining prediction accuracy 
                 within <strong>RMSE < 2.5 K</strong>. This module implements co-kriging surrogates, error estimators, and 
                 threshold-based fidelity switching logic to optimize the accuracy-cost tradeoff in real-time photovoltaic thermal simulations.
             </p>
@@ -100,7 +100,7 @@ title: SimV2 Multi-Fidelity Orchestration
 
         <h3>Squared Exponential Kernel</h3>
 
-        <p>SimV2 employs an anisotropic SE kernel with automatic relevance determination (ARD):</p>
+        <p>SimV2 will employ an anisotropic SE kernel with automatic relevance determination (ARD):</p>
 
         <p style="text-align: center; margin: 2rem 0;">
             $$
@@ -120,7 +120,7 @@ title: SimV2 Multi-Fidelity Orchestration
         <h3>Residual-Based Indicators</h3>
 
         <p>
-            SimV2 computes <strong>a posteriori</strong> error indicators at each timestep to decide fidelity level. 
+            SimV2 will compute <strong>a posteriori</strong> error indicators at each timestep to decide fidelity level. 
             Define the energy balance residual:
         </p>
 
@@ -161,7 +161,7 @@ title: SimV2 Multi-Fidelity Orchestration
         <h3>Particle Swarm Optimization (PSO)</h3>
 
         <p>
-            SimV2 uses PSO to tune the threshold parameters $\{\tau_E, \tau_G, \tau_{\dot{T}}\}$ offline to maximize 
+            SimV2 will use PSO to tune the threshold parameters $\{\tau_E, \tau_G, \tau_{\dot{T}}\}$ offline to maximize 
             computational efficiency subject to accuracy constraints.
         </p>
 
@@ -217,7 +217,7 @@ END FOR</pre>
             $$
         </p>
 
-        <h2>Validation Studies</h2>
+        <!--<h2>Validation Studies</h2>
 
         <h3>Case Study: Cloud Transient Event</h3>
 
@@ -329,7 +329,7 @@ END FOR</pre>
             <li><strong>Bi-fidelity framework validated on real PV systems</strong> (first in the solar energy literature to demonstrate <2K RMSE at >10× speedup)</li>
             <li><strong>Optimal threshold tuning via PSO</strong> (reduces manual parameter selection)</li>
             <li><strong>Seamless integration with existing HF solvers</strong> (drop-in replacement for single-fidelity workflows)</li>
-        </ol>
+        </ol>-->
 
         <h2>References</h2>
 
