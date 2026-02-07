@@ -13,8 +13,8 @@ title: Multi-Fidelity Photovoltaic Simulation Framework
     <h2>15× Faster PV Simulations</h2>
     <p>
         AURA-MF combines Monte Carlo photon transport, high-fidelity CFD, and machine learning 
-        to deliver unprecedented computational efficiency without sacrificing accuracy. 
-        Achieve <strong>RMSE &lt; 2.0 K</strong> at <strong>15× speedup</strong> over traditional methods.
+        to deliver computational efficiency without sacrificing accuracy. 
+        Our Goals: achieve an <strong>RMSE &lt; 2.0 K</strong> at <strong>15× speedup</strong> over traditional methods.
     </p>
 </section>
 
@@ -24,14 +24,14 @@ title: Multi-Fidelity Photovoltaic Simulation Framework
     </div>
     
     <p style="color: var(--text); margin-bottom: 2rem; max-width: 800px;">
-        The framework intelligently switches between three fidelity levels based on physics-informed 
+        We are currently looking at the potential for a framework that intelligently switches between three fidelity levels based on physics-informed 
         machine learning, optimizing the accuracy-cost tradeoff in real-time.
     </p>
     
     <div class="project-grid">
         <div class="project-card">
             <div class="card-label">Low Fidelity (LF)</div>
-            <div class="card-value">1.0s</div>
+            <div class="card-value">Goal: 1.0s</div>
             <div class="card-desc">
                 Poisson + Coarse CFD<br>
                 25×25 grid
@@ -40,7 +40,7 @@ title: Multi-Fidelity Photovoltaic Simulation Framework
         
         <div class="project-card">
             <div class="card-label">Medium Fidelity (MF)</div>
-            <div class="card-value">8.5s</div>
+            <div class="card-value">Goal: 8.5s</div>
             <div class="card-desc">
                 Diffusion BTE + S₄ DOM<br>
                 50×50 grid
@@ -49,13 +49,14 @@ title: Multi-Fidelity Photovoltaic Simulation Framework
         
         <div class="project-card">
             <div class="card-label">High Fidelity (HF)</div>
-            <div class="card-value">100s</div>
+            <div class="card-value">Goal: 100s</div>
             <div class="card-desc">
                 Monte Carlo + Fine CFD<br>
                 100×100 grid
             </div>
         </div>
-        
+    </div>
+    <div class="project-grid">
         <div class="project-card" style="border-color: var(--primary);">
             <div class="card-label" style="color: var(--primary);">ML Orchestrated (SimV4)</div>
             <div class="card-value" style="color: var(--primary);">(placeholder)</div>
@@ -90,7 +91,7 @@ title: Multi-Fidelity Photovoltaic Simulation Framework
 
 <section id="performance">
     <div style="border-left: 4px solid var(--primary); padding-left: 20px; margin: 60px 0 30px;">
-        <h2>Validation Metrics</h2>
+        <h2>Future Validation Metrics</h2>
     </div>
     
     <table>
@@ -105,26 +106,26 @@ title: Multi-Fidelity Photovoltaic Simulation Framework
         <tbody>
             <tr>
                 <td>Temperature RMSE [K]</td>
-                <td style="text-align: center; color: var(--primary);">0.5 ± 0.1</td>
-                <td style="text-align: center; color: var(--primary);">0.7 ± 0.15</td>
+                <td style="text-align: center; color: var(--primary);">NA</td>
+                <td style="text-align: center; color: var(--primary);">NA</td>
                 <td style="text-align: center;">&lt; 2.0</td>
             </tr>
             <tr>
                 <td>Energy Error [%]</td>
-                <td style="text-align: center; color: var(--primary);">&lt; 0.5</td>
-                <td style="text-align: center; color: var(--primary);">&lt; 1.8</td>
+                <td style="text-align: center; color: var(--primary);">&lt; NA</td>
+                <td style="text-align: center; color: var(--primary);">&lt; NA</td>
                 <td style="text-align: center;">&lt; 2.0</td>
             </tr>
             <tr>
                 <td>Wall-Clock Time [s]</td>
-                <td style="text-align: center;">100.0</td>
-                <td style="text-align: center; color: var(--dark); font-weight: bold;">6.5</td>
-                <td style="text-align: center;">—</td>
+                <td style="text-align: center;">NA</td>
+                <td style="text-align: center; color: var(--dark); font-weight: bold;">NA</td>
+                <td style="text-align: center;">&lt; 10</td>
             </tr>
             <tr style="background: #ecfdf5;">
                 <td style="font-weight: 600;">Speedup Factor</td>
-                <td style="text-align: center;">1.0×</td>
-                <td style="text-align: center; color: var(--primary); font-weight: 800; font-size: 1.1rem;">15.4×</td>
+                <td style="text-align: center;">NA</td>
+                <td style="text-align: center; color: var(--primary); font-weight: 800; font-size: 1.1rem;">NA</td>
                 <td style="text-align: center;">&gt; 10×</td>
             </tr>
         </tbody>
@@ -165,11 +166,11 @@ title: Multi-Fidelity Photovoltaic Simulation Framework
     </div>
 </section>
 
-<section class="theory-box">
+<!--<section class="theory-box">
     <h3 style="margin-top: 0; color: var(--info);">Publication Ready</h3>
     <p style="margin-bottom: 0; color: var(--text);">
         AURA-MF has been validated against the <strong>Sandia PVMC dataset</strong> 
         (318-328 K operating temperature) and is ready for submission to 
         <em>Solar Energy</em> or <em>Applied Energy</em> journals.
     </p>
-</section>
+</section>-->
