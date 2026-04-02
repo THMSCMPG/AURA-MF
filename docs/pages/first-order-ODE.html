@@ -1,0 +1,72 @@
+---
+layout: AURA-MF
+title: First-Order ODEs - Solar Panel Dynamics
+---
+
+<main>
+    <div class="executive-summary">
+        <h2>Abstract</h2>
+        <p>
+            This page explores the various methods used to solve first-order ordinary differential equations (ODEs) that model the temperature change of a solar panel. We investigate analytical solutions, numerical methods, and machine learning approaches to understand the dynamics of the system. Currently, we have evaluated the exact solution of the linear ODE modeling temperature change, alongside numerical methods such as Euler's method and the Improved Euler's method (Heun's method)[cite: 1, 15].
+        </p>
+    </div>
+
+    <hr>
+
+    <section id="physics-modeling">
+        <h2>Mathematical Modeling</h2>
+        <p>The temperature dynamics of the solar panel are governed by the balance of solar absorption, convective cooling, and (in the nonlinear case) radiative heat loss.</p>
+        
+        <h3>1. Linear Case: Convection Only</h3>
+        <p>The linear ordinary differential equation (ODE) for temperature $T$ over time $t$ is expressed as[cite: 25]:</p>
+        $$\frac{dT}{dt} = \frac{1}{mc_p} [ (\alpha - \eta)GA - h_{conv}A(T - T_{amb}) ]$$
+        <p>Where the exact solution is given by[cite: 39]:</p>
+        $$T(t) = T_{ss} + (T_0 - T_{ss})e^{-(t - t_0) / \tau}$$
+        <ul>
+            <li><strong>Steady-state temperature ($T_{ss}$):</strong> $T_{amb} + \frac{(\alpha - \eta)G}{h_{conv}}$ [cite: 42]</li>
+            <li><strong>Thermal time constant ($\tau$):</strong> $\frac{mc_p}{h_{conv}A}$ [cite: 43]</li>
+        </ul>
+
+        <h3>2. Nonlinear Case: Convection + Radiation</h3>
+        <p>Adding the Stefan-Boltzmann law for radiation introduces a $T^4$ term, making the ODE nonlinear[cite: 32, 33]:</p>
+        $$\frac{dT}{dt} = \frac{1}{mc_p} [ (\alpha - \eta)GA - h_{conv}A(T - T_{amb}) - \epsilon\sigma A(T^4 - T_{sky}^4) ]$$
+    </section>
+
+    <hr>
+
+    <section id="numerical-analysis">
+        <h2>Numerical Methods & Results</h2>
+        <p>We compared the <strong>Forward Euler</strong> method (first-order) against the <strong>Improved Euler / Heun’s Method</strong> (second-order)[cite: 14, 15].</p>
+
+        <div class="visual-comparison">
+            <h3>Effect of Step Size ($h$) on Convergence</h3>
+            <p>Numerical accuracy is highly dependent on the time step ($h$). As seen in our analysis, reducing the step size from $h=100s$ (37 points) to $h=10s$ (361 points) significantly reduces the absolute error in the linear model[cite: 5, 13].</p>
+            
+            <div class="image-grid">
+                <img src="https://thmscmpg.github.io/AURA-MF/assets/Plots/euler_plot_37_points.png" alt="Euler Plot 37 points" style="width:45%;">
+                <img src="https://thmscmpg.github.io/AURA-MF/assets/Plots/euler_plot_361_points.png" alt="Euler Plot 361 points" style="width:45%;">
+            </div>
+            <p><em>Notice that the Improved Euler method (Heun's) maintains a much lower error profile even at larger step sizes compared to the standard Euler method[cite: 18].</em></p>
+        </div>
+
+        
+        <h3>Direction Fields</h3>
+        <p>Direction fields illustrate the stability of the system. Regardless of the initial temperature, the system naturally "flows" toward its steady-state temperature[cite: 42].</p>
+        <div class="image-grid">
+            <img src="https://thmscmpg.github.io/AURA-MF/assets/Plots/traditional_vectorfield_linear.png" alt="Linear Direction Field" style="width:45%;">
+            <img src="https://thmscmpg.github.io/AURA-MF/assets/Plots/traditional_vectorfield_nonlinear.png" alt="Nonlinear Direction Field" style="width:45%;">
+        </div>
+        
+            </section>
+
+    <hr>
+
+    <section id="resources">
+        <h2>Poster and Presentation</h2>
+        <p>Further details on the multi-fidelity approach and future machine learning integration can be found in the project assets below.</p>
+        <ul>
+            <li><a href="poster.pdf">Research Poster (PDF)</a></li>
+            <li><a href="presentation.pptx">Project Slide Deck (PPTX)</a></li>
+        </ul>
+    </section>
+</main>
