@@ -79,22 +79,17 @@ title: First-Order ODEs - Solar Panel Dynamics
         </p>
 
         <div class="future-grid">
-            <h3>1. High-Order Numerical Schemes</h3>
-            <p>
-                While the Improved Euler method offers second-order accuracy, future iterations will implement <strong>Fourth-Order Runge-Kutta (RK4)</strong> and adaptive step-size solvers. These methods will allow for higher precision when modeling "stiff" equations—specifically when rapid environmental fluctuations (such as intermittent cloud cover) cause sharp gradients in the temperature derivative.
-            </p>
-
-            <h3>2. Multi-Fidelity Integration (AURA-MFP)</h3>
+            <h3>1. Multi-Fidelity Integration (AURA-MFP)</h3>
             <p>
                 A core objective is to integrate these low-fidelity 1D ODE models into a <strong>Multi-Fidelity framework</strong>. By using the fast ODE solutions to explore large parameter spaces and reserved high-fidelity 3D simulations for verification, we can significantly reduce the computational cost of long-term environmental assessments.
             </p>
 
-            <h3>3. Physics-Informed Machine Learning (PINNs)</h3>
+            <h3>2. Physics-Informed Machine Learning (PINNs)</h3>
             <p>
                 We plan to explore the application of <strong>Physics-Informed Neural Networks</strong> to predict temperature changes. Unlike standard "black-box" models, PINNs can be trained on historical environmental data while being constrained by the underlying thermodynamic equations (convection and radiation laws), ensuring that predictions remain physically consistent.
             </p>
 
-            <h3>4. Hardware Benchmarking & Cluster Computing</h3>
+            <h3>3. Hardware Benchmarking & Cluster Computing</h3>
             <p>
                 To support large-scale simulations, future work includes benchmarking these Fortran-based solvers on <strong>cluster architecture</strong>. This will involve optimizing the code for parallel execution across multiple nodes to handle complex multi-physics simulations involving simultaneous fluid dynamics and photon transport.
             </p>
